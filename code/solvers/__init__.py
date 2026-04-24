@@ -16,6 +16,12 @@ Public API:
 - `validate_solution` — re-verifies budget / class-cardinality / profit
 """
 
+# Eager imports trigger @register at module-import time so every script
+# and test sees the full registry without needing to know about adapter
+# module names. New adapters MUST be added here.
+from solvers import cbc as _cbc  # noqa: F401
+from solvers import highs as _highs  # noqa: F401
+from solvers import scip as _scip  # noqa: F401
 from solvers.base import (
     InvalidSolutionError,
     Solver,

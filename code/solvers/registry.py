@@ -47,6 +47,14 @@ def list_solvers() -> list[str]:
     return sorted(_FACTORIES)
 
 
-def _reset_for_tests() -> None:
-    """Test-only hook to clear the registry between unit tests."""
+def _snapshot_and_clear() -> dict[str, Callable[[], Solver]]:
+    """Test-only hook: save the current registry, then clear it."""
+    snap = dict(_FACTORIES)
     _FACTORIES.clear()
+    return snap
+
+
+def _restore(snapshot: dict[str, Callable[[], Solver]]) -> None:
+    """Test-only hook: restore a registry snapshot."""
+    _FACTORIES.clear()
+    _FACTORIES.update(snapshot)

@@ -15,7 +15,7 @@ from solvers import (
     register,
     validate_solution,
 )
-from solvers.registry import _reset_for_tests
+from solvers.registry import _restore, _snapshot_and_clear
 
 from instances import generate_instance
 
@@ -27,9 +27,11 @@ def small_instance():
 
 @pytest.fixture
 def fresh_registry():
-    _reset_for_tests()
-    yield
-    _reset_for_tests()
+    snapshot = _snapshot_and_clear()
+    try:
+        yield
+    finally:
+        _restore(snapshot)
 
 
 def _make_dummy_solver(name: str = "dummy", status: SolverStatus = SolverStatus.OPTIMAL):
