@@ -1,0 +1,24 @@
+{
+  "default": {
+    "name": "default (manuscript)",
+    "n_instances": 16,
+    "gap_mean": 0.0242827671973406,
+    "gap_ci_low": 0.015150053189054439,
+    "gap_ci_high": 0.03546461003056114,
+    "time_mean": 2.0998087868110815,
+    "time_ci_low": 0.9838934423057026,
+    "time_ci_high": 3.475537419729221,
+    "n_optimal": 0
+  },
+  "smac": {
+    "name": "SMAC incumbent",
+    "n_instances": 16,
+    "gap_mean": 0.014474647202615397,
+    "gap_ci_low": 0.009701807898049303,
+    "gap_ci_high": 0.019824426327466383,
+    "time_mean": 1.5442796880624883,
+    "time_ci_low": 0.6191198633728164,
+    "time_ci_high": 3.0618312096975844,
+    "n_optimal": 0
+  }
+}

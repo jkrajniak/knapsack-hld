@@ -8,6 +8,7 @@ from instances import (
     CellKey,
     CorrelationKind,
     assert_test_only,
+    assert_tuning_only,
     generate_instance,
     split_seeds,
 )
@@ -75,3 +76,31 @@ def test_assert_test_only_blocks_tuning_seed() -> None:
     inst_tune = generate_instance(N=200, M=5, correlation="uncorrelated", f=0.5, seed=tune_seed)
     with pytest.raises(AssertionError, match="TUNING subset"):
         assert_test_only(inst_tune, cell_seeds=seeds)
+
+
+def test_assert_tuning_only_passes_for_tuning_seed() -> None:
+    seeds = list(range(50))
+    inst_probe = generate_instance(N=200, M=5, correlation="uncorrelated", f=0.5, seed=0)
+    s = split_seeds(seeds, cell=CellKey.from_instance(inst_probe))
+    tune_seed = next(iter(s.tuning))
+    inst_tune = generate_instance(N=200, M=5, correlation="uncorrelated", f=0.5, seed=tune_seed)
+    assert_tuning_only(inst_tune, cell_seeds=seeds)
+
+
+def test_assert_tuning_only_blocks_test_seed() -> None:
+    seeds = list(range(50))
+    inst_probe = generate_instance(N=200, M=5, correlation="uncorrelated", f=0.5, seed=0)
+    s = split_seeds(seeds, cell=CellKey.from_instance(inst_probe))
+    test_seed = next(iter(s.test))
+    inst_test = generate_instance(N=200, M=5, correlation="uncorrelated", f=0.5, seed=test_seed)
+    with pytest.raises(AssertionError, match="TEST subset"):
+        assert_tuning_only(inst_test, cell_seeds=seeds)
+
+
+def test_assert_helpers_reject_unknown_seed() -> None:
+    seeds = list(range(50))
+    inst = generate_instance(N=200, M=5, correlation="uncorrelated", f=0.5, seed=999)
+    with pytest.raises(AssertionError, match="not present in archive cell"):
+        assert_tuning_only(inst, cell_seeds=seeds)
+    with pytest.raises(AssertionError, match="not present in archive cell"):
+        assert_test_only(inst, cell_seeds=seeds)

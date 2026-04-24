@@ -1,0 +1,66 @@
+{
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.100_seed0.json.gz": {
+    "profit": 12030,
+    "time_s": 12.594399339999654
+  },
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.100_seed3.json.gz": {
+    "profit": 11613,
+    "time_s": 0.19573519499681424
+  },
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.250_seed2.json.gz": {
+    "profit": 29544,
+    "time_s": 0.2070866370049771
+  },
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.250_seed3.json.gz": {
+    "profit": 29004,
+    "time_s": 42.01023504399927
+  },
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.500_seed1.json.gz": {
+    "profit": 59439,
+    "time_s": 7.400326270988444
+  },
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.500_seed4.json.gz": {
+    "profit": 58907,
+    "time_s": 0.27069316199049354
+  },
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.750_seed2.json.gz": {
+    "profit": 87325,
+    "time_s": 4.629715453993413
+  },
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.750_seed3.json.gz": {
+    "profit": 85391,
+    "time_s": 0.10150825699383859
+  },
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.900_seed2.json.gz": {
+    "profit": 104144,
+    "time_s": 34.42124907599646
+  },
+  "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.900_seed3.json.gz": {
+    "profit": 101759,
+    "time_s": 3.950789383990923
+  },
+  "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.100_seed1.json.gz": {
+    "profit": 11794,
+    "time_s": 0.05226170699461363
+  },
+  "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.100_seed2.json.gz": {
+    "profit": 11824,
+    "time_s": 0.05932876000588294
+  },
+  "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.250_seed2.json.gz": {
+    "profit": 29401,
+    "time_s": 0.09413496199704241
+  },
+  "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.250_seed4.json.gz": {
+    "profit": 30011,
+    "time_s": 3.385131774004549
+  },
+  "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.500_seed2.json.gz": {
+    "profit": 58078,
+    "time_s": 0.08436477399664
+  },
+  "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.500_seed3.json.gz": {
+    "profit": 56340,
+    "time_s": 0.36085438600275666
+  }
+}

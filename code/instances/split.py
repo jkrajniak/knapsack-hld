@@ -32,7 +32,7 @@ class CellKey:
     f: float
 
     @classmethod
-    def from_instance(cls, inst: InstanceModel) -> "CellKey":
+    def from_instance(cls, inst: InstanceModel) -> CellKey:
         return cls(N=inst.N, M=inst.M, correlation=inst.correlation, f=inst.f)
 
 
@@ -69,7 +69,7 @@ def split_seeds(
     rng = np.random.default_rng(_mix_seed(master_seed, cell))
     ordered = np.array(sorted(set(int(s) for s in seeds)), dtype=np.int64)
     perm = rng.permutation(len(ordered))
-    n_tune = max(1, int(round(tuning_ratio * len(ordered))))
+    n_tune = max(1, round(tuning_ratio * len(ordered)))
     tune_idx = sorted(perm[:n_tune].tolist())
     test_idx = sorted(perm[n_tune:].tolist())
     return Split(
@@ -92,6 +92,46 @@ def assert_test_only(
     for the instance's cell; otherwise this function falls back to the
     canonical 50-seed grid `[0, 50)`.
     """
+    _assert_subset(
+        instance,
+        forbidden="tuning",
+        tuning_ratio=tuning_ratio,
+        master_seed=master_seed,
+        cell_seeds=cell_seeds,
+    )
+
+
+def assert_tuning_only(
+    instance: InstanceModel,
+    *,
+    tuning_ratio: float = DEFAULT_TUNING_RATIO,
+    master_seed: int = DEFAULT_MASTER_SEED,
+    cell_seeds: Iterable[int] | None = None,
+) -> None:
+    """Raise `AssertionError` if `instance.seed` belongs to the test subset.
+
+    Symmetric counterpart of :func:`assert_test_only`: the SMAC tuning
+    harness MUST call this on every instance it evaluates so that the
+    parameter campaign cannot accidentally leak signal from the held-out
+    test partition (parameter-tuning spec §4.1.3).
+    """
+    _assert_subset(
+        instance,
+        forbidden="test",
+        tuning_ratio=tuning_ratio,
+        master_seed=master_seed,
+        cell_seeds=cell_seeds,
+    )
+
+
+def _assert_subset(
+    instance: InstanceModel,
+    *,
+    forbidden: str,
+    tuning_ratio: float,
+    master_seed: int,
+    cell_seeds: Iterable[int] | None,
+) -> None:
     cell = CellKey.from_instance(instance)
     seeds = list(cell_seeds) if cell_seeds is not None else list(range(50))
     if instance.seed not in seeds:
@@ -100,10 +140,12 @@ def assert_test_only(
             "cannot determine tuning/test membership"
         )
     split = split_seeds(seeds, cell=cell, tuning_ratio=tuning_ratio, master_seed=master_seed)
-    if instance.seed in split.tuning:
+    forbidden_set = split.tuning if forbidden == "tuning" else split.test
+    role = "TEST" if forbidden == "tuning" else "TUNING"
+    if instance.seed in forbidden_set:
         raise AssertionError(
-            f"instance seed={instance.seed} is in the TUNING subset for cell {cell}; "
-            "result-producing scripts must use the test subset only"
+            f"instance seed={instance.seed} is in the {forbidden.upper()} subset for cell {cell}; "
+            f"this code path must use the {role.lower()} subset only"
         )
 
 

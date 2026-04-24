@@ -1,0 +1,180 @@
+{
+    "name": "hld_smac",
+    "deterministic": true,
+    "objectives": "cost",
+    "crash_cost": Infinity,
+    "termination_cost_threshold": Infinity,
+    "walltime_limit": Infinity,
+    "cputime_limit": Infinity,
+    "trial_walltime_limit": null,
+    "trial_memory_limit": null,
+    "n_trials": 150,
+    "use_default_config": false,
+    "instances": [
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.100_seed0.json.gz",
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.100_seed3.json.gz",
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.250_seed2.json.gz",
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.250_seed3.json.gz",
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.500_seed1.json.gz",
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.500_seed4.json.gz",
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.750_seed2.json.gz",
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.750_seed3.json.gz",
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.900_seed2.json.gz",
+        "inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.900_seed3.json.gz",
+        "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.100_seed1.json.gz",
+        "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.100_seed2.json.gz",
+        "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.250_seed2.json.gz",
+        "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.250_seed4.json.gz",
+        "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.500_seed2.json.gz",
+        "inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.500_seed3.json.gz"
+    ],
+    "instance_features": null,
+    "adaptive_capping": false,
+    "adaptive_capping_slackfactor": null,
+    "runtime_cutoff": null,
+    "min_budget": null,
+    "max_budget": null,
+    "seed": 7,
+    "n_workers": 1,
+    "_meta": {
+        "facade": {
+            "name": "AlgorithmConfigurationFacade"
+        },
+        "runner": {
+            "name": "TargetFunctionRunner",
+            "code": "b'<\\x03\\x80\\x00S\\x06P\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00V\\x01,\\x1a\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00p\\x03\\\\\\x03\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00V\\x03P\\x04\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\\\\\x07\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00S\\x06P\\x08\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\\\\\n\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00P\\x0c\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00!\\x00V\\x03P\\x04\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x004\\x01\\x00\\x00\\x00\\x00\\x00\\x00,\\x1a\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x004\\x01\\x00\\x00\\x00\\x00\\x00\\x00S\\x06P\\x0e\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00S\\x06P\\x10\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00R\\x007\\x04\\x00\\x00\\x00\\x00\\x00\\x00\\x1f\\x00\\\\\\x12\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00P\\x15\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\\\\\x17\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00V\\x004\\x01\\x00\\x00\\x00\\x00\\x00\\x004\\x01\\x00\\x00\\x00\\x00\\x00\\x00p\\x04\\\\\\x19\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00W4\\\\\\x1b\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00V\\x024\\x01\\x00\\x00\\x00\\x00\\x00\\x00S\\x07R\\x017\\x04\\x00\\x00\\x00\\x00\\x00\\x00p\\x05S\\x08P\\x1d\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00V\\x054\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x1f\\x00V\\x05P\\x1e\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00#\\x00'"
+        },
+        "model": {
+            "name": "RandomForest",
+            "types": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "bounds": [
+                [
+                    0,
+                    1.0
+                ],
+                [
+                    0,
+                    1.0
+                ],
+                [
+                    0,
+                    1.0
+                ],
+                [
+                    0,
+                    1.0
+                ]
+            ],
+            "pca_components": 4,
+            "n_estimators": 10,
+            "cross_trees_variance": false,
+            "criterion": "squared_error",
+            "splitter": "random",
+            "max_depth": 20,
+            "min_samples_split": 3,
+            "min_samples_leaf": 3,
+            "min_weight_fraction_leaf": 0.0,
+            "max_leaf_nodes": 1048576,
+            "min_impurity_decrease": 1e-08,
+            "bootstrap": true,
+            "oob_score": false,
+            "n_jobs": -1,
+            "verbose": 0,
+            "warm_start": false,
+            "ccp_alpha": 0.0,
+            "max_samples": null,
+            "monotonic_cst": null,
+            "random_state": 7,
+            "max_features": 3,
+            "log_y": false
+        },
+        "acquisition_maximizer": {
+            "name": "LocalAndSortedRandomSearch",
+            "acquisition_function": {
+                "name": "EI",
+                "xi": 0.0,
+                "log": false
+            },
+            "challengers": 5000,
+            "seed": 7,
+            "random_search": {
+                "name": "RandomSearch",
+                "acquisition_function": {
+                    "name": "EI",
+                    "xi": 0.0,
+                    "log": false
+                },
+                "challengers": 5000,
+                "seed": 7
+            },
+            "local_search": {
+                "name": "LocalSearch",
+                "acquisition_function": {
+                    "name": "EI",
+                    "xi": 0.0,
+                    "log": false
+                },
+                "challengers": 5000,
+                "seed": 7,
+                "max_steps": null,
+                "n_steps_plateau_walk": 10,
+                "vectorization_min_obtain": 2,
+                "vectorization_max_obtain": 64,
+                "n_jobs": 1,
+                "stdev_init": 0.05,
+                "stdev_min": 0.005,
+                "stdev_max": null,
+                "upscale_thresh": 3,
+                "downscale_interval": 3
+            }
+        },
+        "acquisition_function": {
+            "name": "EI",
+            "xi": 0.0,
+            "log": false
+        },
+        "intensifier": {
+            "name": "Intensifier",
+            "max_incumbents": 10,
+            "max_config_calls": 2000,
+            "seed": 7
+        },
+        "initial_design": {
+            "name": "DefaultInitialDesign",
+            "n_configs": 37,
+            "n_configs_per_hyperparameter": 10,
+            "additional_configs": [],
+            "seed": 7
+        },
+        "random_design": {
+            "name": "ProbabilityRandomDesign",
+            "seed": 7,
+            "probability": 0.5
+        },
+        "runhistory_encoder": {
+            "name": "RunHistoryEncoder",
+            "considered_states": [
+                1,
+                2,
+                4
+            ],
+            "lower_budget_states": [],
+            "scale_percentage": 5,
+            "seed": 7
+        },
+        "multi_objective_algorithm": null,
+        "config_selector": {
+            "name": "ConfigSelector",
+            "retrain_after": 8,
+            "max_new_config_tries": 16,
+            "min_trials": 1
+        },
+        "version": "2.4.0"
+    },
+    "output_directory": "tuning/smac_run/preview/hld_smac/7"
+}

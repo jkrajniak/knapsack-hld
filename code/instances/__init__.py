@@ -14,6 +14,7 @@ from instances.split import (
     CellKey,
     Split,
     assert_test_only,
+    assert_tuning_only,
     split_seeds,
 )
 
@@ -26,6 +27,7 @@ __all__ = [
     "InstanceModel",
     "Split",
     "assert_test_only",
+    "assert_tuning_only",
     "build_manifest",
     "generate_instance",
     "instance_id",

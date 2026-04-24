@@ -1,0 +1,52 @@
+{
+  "config": {
+    "K": 6,
+    "N_iter": 23,
+    "alpha": 0.1227967849346,
+    "lambda_max": 12.4963357648862
+  },
+  "optimality_gap": {
+    "ci_high": 0.019824426327466383,
+    "ci_level": 0.95,
+    "ci_low": 0.009701807898049303,
+    "mean": 0.014474647202615397,
+    "n_resamples": 1000,
+    "n_samples": 16
+  },
+  "param_space": {
+    "alpha": {
+      "default": 0.9,
+      "high": 1.0,
+      "low": 0.0
+    },
+    "k": {
+      "default": 8,
+      "high": 64,
+      "low": 4
+    },
+    "lambda_max": {
+      "default": 10.0,
+      "high": 100.0,
+      "low": 1.0
+    },
+    "n_iter": {
+      "default": 20,
+      "high": 50,
+      "low": 5
+    }
+  },
+  "runtime_s": {
+    "ci_high": 3.304013941091011,
+    "ci_level": 0.95,
+    "ci_low": 0.6604087417254733,
+    "mean": 1.6654182104384745,
+    "n_resamples": 1000,
+    "n_samples": 16
+  },
+  "smac": {
+    "n_evaluations_recorded": 16,
+    "n_trials_total": 150,
+    "seed": 7
+  },
+  "tuning_subset_size": 16
+}
