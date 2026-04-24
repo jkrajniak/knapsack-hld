@@ -9,9 +9,11 @@ Currently registered through the unified `solvers` interface:
 
 - `mcknap`   — exact MCKP solver in the spirit of Pisinger 1995
               (Sinha-Zoltners LP relaxation + branch-and-bound)
-- `trs2008`  — Tsesmetzis-Roussaki-Sykas 2008 polynomial heuristic (TODO)
+- `trs2008`  — Tsesmetzis-Roussaki-Sykas 2008 two-phase greedy
+              Selective-MCKP heuristic
 """
 
 from baselines import mcknap as _mcknap
+from baselines import trs2008 as _trs2008
 
-__all__ = ["_mcknap"]
+__all__ = ["_mcknap", "_trs2008"]
