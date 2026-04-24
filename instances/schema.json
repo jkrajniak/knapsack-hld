@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jkrajniak/knapsack-hld/instances/schema.json",
+  "title": "Selective-MCKP instance",
+  "description": "On-disk format for one Selective-MCKP benchmark instance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "N",
+    "M",
+    "correlation",
+    "f",
+    "seed",
+    "B",
+    "items",
+    "generator_version"
+  ],
+  "properties": {
+    "N": {"type": "integer", "minimum": 1, "description": "Number of classes"},
+    "M": {"type": "integer", "minimum": 1, "description": "Items per class"},
+    "correlation": {
+      "type": "string",
+      "enum": ["uncorrelated", "weakly", "strongly", "inversely_strongly"]
+    },
+    "f": {"type": "number", "exclusiveMinimum": 0, "description": "Budget tightness factor"},
+    "seed": {"type": "integer", "minimum": 0},
+    "B": {"type": "integer", "minimum": 1, "description": "Total budget"},
+    "items": {
+      "type": "array",
+      "description": "items[i][j] = [profit, cost]",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 0},
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "generator_version": {"type": "string"}
+  }
+}
