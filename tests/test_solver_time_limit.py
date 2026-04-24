@@ -20,9 +20,7 @@ GRACE_FACTOR = 30.0  # CBC + PuLP have ~1 s subprocess startup; we accept ≤ 1.
 @pytest.mark.parametrize("name", SOLVERS)
 def test_solver_returns_within_grace_period(name: str) -> None:
     """Solver must return a SolveResult, not raise, when starved for time."""
-    inst = generate_instance(
-        N=400, M=10, correlation="inversely_strongly", f=0.5, seed=0
-    )
+    inst = generate_instance(N=400, M=10, correlation="inversely_strongly", f=0.5, seed=0)
     solver = get_solver(name)
     result = solver.solve(inst, time_limit_s=TIME_LIMIT, random_seed=0)
 

@@ -21,6 +21,7 @@ Public API:
 # module names. These imports MUST come AFTER `register` is in scope.
 # New adapters MUST be added to this block.
 import baselines as _baselines  # noqa: F401
+import heuristics as _heuristics  # noqa: F401
 
 from solvers import cbc as _cbc  # noqa: F401
 from solvers import highs as _highs  # noqa: F401

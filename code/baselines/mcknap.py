@@ -209,12 +209,8 @@ def _solve_mcknap(
             raise _Timeout
 
         residual = [env for env in envelopes if env.cls_idx not in fixed]
-        residual_capacity = capacity - sum(
-            augmented_items[i][j][1] for i, j in fixed.items()
-        )
-        residual_profit_fixed = sum(
-            augmented_items[i][j][0] for i, j in fixed.items()
-        )
+        residual_capacity = capacity - sum(augmented_items[i][j][1] for i, j in fixed.items())
+        residual_profit_fixed = sum(augmented_items[i][j][0] for i, j in fixed.items())
 
         if residual_capacity < 0:
             return
@@ -272,9 +268,7 @@ def _solve_mcknap(
     if best_profit < 0:
         return 0, best_selection, 0, SolverStatus.INFEASIBLE.value, metadata
 
-    total_cost = sum(
-        instance.items[i][j][1] for i, j in best_selection.items() if j is not None
-    )
+    total_cost = sum(instance.items[i][j][1] for i, j in best_selection.items() if j is not None)
     status = SolverStatus.FEASIBLE if timed_out else SolverStatus.OPTIMAL
     return int(best_profit), best_selection, int(total_cost), status.value, metadata
 

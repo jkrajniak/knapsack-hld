@@ -43,9 +43,7 @@ def test_three_milp_solvers_agree_on_50_class_instance(correlation: CorrelationK
         profits[name] = result.profit
 
     unique = set(profits.values())
-    assert len(unique) == 1, (
-        f"MILP baselines disagree on {correlation}: {profits}"
-    )
+    assert len(unique) == 1, f"MILP baselines disagree on {correlation}: {profits}"
 
 
 def test_solver_metadata_carries_status_and_objective() -> None:

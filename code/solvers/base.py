@@ -86,12 +86,8 @@ def validate_solution(instance: InstanceModel, result: SolveResult) -> None:
         cost += c
 
     if cost != result.total_cost:
-        raise InvalidSolutionError(
-            f"recomputed cost {cost} != reported {result.total_cost}"
-        )
+        raise InvalidSolutionError(f"recomputed cost {cost} != reported {result.total_cost}")
     if profit != result.profit:
-        raise InvalidSolutionError(
-            f"recomputed profit {profit} != reported {result.profit}"
-        )
+        raise InvalidSolutionError(f"recomputed profit {profit} != reported {result.profit}")
     if cost > instance.B:
         raise InvalidSolutionError(f"total cost {cost} exceeds budget {instance.B}")

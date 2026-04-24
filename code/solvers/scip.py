@@ -81,9 +81,7 @@ class ScipAdapter:
         for i in range(instance.N):
             model.addCons(scip.quicksum(x[i, j] for j in range(instance.M)) <= 1)
 
-        budget_expr = scip.quicksum(
-            instance.items[i][j][1] * x[i, j] for (i, j) in x
-        )
+        budget_expr = scip.quicksum(instance.items[i][j][1] * x[i, j] for (i, j) in x)
         model.addCons(budget_expr <= instance.B)
 
         model.setObjective(

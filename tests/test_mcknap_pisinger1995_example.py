@@ -107,9 +107,7 @@ def test_mcknap_handles_selective_skipping() -> None:
 
 def test_mcknap_returns_timeout_gracefully() -> None:
     """A starved solve must return a SolveResult, not raise."""
-    inst = generate_instance(
-        N=80, M=10, correlation="inversely_strongly", f=0.5, seed=0
-    )
+    inst = generate_instance(N=80, M=10, correlation="inversely_strongly", f=0.5, seed=0)
     result = get_solver("mcknap").solve(inst, time_limit_s=0.01)
     assert result is not None
     assert result.wall_time_s >= 0.0
