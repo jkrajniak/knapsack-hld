@@ -18,7 +18,10 @@ Public API:
 
 # Eager imports trigger @register at module-import time so every script
 # and test sees the full registry without needing to know about adapter
-# module names. New adapters MUST be added here.
+# module names. These imports MUST come AFTER `register` is in scope.
+# New adapters MUST be added to this block.
+import baselines as _baselines  # noqa: F401
+
 from solvers import cbc as _cbc  # noqa: F401
 from solvers import highs as _highs  # noqa: F401
 from solvers import scip as _scip  # noqa: F401
