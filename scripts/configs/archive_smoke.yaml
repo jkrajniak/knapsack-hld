@@ -1,0 +1,9 @@
+# Smoke-test archive: tiny grid covering all four correlations + tightnesses.
+# Useful for CI and for sanity-checking the full pipeline end-to-end.
+#
+# Total: 4 corr * 2 (M) * 5 (f) * 5 (seeds) = 200 instances at N=200.
+N: [200]
+M: [5, 10]
+correlation: [uncorrelated, weakly, strongly, inversely_strongly]
+f: [0.1, 0.25, 0.5, 0.75, 0.9]
+seeds: [0, 1, 2, 3, 4]

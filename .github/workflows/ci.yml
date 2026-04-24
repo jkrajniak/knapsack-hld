@@ -39,3 +39,12 @@ jobs:
 
       - name: Run tests (pytest)
         run: uv run pytest -q
+
+      - name: Smoke archive — generate
+        run: |
+          uv run python scripts/generate_instances.py \
+            --config scripts/configs/archive_smoke.yaml \
+            --out instances --jobs 2
+
+      - name: Smoke archive — verify integrity
+        run: uv run python scripts/verify_instances.py --archive instances
