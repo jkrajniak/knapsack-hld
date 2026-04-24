@@ -1,0 +1,57 @@
+[project]
+name = "knapsack-hld"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "highspy>=1.14.0",
+    "joblib>=1.5.3",
+    "matplotlib>=3.10.9",
+    "numpy>=2.4.4",
+    "pandas>=3.0.2",
+    "pulp>=3.3.0",
+    "pydantic>=2.13.3",
+    "pyscipopt>=6.1.0",
+    "pyyaml>=6.0.3",
+    "smac>=2.4.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+    "ruff>=0.15.11",
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers"]
+filterwarnings = [
+    "ignore::DeprecationWarning:pynisher.*",
+    "ignore::SyntaxWarning:pynisher.*",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["paper", "instances", "results", "figures", "tuning"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # bugbear
+    "UP",   # pyupgrade
+    "SIM",  # flake8-simplify
+    "RUF",  # ruff-specific
+]
+ignore = [
+    "E501",  # line length handled by formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B011"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
