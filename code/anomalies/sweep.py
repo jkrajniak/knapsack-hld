@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Any
 
 from instances.schema import InstanceModel
-from solvers.base import SolveResult
+from solvers.base import SolveResult, SolverStatus
 from solvers.hld import HldAdapter
 from solvers.registry import get_solver
 
@@ -74,6 +74,8 @@ class SweepRecord:
     opt_wall_s: float
     solver_metadata: dict[str, Any]
     budget: int
+    opt_status: str = "unknown"
+    opt_metadata: dict[str, Any] | None = None
 
     def as_json(self) -> dict[str, Any]:
         return {
@@ -86,6 +88,8 @@ class SweepRecord:
             "opt_wall_s": self.opt_wall_s,
             "solver_metadata": self.solver_metadata,
             "budget": self.budget,
+            "opt_status": self.opt_status,
+            "opt_metadata": self.opt_metadata or {},
         }
 
 
@@ -118,6 +122,8 @@ def run_one(
     n_iter: int,
     opt_profit: int,
     opt_wall_s: float,
+    opt_status: str = "unknown",
+    opt_metadata: dict[str, Any] | None = None,
     sub_solver: str = "highs",
     eval_time_limit_s: float | None = None,
 ) -> SweepRecord:
@@ -141,6 +147,8 @@ def run_one(
         opt_wall_s=float(opt_wall_s),
         solver_metadata=dict(res.solver_metadata),
         budget=int(item.inst.B),
+        opt_status=opt_status,
+        opt_metadata=dict(opt_metadata) if opt_metadata else {},
     )
 
 
@@ -155,25 +163,45 @@ def run_sweep(
     out_path: Path | None = None,
 ) -> list[SweepRecord]:
     """Run the full sweep and (optionally) stream JSONL to ``out_path``."""
-    refs: dict[str, tuple[int, float]] = {}
+    refs: dict[str, tuple[int, float, str, dict[str, Any]]] = {}
     ref = get_solver(reference_solver)
     for item in items:
         LOG.info("solving %s with reference solver %s", item.inst_id, reference_solver)
         rt0 = time.perf_counter()
         ref_res = ref.solve(item.inst, time_limit_s=reference_time_limit_s)
-        refs[item.inst_id] = (int(ref_res.profit), time.perf_counter() - rt0)
+        ref_wall = time.perf_counter() - rt0
+        ref_status = (
+            ref_res.status.value
+            if isinstance(ref_res.status, SolverStatus)
+            else str(ref_res.status)
+        )
+        refs[item.inst_id] = (
+            int(ref_res.profit),
+            ref_wall,
+            ref_status,
+            dict(ref_res.solver_metadata or {}),
+        )
+        LOG.info(
+            "  -> %s profit=%d status=%s wall=%.1fs",
+            item.inst_id,
+            ref_res.profit,
+            ref_status,
+            ref_wall,
+        )
 
     records: list[SweepRecord] = []
     out_fh = out_path.open("w") if out_path is not None else None
     try:
         for item in items:
-            opt_profit, opt_wall = refs[item.inst_id]
+            opt_profit, opt_wall, opt_status, opt_meta = refs[item.inst_id]
             for n_iter in n_iter_grid:
                 rec = run_one(
                     item=item,
                     n_iter=n_iter,
                     opt_profit=opt_profit,
                     opt_wall_s=opt_wall,
+                    opt_status=opt_status,
+                    opt_metadata=opt_meta,
                     sub_solver=sub_solver,
                     eval_time_limit_s=eval_time_limit_s,
                 )

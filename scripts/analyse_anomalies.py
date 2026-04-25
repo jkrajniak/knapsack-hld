@@ -218,6 +218,11 @@ def _render_report(analyses: list[dict]) -> str:
         f"- H2 (sub-MILP straggler) flagged: **{h2_rate:.0%}** of records\n"
     )
 
+    ref_lines = _reference_solver_summary(by_inst)
+    if ref_lines:
+        lines.append("\n### Reference solver status\n")
+        lines.extend(ref_lines)
+
     lines.append("\n## Per-instance trajectories\n")
     for inst_id, recs in sorted(by_inst.items()):
         recs.sort(key=lambda r: r["record"]["n_iter"])
@@ -246,6 +251,40 @@ def _render_report(analyses: list[dict]) -> str:
     lines.append(_interpret(h1_rate, h2_rate))
 
     return "\n".join(lines) + "\n"
+
+
+def _reference_solver_summary(by_inst: dict[str, list[dict]]) -> list[str]:
+    """One bullet per instance describing the reference solver outcome."""
+    out: list[str] = []
+    any_data = False
+    for inst_id, recs in sorted(by_inst.items()):
+        first = recs[0]["record"]
+        status = first.get("opt_status")
+        opt_meta = first.get("opt_metadata") or {}
+        opt_wall = first.get("opt_wall_s")
+        if status is None and not opt_meta:
+            continue
+        any_data = True
+        highs_status = opt_meta.get("highs_status", "n/a")
+        mip_gap = opt_meta.get("mip_gap")
+        gap_str = f"{mip_gap:.2%}" if isinstance(mip_gap, (int, float)) else "n/a"
+        suboptimal = any(
+            r["record"]["optimality_gap"] < 0 for r in recs
+        )
+        warn = " ← HLD found a strictly better solution" if suboptimal else ""
+        out.append(
+            f"- `{inst_id}`: status=**{status}** (HiGHS={highs_status}), "
+            f"mip_gap={gap_str}, ref wall={opt_wall:.1f} s{warn}\n"
+        )
+    if not any_data:
+        return []
+    out.append(
+        "\n*Negative optimality gaps mean the reference solver returned a "
+        "feasible-but-suboptimal incumbent (typically because `time_limit` "
+        "was hit). Treat the gap as a lower bound on HLD's true gap to the "
+        "exact optimum in those rows.*\n"
+    )
+    return out
 
 
 def _interpret(h1_rate: float, h2_rate: float) -> str:
