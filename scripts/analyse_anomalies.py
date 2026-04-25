@@ -206,6 +206,7 @@ def _render_report(analyses: list[dict]) -> str:
     n_records = len(analyses)
     h1_rate = sum(1 for a in analyses if a["verdicts"].h1_degenerate_dual) / n_records
     h2_rate = sum(1 for a in analyses if a["verdicts"].h2_straggler) / n_records
+    h1_rate_low, h1_rate_high = _h1_rate_by_regime(analyses)
     mean_gap = mean(a["record"]["optimality_gap"] for a in analyses)
     mean_wall = mean(a["record"]["hld_wall_s"] for a in analyses)
     lines.append("## Summary\n")
@@ -214,7 +215,9 @@ def _render_report(analyses: list[dict]) -> str:
         f"({len(by_inst)} instance(s) x {n_records // max(len(by_inst), 1)} N_iter values)\n"
         f"- Mean optimality gap: **{mean_gap:.2%}**\n"
         f"- Mean HLD wall time: **{mean_wall:.2f} s**\n"
-        f"- H1 (degenerate dual) flagged: **{h1_rate:.0%}** of records\n"
+        f"- H1 (degenerate dual) flagged: **{h1_rate:.0%}** overall "
+        f"(low N_iter ≤ {H1_LOW_NITER_BOUNDARY}: **{h1_rate_low:.0%}**, "
+        f"high N_iter > {H1_LOW_NITER_BOUNDARY}: **{h1_rate_high:.0%}**)\n"
         f"- H2 (sub-MILP straggler) flagged: **{h2_rate:.0%}** of records\n"
     )
 
@@ -248,7 +251,7 @@ def _render_report(analyses: list[dict]) -> str:
             )
 
     lines.append("\n## Interpretation\n")
-    lines.append(_interpret(h1_rate, h2_rate))
+    lines.append(_interpret(h1_rate, h2_rate, h1_rate_low, h1_rate_high))
 
     return "\n".join(lines) + "\n"
 
@@ -257,6 +260,7 @@ def _reference_solver_summary(by_inst: dict[str, list[dict]]) -> list[str]:
     """One bullet per instance describing the reference solver outcome."""
     out: list[str] = []
     any_data = False
+    any_neg_gap_at_optimal = False
     for inst_id, recs in sorted(by_inst.items()):
         first = recs[0]["record"]
         status = first.get("opt_status")
@@ -267,35 +271,85 @@ def _reference_solver_summary(by_inst: dict[str, list[dict]]) -> list[str]:
         any_data = True
         highs_status = opt_meta.get("highs_status", "n/a")
         mip_gap = opt_meta.get("mip_gap")
-        gap_str = f"{mip_gap:.2%}" if isinstance(mip_gap, (int, float)) else "n/a"
-        suboptimal = any(
-            r["record"]["optimality_gap"] < 0 for r in recs
-        )
-        warn = " ← HLD found a strictly better solution" if suboptimal else ""
+        gap_str = f"{mip_gap:.2e}" if isinstance(mip_gap, (int, float)) else "n/a"
+        deltas = [r["record"]["opt_profit"] - r["record"]["hld_profit"] for r in recs]
+        worst_for_ref = -min(deltas) if min(deltas) < 0 else 0
+        warn = ""
+        if status == "optimal" and worst_for_ref > 0:
+            any_neg_gap_at_optimal = True
+            warn = (
+                f" ← HLD beats reference by up to {worst_for_ref} units "
+                "(HiGHS within default `mip_rel_gap`)"
+            )
+        elif worst_for_ref > 0:
+            warn = f" ← HLD beats reference by up to {worst_for_ref} units"
         out.append(
             f"- `{inst_id}`: status=**{status}** (HiGHS={highs_status}), "
             f"mip_gap={gap_str}, ref wall={opt_wall:.1f} s{warn}\n"
         )
     if not any_data:
         return []
-    out.append(
-        "\n*Negative optimality gaps mean the reference solver returned a "
-        "feasible-but-suboptimal incumbent (typically because `time_limit` "
-        "was hit). Treat the gap as a lower bound on HLD's true gap to the "
-        "exact optimum in those rows.*\n"
-    )
+    if any_neg_gap_at_optimal:
+        out.append(
+            "\n*HiGHS returns `kOptimal` whenever the residual MIP gap is "
+            "below its default `mip_rel_gap` tolerance (~1e-4). On these "
+            "instances HLD's combinatorial Phase-3 occasionally yields a "
+            "strictly better integer-feasible solution than HiGHS's accepted "
+            "incumbent, producing tiny negative optimality gaps in the "
+            "tables below. To get a hard true-optimum reference, lower "
+            "`HiGHS.mip_rel_gap` (or `mip_abs_gap`) to ≤ 1e-9 in the "
+            "adapter; the current values are within HiGHS's own tolerance.*\n"
+        )
+    else:
+        out.append(
+            "\n*Negative optimality gaps mean the reference solver returned "
+            "a feasible-but-suboptimal incumbent (typically because "
+            "`time_limit` was hit). Treat the gap as a lower bound on HLD's "
+            "true gap to the exact optimum in those rows.*\n"
+        )
     return out
 
 
-def _interpret(h1_rate: float, h2_rate: float) -> str:
+H1_LOW_NITER_BOUNDARY: int = 15  # N_iter <= boundary is "still-narrowing bisection"
+
+
+def _h1_rate_by_regime(analyses: list[dict]) -> tuple[float, float]:
+    low = [a for a in analyses if a["record"]["n_iter"] <= H1_LOW_NITER_BOUNDARY]
+    high = [a for a in analyses if a["record"]["n_iter"] > H1_LOW_NITER_BOUNDARY]
+    low_rate = (
+        sum(1 for a in low if a["verdicts"].h1_degenerate_dual) / len(low)
+        if low
+        else 0.0
+    )
+    high_rate = (
+        sum(1 for a in high if a["verdicts"].h1_degenerate_dual) / len(high)
+        if high
+        else 0.0
+    )
+    return low_rate, high_rate
+
+
+def _interpret(
+    h1_rate: float, h2_rate: float, h1_rate_low: float, h1_rate_high: float
+) -> str:
     bits: list[str] = []
-    if h1_rate >= 0.5:
+    if h1_rate_high >= 0.5:
         bits.append(
-            "- **H1 supported.** Phase-1 routinely fails to converge on this "
-            "anomaly subset: the Lagrange multiplier oscillates and the "
-            "selection cost flips around the budget. The Phase-2 estimated "
-            "costs ``C_k`` are therefore noisy, which is consistent with the "
-            "non-monotonic gap-vs-N_iter behaviour reported in Figure 4.\n"
+            "- **H1 supported.** Even at large `N_iter` "
+            f"(>{H1_LOW_NITER_BOUNDARY}) Phase-1 fails to converge: the "
+            "Lagrange multiplier oscillates and the selection cost flips "
+            "around the budget. Phase-2 estimated costs `C_k` are therefore "
+            "noisy, which would explain the non-monotonic gap-vs-N_iter "
+            "behaviour in Figure 4.\n"
+        )
+    elif h1_rate_low >= 0.5 and h1_rate_high < 0.3:
+        bits.append(
+            "- **H1 not supported.** Phase-1 converges cleanly when given "
+            f"enough iterations (H1 rate {h1_rate_low:.0%} for "
+            f"`N_iter <= {H1_LOW_NITER_BOUNDARY}`, "
+            f"{h1_rate_high:.0%} for `N_iter > {H1_LOW_NITER_BOUNDARY}`). "
+            "The early-iteration H1 flags reflect the bisection's geometric "
+            "narrowing window, not degeneracy of the dual basis.\n"
         )
     else:
         bits.append(
