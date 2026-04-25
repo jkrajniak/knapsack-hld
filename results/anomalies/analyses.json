@@ -1,0 +1,218 @@
+[
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "n_iter": 1,
+    "optimality_gap": 0.01659881028560535,
+    "hld_wall_s": 73.1381187379884,
+    "verdicts": {
+      "phase1": {
+        "n_iter": 1,
+        "final_lambda": 50.0,
+        "final_gap_to_budget": -2500485,
+        "lambda_rel_spread": 0.0,
+        "sign_flips_in_window": 0,
+        "window": 1
+      },
+      "phase3": {
+        "n_batches": 8,
+        "total_wall_s": 73.01379484200152,
+        "max_batch_wall_s": 18.48800501402002,
+        "max_batch_share": 0.25321249298200715
+      },
+      "h1_degenerate_dual": false,
+      "h2_straggler": false
+    }
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "n_iter": 2,
+    "optimality_gap": 0.0014766641424279203,
+    "hld_wall_s": 83.60171229799744,
+    "verdicts": {
+      "phase1": {
+        "n_iter": 2,
+        "final_lambda": 25.0,
+        "final_gap_to_budget": -2500359,
+        "lambda_rel_spread": 0.5,
+        "sign_flips_in_window": 0,
+        "window": 2
+      },
+      "phase3": {
+        "n_batches": 8,
+        "total_wall_s": 83.4165843850351,
+        "max_batch_wall_s": 20.30175553500885,
+        "max_batch_share": 0.24337792879770537
+      },
+      "h1_degenerate_dual": true,
+      "h2_straggler": false
+    }
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "n_iter": 3,
+    "optimality_gap": 0.001780007470256364,
+    "hld_wall_s": 63.9228274729976,
+    "verdicts": {
+      "phase1": {
+        "n_iter": 3,
+        "final_lambda": 12.5,
+        "final_gap_to_budget": -2499826,
+        "lambda_rel_spread": 0.75,
+        "sign_flips_in_window": 0,
+        "window": 3
+      },
+      "phase3": {
+        "n_batches": 8,
+        "total_wall_s": 63.7338043480413,
+        "max_batch_wall_s": 17.557285232003778,
+        "max_batch_share": 0.27547838092522964
+      },
+      "h1_degenerate_dual": true,
+      "h2_straggler": false
+    }
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "n_iter": 5,
+    "optimality_gap": 0.00021516573816285716,
+    "hld_wall_s": 114.48794556802022,
+    "verdicts": {
+      "phase1": {
+        "n_iter": 5,
+        "final_lambda": 3.125,
+        "final_gap_to_budget": -2482893,
+        "lambda_rel_spread": 0.9375,
+        "sign_flips_in_window": 0,
+        "window": 5
+      },
+      "phase3": {
+        "n_batches": 8,
+        "total_wall_s": 114.25340967203374,
+        "max_batch_wall_s": 33.99854451301508,
+        "max_batch_share": 0.29757137761234825
+      },
+      "h1_degenerate_dual": true,
+      "h2_straggler": false
+    }
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "n_iter": 8,
+    "optimality_gap": 4.719363953932798e-05,
+    "hld_wall_s": 88.44483991598827,
+    "verdicts": {
+      "phase1": {
+        "n_iter": 8,
+        "final_lambda": 1.171875,
+        "final_gap_to_budget": -1161879,
+        "lambda_rel_spread": 0.875,
+        "sign_flips_in_window": 2,
+        "window": 5
+      },
+      "phase3": {
+        "n_batches": 8,
+        "total_wall_s": 88.1432047149865,
+        "max_batch_wall_s": 18.240475614002207,
+        "max_batch_share": 0.20694137084059167
+      },
+      "h1_degenerate_dual": true,
+      "h2_straggler": false
+    }
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "n_iter": 12,
+    "optimality_gap": -6.209689413069471e-07,
+    "hld_wall_s": 77.27981614501914,
+    "verdicts": {
+      "phase1": {
+        "n_iter": 12,
+        "final_lambda": 1.0986328125,
+        "final_gap_to_budget": -62748,
+        "lambda_rel_spread": 0.16666666666666666,
+        "sign_flips_in_window": 2,
+        "window": 5
+      },
+      "phase3": {
+        "n_batches": 8,
+        "total_wall_s": 76.9061739690078,
+        "max_batch_wall_s": 20.192303641000763,
+        "max_batch_share": 0.26255764132978454
+      },
+      "h1_degenerate_dual": true,
+      "h2_straggler": false
+    }
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "n_iter": 16,
+    "optimality_gap": -5.278236001109051e-06,
+    "hld_wall_s": 110.76056832098402,
+    "verdicts": {
+      "phase1": {
+        "n_iter": 16,
+        "final_lambda": 1.09405517578125,
+        "final_gap_to_budget": 23544,
+        "lambda_rel_spread": 0.011111111111111112,
+        "sign_flips_in_window": 3,
+        "window": 5
+      },
+      "phase3": {
+        "n_batches": 8,
+        "total_wall_s": 110.25147966603981,
+        "max_batch_wall_s": 24.002523641014704,
+        "max_batch_share": 0.21770704315008008
+      },
+      "h1_degenerate_dual": true,
+      "h2_straggler": false
+    }
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "n_iter": 20,
+    "optimality_gap": 9.314534119604207e-06,
+    "hld_wall_s": 94.06333975601592,
+    "verdicts": {
+      "phase1": {
+        "n_iter": 20,
+        "final_lambda": 1.0952949523925781,
+        "final_gap_to_budget": -897,
+        "lambda_rel_spread": 0.001218875152359394,
+        "sign_flips_in_window": 1,
+        "window": 5
+      },
+      "phase3": {
+        "n_batches": 8,
+        "total_wall_s": 93.40883491994464,
+        "max_batch_wall_s": 24.039292849978665,
+        "max_batch_share": 0.25735566523853304
+      },
+      "h1_degenerate_dual": false,
+      "h2_straggler": false
+    }
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "n_iter": 25,
+    "optimality_gap": 9.314534119604207e-06,
+    "hld_wall_s": 89.23583428497659,
+    "verdicts": {
+      "phase1": {
+        "n_iter": 25,
+        "final_lambda": 1.0952383279800415,
+        "final_gap_to_budget": -897,
+        "lambda_rel_spread": 2.176847054725935e-05,
+        "sign_flips_in_window": 2,
+        "window": 5
+      },
+      "phase3": {
+        "n_batches": 8,
+        "total_wall_s": 88.56837827403797,
+        "max_batch_wall_s": 23.715542902995367,
+        "max_batch_share": 0.26776535107843447
+      },
+      "h1_degenerate_dual": false,
+      "h2_straggler": false
+    }
+  }
+]
