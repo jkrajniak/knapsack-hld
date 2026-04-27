@@ -28,7 +28,8 @@ from pathlib import Path
 from typing import Any
 
 from instances.schema import InstanceModel
-from solvers.base import SolveResult, SolverStatus
+from solvers.base import SolveResult, Solver, SolverStatus
+from solvers.highs import HighsAdapter
 from solvers.hld import HldAdapter
 from solvers.registry import get_solver
 
@@ -152,6 +153,34 @@ def run_one(
     )
 
 
+def _build_reference_solver(
+    name: str, mip_rel_gap: float | None
+) -> Solver:
+    """Construct the reference solver, honouring an optional tight `mip_rel_gap`.
+
+    HiGHS's default `mip_rel_gap` (0.01%) lets the solver declare
+    `kOptimal` while leaving small integer-feasible improvements on the
+    table. When this adapter is used as the optimality-gap *reference*
+    for a high-quality heuristic such as HLD, the heuristic can find
+    solutions a few units better than HiGHS's reported optimum, which
+    surfaces as spurious *negative* optimality gaps. Tightening the
+    tolerance to ``mip_rel_gap=1e-9`` removes the artefact at modest
+    extra wall-clock cost. Other reference solvers fall through to the
+    registry unchanged.
+    """
+    if mip_rel_gap is None:
+        return get_solver(name)
+    if name == "highs":
+        return HighsAdapter(mip_rel_gap=mip_rel_gap)
+    LOG.warning(
+        "reference_mip_rel_gap=%g requested but solver=%r has no tight-tolerance "
+        "shim; falling back to the registry default.",
+        mip_rel_gap,
+        name,
+    )
+    return get_solver(name)
+
+
 def run_sweep(
     *,
     items: list[AnomalyInstance],
@@ -159,12 +188,18 @@ def run_sweep(
     sub_solver: str = "highs",
     reference_solver: str = "highs",
     reference_time_limit_s: float | None = 600.0,
+    reference_mip_rel_gap: float | None = None,
     eval_time_limit_s: float | None = None,
     out_path: Path | None = None,
 ) -> list[SweepRecord]:
-    """Run the full sweep and (optionally) stream JSONL to ``out_path``."""
+    """Run the full sweep and (optionally) stream JSONL to ``out_path``.
+
+    Pass ``reference_mip_rel_gap=1e-9`` (or tighter) to remove the
+    HiGHS-default-tolerance artefact described in §4.3.5 of the change
+    plan; see :func:`_build_reference_solver`.
+    """
     refs: dict[str, tuple[int, float, str, dict[str, Any]]] = {}
-    ref = get_solver(reference_solver)
+    ref = _build_reference_solver(reference_solver, reference_mip_rel_gap)
     for item in items:
         LOG.info("solving %s with reference solver %s", item.inst_id, reference_solver)
         rt0 = time.perf_counter()

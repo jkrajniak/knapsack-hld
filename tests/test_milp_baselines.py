@@ -57,3 +57,31 @@ def test_solver_metadata_carries_status_and_objective() -> None:
         )
         assert "objective_value" in meta
         assert abs(meta["objective_value"] - r.profit) < 0.5
+
+
+def test_highs_mip_rel_gap_kwarg_records_tolerance() -> None:
+    """HighsAdapter(mip_rel_gap=...) must surface the override in metadata (§4.3.5)."""
+    from solvers.highs import HighsAdapter
+
+    inst = generate_instance(N=20, M=3, correlation="uncorrelated", f=0.5, seed=2)
+
+    default = HighsAdapter().solve(inst, time_limit_s=30.0)
+    assert default.solver_metadata.get("mip_rel_gap_set") is None, (
+        "Default HiGHS adapter must not advertise a custom mip_rel_gap"
+    )
+
+    tight = HighsAdapter(mip_rel_gap=1e-9).solve(inst, time_limit_s=30.0)
+    assert tight.solver_metadata.get("mip_rel_gap_set") == 1e-9
+    assert tight.profit == default.profit, (
+        "Tight tolerance must not change the optimum on a tiny instance"
+    )
+
+
+def test_highs_mip_rel_gap_rejects_negative() -> None:
+    """Negative tolerances are nonsense and must raise."""
+    import pytest
+
+    from solvers.highs import HighsAdapter
+
+    with pytest.raises(ValueError, match="non-negative"):
+        HighsAdapter(mip_rel_gap=-1.0)

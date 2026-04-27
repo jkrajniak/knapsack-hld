@@ -98,6 +98,16 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     p.add_argument("--sub-solver", type=str, default="highs")
     p.add_argument(
+        "--reference-mip-rel-gap",
+        type=float,
+        default=None,
+        help=(
+            "Tighten HiGHS's `mip_rel_gap` for the reference solver. "
+            "Use 1e-9 to remove the default-tolerance artefact (§4.3.5). "
+            "Leave unset to keep HiGHS's default tolerance."
+        ),
+    )
+    p.add_argument(
         "--skip-sweep",
         action="store_true",
         help="Skip the sweep and re-analyse an existing JSONL file.",
@@ -136,6 +146,7 @@ def main(argv: list[str] | None = None) -> int:
             n_iter_grid=tuple(args.n_iter_grid),
             sub_solver=args.sub_solver,
             reference_time_limit_s=args.reference_time_limit_s,
+            reference_mip_rel_gap=args.reference_mip_rel_gap,
             eval_time_limit_s=args.eval_time_limit_s,
             out_path=sweep_path,
         )

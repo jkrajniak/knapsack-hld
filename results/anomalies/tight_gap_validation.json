@@ -1,0 +1,74 @@
+[
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed0",
+    "default": {
+      "label": "default",
+      "profit": 3220773,
+      "status": "timeout",
+      "wall_s": 958.5656143910019,
+      "highs_status": "HighsModelStatus.kTimeLimit",
+      "mip_gap": 2.794360235881262e-05,
+      "mip_rel_gap_set": null
+    },
+    "tight": {
+      "label": "tight_1e-9",
+      "profit": 3220773,
+      "status": "timeout",
+      "wall_s": 1298.7355946319876,
+      "highs_status": "HighsModelStatus.kTimeLimit",
+      "mip_gap": 2.794360235881262e-05,
+      "mip_rel_gap_set": 1e-09
+    },
+    "hld_best_profit": 3220790,
+    "hld_advantage_default": 17,
+    "hld_advantage_tight": 17
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed7",
+    "default": {
+      "label": "default",
+      "profit": 3222650,
+      "status": "optimal",
+      "wall_s": 83.79313276498578,
+      "highs_status": "HighsModelStatus.kOptimal",
+      "mip_gap": 9.309108963120414e-06,
+      "mip_rel_gap_set": null
+    },
+    "tight": {
+      "label": "tight_1e-9",
+      "profit": 3222680,
+      "status": "optimal",
+      "wall_s": 306.74126913998043,
+      "highs_status": "HighsModelStatus.kOptimal",
+      "mip_gap": 0.0,
+      "mip_rel_gap_set": 1e-09
+    },
+    "hld_best_profit": 3222670,
+    "hld_advantage_default": 20,
+    "hld_advantage_tight": -10
+  },
+  {
+    "inst_id": "mckp_N10000_M10_weakly_f0.500_seed42",
+    "default": {
+      "label": "default",
+      "profit": 3224958,
+      "status": "optimal",
+      "wall_s": 49.474081809981726,
+      "highs_status": "HighsModelStatus.kOptimal",
+      "mip_gap": 3.938035782171427e-05,
+      "mip_rel_gap_set": null
+    },
+    "tight": {
+      "label": "tight_1e-9",
+      "profit": 3225085,
+      "status": "optimal",
+      "wall_s": 240.68240291497204,
+      "highs_status": "HighsModelStatus.kOptimal",
+      "mip_gap": 0.0,
+      "mip_rel_gap_set": 1e-09
+    },
+    "hld_best_profit": 3225057,
+    "hld_advantage_default": 99,
+    "hld_advantage_tight": -28
+  }
+]

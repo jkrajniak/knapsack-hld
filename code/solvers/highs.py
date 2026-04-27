@@ -19,9 +19,27 @@ from solvers.registry import register
 
 
 class HighsAdapter:
-    """HiGHS exact MILP solver for Selective-MCKP."""
+    """HiGHS exact MILP solver for Selective-MCKP.
+
+    Parameters
+    ----------
+    mip_rel_gap:
+        Optional override for HiGHS's `mip_rel_gap` option. ``None`` keeps
+        the HiGHS default (currently 1e-4 = 0.01%) which is what every
+        out-of-the-box invocation has used historically. Pass a tighter
+        value (e.g. ``1e-9``) when this adapter is used as an
+        optimality-gap *reference* and the small default tolerance would
+        otherwise produce visibly negative gaps for high-quality
+        heuristics. The chosen tolerance is recorded in
+        ``solver_metadata['mip_rel_gap_set']`` for traceability.
+    """
 
     name: str = "highs"
+
+    def __init__(self, *, mip_rel_gap: float | None = None) -> None:
+        if mip_rel_gap is not None and mip_rel_gap < 0:
+            raise ValueError(f"mip_rel_gap must be non-negative, got {mip_rel_gap}")
+        self._mip_rel_gap = mip_rel_gap
 
     def solve(
         self,
@@ -38,6 +56,8 @@ class HighsAdapter:
             h.setOptionValue("time_limit", float(time_limit_s))
         if random_seed is not None:
             h.setOptionValue("random_seed", int(random_seed) % (2**31 - 1))
+        if self._mip_rel_gap is not None:
+            h.setOptionValue("mip_rel_gap", float(self._mip_rel_gap))
 
         var_index = self._build(h, instance)
         t0 = time.perf_counter()
@@ -55,7 +75,13 @@ class HighsAdapter:
                 total_cost=0,
                 wall_time_s=wall,
                 status=status,
-                metadata={"highs_status": str(model_status), "mip_gap": None},
+                metadata={
+                    "highs_status": str(model_status),
+                    "mip_gap": None,
+                    "mip_rel_gap_set": (
+                        float(self._mip_rel_gap) if self._mip_rel_gap is not None else None
+                    ),
+                },
             )
 
         sol = h.getSolution()
@@ -70,6 +96,9 @@ class HighsAdapter:
         meta: dict[str, Any] = {
             "highs_status": str(model_status),
             "mip_gap": float(gap) if gap is not None else None,
+            "mip_rel_gap_set": (
+                float(self._mip_rel_gap) if self._mip_rel_gap is not None else None
+            ),
             "objective_value": float(getattr(info, "objective_function_value", profit)),
             "simplex_iterations": int(getattr(info, "simplex_iteration_count", 0)),
             "mip_node_count": int(getattr(info, "mip_node_count", 0)),
