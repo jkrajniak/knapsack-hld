@@ -30,7 +30,7 @@ from typing import Any
 from instances.schema import InstanceModel
 from solvers.base import SolveResult, Solver, SolverStatus
 from solvers.highs import HighsAdapter
-from solvers.hld import HldAdapter
+from solvers.hld import DEFAULT_ALPHA, HldAdapter
 from solvers.registry import get_solver
 
 from instances import (
@@ -51,6 +51,10 @@ DEFAULT_CELL: dict[str, Any] = {
     "correlation": "weakly",
     "f": 0.5,
 }
+# §4.3.4 alpha-sweep grid: 11 evenly-spaced alphas in [0, 1] at fixed N_iter.
+# Constructed via integer arithmetic so 0.5 is bitwise exact.
+DEFAULT_ALPHA_GRID: tuple[float, ...] = tuple(i / 10 for i in range(11))
+DEFAULT_ALPHA_NITER: int = 20
 
 
 @dataclass(frozen=True)
@@ -64,7 +68,13 @@ class AnomalyInstance:
 
 @dataclass(frozen=True)
 class SweepRecord:
-    """One ``(instance, n_iter)`` HLD evaluation record."""
+    """One ``(instance, n_iter, alpha)`` HLD evaluation record.
+
+    The original §4.3.1 N_iter sweep fixed ``alpha = HLD default``; the
+    §4.3.4 alpha sweep fixes ``n_iter`` and varies ``alpha``. Both modes
+    write the same record schema; consumers should not assume only one
+    of the two is varying.
+    """
 
     inst_id: str
     n_iter: int
@@ -77,11 +87,13 @@ class SweepRecord:
     budget: int
     opt_status: str = "unknown"
     opt_metadata: dict[str, Any] | None = None
+    alpha: float = DEFAULT_ALPHA
 
     def as_json(self) -> dict[str, Any]:
         return {
             "inst_id": self.inst_id,
             "n_iter": self.n_iter,
+            "alpha": self.alpha,
             "hld_profit": self.hld_profit,
             "opt_profit": self.opt_profit,
             "optimality_gap": self.optimality_gap,
@@ -127,9 +139,10 @@ def run_one(
     opt_metadata: dict[str, Any] | None = None,
     sub_solver: str = "highs",
     eval_time_limit_s: float | None = None,
+    alpha: float = DEFAULT_ALPHA,
 ) -> SweepRecord:
-    """Run HLD with the requested ``n_iter`` and produce a SweepRecord."""
-    hld = HldAdapter(n_iter=n_iter, sub_solver=sub_solver)
+    """Run HLD with the requested ``(n_iter, alpha)`` and produce a SweepRecord."""
+    hld = HldAdapter(n_iter=n_iter, alpha=alpha, sub_solver=sub_solver)
     t0 = time.perf_counter()
     res: SolveResult = hld.solve(item.inst, time_limit_s=eval_time_limit_s)
     wall = time.perf_counter() - t0
@@ -150,6 +163,7 @@ def run_one(
         budget=int(item.inst.B),
         opt_status=opt_status,
         opt_metadata=dict(opt_metadata) if opt_metadata else {},
+        alpha=float(alpha),
     )
 
 
@@ -181,26 +195,45 @@ def _build_reference_solver(
     return get_solver(name)
 
 
-def run_sweep(
-    *,
-    items: list[AnomalyInstance],
-    n_iter_grid: tuple[int, ...] = DEFAULT_N_ITER_GRID,
-    sub_solver: str = "highs",
-    reference_solver: str = "highs",
-    reference_time_limit_s: float | None = 600.0,
-    reference_mip_rel_gap: float | None = None,
-    eval_time_limit_s: float | None = None,
-    out_path: Path | None = None,
-) -> list[SweepRecord]:
-    """Run the full sweep and (optionally) stream JSONL to ``out_path``.
+ReferenceCache = dict[str, tuple[int, float, str, dict[str, Any]]]
 
-    Pass ``reference_mip_rel_gap=1e-9`` (or tighter) to remove the
-    HiGHS-default-tolerance artefact described in §4.3.5 of the change
-    plan; see :func:`_build_reference_solver`.
+
+def _resolve_references(
+    items: list[AnomalyInstance],
+    *,
+    reference_solver: str,
+    reference_time_limit_s: float | None,
+    reference_mip_rel_gap: float | None,
+    reference_cache: ReferenceCache | None,
+) -> ReferenceCache:
+    """Solve (or look up cached) references for every item.
+
+    A populated ``reference_cache`` short-circuits the reference solve
+    and is the recommended path for the §4.3.4 alpha sweep, where the
+    instances are identical to the §4.3.1/§4.3.5 sweeps and the
+    tight-tolerance optima are already saved in
+    ``results/anomalies/tight_gap_validation.json``.
     """
-    refs: dict[str, tuple[int, float, str, dict[str, Any]]] = {}
-    ref = _build_reference_solver(reference_solver, reference_mip_rel_gap)
+    refs: ReferenceCache = {}
+    pending: list[AnomalyInstance] = []
     for item in items:
+        if reference_cache is not None and item.inst_id in reference_cache:
+            refs[item.inst_id] = reference_cache[item.inst_id]
+            opt_profit = refs[item.inst_id][0]
+            LOG.info(
+                "reference cache hit for %s (profit=%d, status=%s)",
+                item.inst_id,
+                opt_profit,
+                refs[item.inst_id][2],
+            )
+        else:
+            pending.append(item)
+
+    if not pending:
+        return refs
+
+    ref = _build_reference_solver(reference_solver, reference_mip_rel_gap)
+    for item in pending:
         LOG.info("solving %s with reference solver %s", item.inst_id, reference_solver)
         rt0 = time.perf_counter()
         ref_res = ref.solve(item.inst, time_limit_s=reference_time_limit_s)
@@ -223,6 +256,36 @@ def run_sweep(
             ref_status,
             ref_wall,
         )
+    return refs
+
+
+def run_sweep(
+    *,
+    items: list[AnomalyInstance],
+    n_iter_grid: tuple[int, ...] = DEFAULT_N_ITER_GRID,
+    sub_solver: str = "highs",
+    reference_solver: str = "highs",
+    reference_time_limit_s: float | None = 600.0,
+    reference_mip_rel_gap: float | None = None,
+    reference_cache: ReferenceCache | None = None,
+    eval_time_limit_s: float | None = None,
+    out_path: Path | None = None,
+) -> list[SweepRecord]:
+    """Run the N_iter sweep and (optionally) stream JSONL to ``out_path``.
+
+    Pass ``reference_mip_rel_gap=1e-9`` (or tighter) to remove the
+    HiGHS-default-tolerance artefact described in §4.3.5 of the change
+    plan; see :func:`_build_reference_solver`. Pass a populated
+    ``reference_cache`` to skip the reference solve entirely (useful when
+    re-using optima from a prior sweep on the same instances).
+    """
+    refs = _resolve_references(
+        items,
+        reference_solver=reference_solver,
+        reference_time_limit_s=reference_time_limit_s,
+        reference_mip_rel_gap=reference_mip_rel_gap,
+        reference_cache=reference_cache,
+    )
 
     records: list[SweepRecord] = []
     out_fh = out_path.open("w") if out_path is not None else None
@@ -255,6 +318,105 @@ def run_sweep(
         if out_fh is not None:
             out_fh.close()
     return records
+
+
+def run_alpha_sweep(
+    *,
+    items: list[AnomalyInstance],
+    alpha_grid: tuple[float, ...] = DEFAULT_ALPHA_GRID,
+    n_iter: int = DEFAULT_ALPHA_NITER,
+    sub_solver: str = "highs",
+    reference_solver: str = "highs",
+    reference_time_limit_s: float | None = 600.0,
+    reference_mip_rel_gap: float | None = None,
+    reference_cache: ReferenceCache | None = None,
+    eval_time_limit_s: float | None = None,
+    out_path: Path | None = None,
+) -> list[SweepRecord]:
+    """Run the §4.3.4 alpha sweep at fixed ``n_iter``.
+
+    Mirrors :func:`run_sweep` but iterates over ``alpha_grid`` instead
+    of an N_iter grid. Reference solves are reused across all alphas for
+    the same instance — alpha only controls Phase-2 budget allocation,
+    not the reference optimum.
+    """
+    refs = _resolve_references(
+        items,
+        reference_solver=reference_solver,
+        reference_time_limit_s=reference_time_limit_s,
+        reference_mip_rel_gap=reference_mip_rel_gap,
+        reference_cache=reference_cache,
+    )
+
+    records: list[SweepRecord] = []
+    out_fh = out_path.open("w") if out_path is not None else None
+    try:
+        for item in items:
+            opt_profit, opt_wall, opt_status, opt_meta = refs[item.inst_id]
+            for alpha in alpha_grid:
+                rec = run_one(
+                    item=item,
+                    n_iter=n_iter,
+                    alpha=alpha,
+                    opt_profit=opt_profit,
+                    opt_wall_s=opt_wall,
+                    opt_status=opt_status,
+                    opt_metadata=opt_meta,
+                    sub_solver=sub_solver,
+                    eval_time_limit_s=eval_time_limit_s,
+                )
+                records.append(rec)
+                if out_fh is not None:
+                    out_fh.write(json.dumps(rec.as_json()) + "\n")
+                    out_fh.flush()
+                LOG.info(
+                    "alpha-sweep %s alpha=%.2f gap=%.4f hld_wall=%.2fs",
+                    item.inst_id,
+                    alpha,
+                    rec.optimality_gap,
+                    rec.hld_wall_s,
+                )
+    finally:
+        if out_fh is not None:
+            out_fh.close()
+    return records
+
+
+def reference_cache_from_tight_validation(
+    path: Path,
+    *,
+    prefer: str = "tight",
+) -> ReferenceCache:
+    """Build a ``ReferenceCache`` from ``tight_gap_validation.json``.
+
+    The §4.3.5 validation file stores both the default- and tight-
+    tolerance HiGHS optima for each anomaly instance. The §4.3.4 alpha
+    sweep wants the *tight* optimum (true integer optimum on seeds 7
+    and 42; tight time-out incumbent on seed 0) so that the gap-vs-α
+    curve is not contaminated by the HiGHS-default tolerance artefact
+    we already understand.
+    """
+    if prefer not in {"tight", "default"}:
+        raise ValueError(f"prefer must be 'tight' or 'default', got {prefer!r}")
+    raw = json.loads(path.read_text())
+    cache: ReferenceCache = {}
+    for entry in raw:
+        inst_id = entry["inst_id"]
+        ref = entry[prefer]
+        meta = {
+            "highs_status": ref.get("highs_status"),
+            "mip_gap": ref.get("mip_gap"),
+            "mip_rel_gap_set": ref.get("mip_rel_gap_set"),
+            "objective_value": float(ref["profit"]),
+            "_source": f"tight_gap_validation.{prefer}",
+        }
+        cache[inst_id] = (
+            int(ref["profit"]),
+            float(ref["wall_s"]),
+            str(ref.get("status", "unknown")),
+            meta,
+        )
+    return cache
 
 
 def _cell_dirname(cell: dict[str, Any]) -> str:
