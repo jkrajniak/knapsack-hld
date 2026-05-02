@@ -33,6 +33,7 @@ def test_smac_full_script_dry_run_shows_unique_full_campaign_steps() -> None:
     assert "--archive instances" in completed.stdout
     assert "--out-dir results/smac_run/full_" in completed.stdout
     assert "--budget 5000" in completed.stdout
+    assert "--max-N 10000" in completed.stdout
     assert "--seed 7" in completed.stdout
     assert "--ref-time-limit-s 60" in completed.stdout
     assert "--eval-time-limit-s 60" in completed.stdout

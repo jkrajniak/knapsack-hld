@@ -113,6 +113,7 @@ def load_tuning_archive(
     archive_root: Path,
     manifest_path: Path | None = None,
     max_instances: int | None = None,
+    max_n: int | None = None,
     reference_cache: Path | None = None,
     time_limit_s: float | None = None,
 ) -> TuningArchive:
@@ -131,7 +132,7 @@ def load_tuning_archive(
             f=entry["cell"]["f"],
         )
         seeds_per_cell[cell].append(int(entry["seed"]))
-        if entry.get("subset") == "tuning":
+        if entry.get("subset") == "tuning" and _entry_passes_filters(entry, max_n=max_n):
             tuning_entries.append(entry)
 
     if not tuning_entries:
@@ -164,6 +165,13 @@ def load_tuning_archive(
         tuning_ratio=manifest.get("tuning_ratio", DEFAULT_TUNING_RATIO),
         master_seed=manifest.get("master_seed", DEFAULT_MASTER_SEED),
     )
+
+
+def _entry_passes_filters(entry: dict[str, Any], *, max_n: int | None) -> bool:
+    """Return true when a manifest entry is eligible for tuning."""
+    if max_n is None:
+        return True
+    return int(entry["cell"]["N"]) <= max_n
 
 
 def _build_tuning_items(
@@ -465,6 +473,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                    help=f"SMAC random seed (default: {DEFAULT_SEED}).")
     p.add_argument("--max-instances", type=int, default=None,
                    help="Cap on tuning instances (default: all in subset).")
+    p.add_argument("--max-N", dest="max_n", type=int, default=None,
+                   help="Exclude tuning instances with N above this value (default: no cap).")
     p.add_argument("--eval-time-limit-s", type=float, default=None,
                    help="Per-trial HLD wall-clock cap (default: none).")
     p.add_argument("--ref-time-limit-s", type=float, default=None,
@@ -493,6 +503,7 @@ def main(argv: list[str] | None = None) -> int:
         archive_root=args.archive,
         manifest_path=args.manifest,
         max_instances=args.max_instances,
+        max_n=args.max_n,
         reference_cache=out_dir / "reference_profits.json",
         time_limit_s=args.ref_time_limit_s,
     )

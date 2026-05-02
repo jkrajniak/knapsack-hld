@@ -10,11 +10,13 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+
 from tuning.smac_run import (
     DEFAULT_BUDGET,
     DEFAULT_PREVIEW_BUDGET,
     PARAM_SPACE,
     HldConfig,
+    _entry_passes_filters,
     _resolve_out_dir,
     build_configspace,
     evaluate_hld,
@@ -53,6 +55,14 @@ def test_parse_args_defaults() -> None:
     assert ns.budget == DEFAULT_BUDGET
     assert ns.preview is False
     assert ns.bootstrap_resamples == 1000
+    assert ns.max_n is None
+
+
+def test_manifest_entry_filter_excludes_large_n() -> None:
+    small = {"cell": {"N": 10000, "M": 10, "correlation": "weakly", "f": 0.5}}
+    large = {"cell": {"N": 100000, "M": 10, "correlation": "weakly", "f": 0.5}}
+    assert _entry_passes_filters(small, max_n=10000)
+    assert not _entry_passes_filters(large, max_n=10000)
 
 
 def test_resolve_out_dir_preview_swaps_budget_and_subdir() -> None:

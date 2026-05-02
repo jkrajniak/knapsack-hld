@@ -64,5 +64,8 @@ If the canary completes, launch the full tuning campaign:
 scripts/run_smac_full.sh --archive instances
 ```
 
-The full runner writes logs to `logs/smac_full_*.log` and writes outputs
-to a fresh timestamped directory under `results/smac_run/full_*/`.
+By default the full runner tunes on `N <= 10,000` instances to keep
+reference-profit construction bounded; the `N=100,000` archive remains
+available for later validation. It writes logs to `logs/smac_full_*.log`
+and writes outputs to a fresh timestamped directory under
+`results/smac_run/full_*/`.
