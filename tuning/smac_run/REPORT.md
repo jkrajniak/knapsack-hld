@@ -2,9 +2,8 @@
 
 > **Status:** preview run on the small N=200 tuning subset (this branch
 > ships only 16 tuning instances across the four correlation kinds and
-> two M values). The full 5 000-trial campaign described in
-> `openspec/changes/itor-major-revision-2026/tasks.md §4.2.1` is gated
-> on the full benchmark archive (§2.2.1).
+> two M values). The full 5 000-trial campaign is gated on the full
+> benchmark archive.
 >
 > The harness, parameter space, target metric, safety hooks, and
 > bootstrap CI logic are exactly the same as in the planned full run;

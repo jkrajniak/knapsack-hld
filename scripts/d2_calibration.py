@@ -1,7 +1,6 @@
 """D2 calibration: HLD vs HiGHS on the hardest cells (manuscript §3.7).
 
-Per `openspec/changes/itor-major-revision-2026/tasks.md` §3.7.1 the
-target configuration is
+The target calibration configuration is
 
     N=100 000, M=10, correlation=inversely_strongly,
     f in {0.1, 0.5, 0.9}, time_limit=60 s
@@ -13,8 +12,8 @@ to `results/d2_calibration/<date>.csv.gz`, plus a sidecar
 `<date>.host.json` so the run is fully reproducible.
 
 A `--preview` flag swaps the target N for a smaller value (default
-N=200, the largest cell shipped with the change branch) so the harness
-can be exercised end-to-end before the full archive (§2.2.1) is
+N=200, the largest small cell shipped with the repository) so the
+harness can be exercised end-to-end before the full archive is
 generated. The preview CSV is written to a separate
 `results/d2_calibration/preview/` subdirectory so it never displaces
 the canonical 100k-class results.

@@ -20,8 +20,7 @@ When the §5 example is to hand:
 2. Replace `_TODO_PAPER_EXPECTED_PROFIT` with the published optimum.
 3. Remove the `xfail` marker.
 
-Tracked in `openspec/changes/itor-major-revision-2026/tasks.md` §3.4.2
-as PENDING (paper-access gated).
+This remains paper-access gated until the worked example can be transcribed.
 """
 
 from __future__ import annotations

@@ -37,8 +37,7 @@ simpler:
 - **No gradient projection.** B&B alone closes the gap.
 - **Pure Python.** Numpy is used only for sorting in the envelope build.
 
-The reasoning is documented in design D-mcknap of the OpenSpec change
-`itor-major-revision-2026`:
+The reasoning is as follows:
 
 > A faithful pure-Python implementation of Pisinger's primal-dual core
 > algorithm is high-risk for low marginal benefit (the reviewers want

@@ -18,10 +18,10 @@ exact baselines.
 
 ## Status
 
-🚧 Skeleton — Phase A (week 1) of the ITOR major revision. Implementation of
-benchmark suite, baselines, tuning campaign and HLD instrumentation lands in
-Phases B–F (see `openspec/changes/itor-major-revision-2026/tasks.md` in the
-companion paper repository).
+This repository is an active revision package. It includes the benchmark
+generator, solver adapters, HLD implementation, tuning harnesses, anomaly
+analysis scripts, and reproducibility checks needed for the revised
+manuscript.
 
 ## Quick start
 

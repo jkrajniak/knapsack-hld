@@ -1,4 +1,4 @@
-"""Anomaly investigation: alpha sweep driver (openspec §4.3.4).
+"""Anomaly investigation: alpha sweep driver.
 
 Companion to :mod:`scripts.analyse_anomalies`. The original §4.3.1 sweep
 fixed ``alpha = HLD default (0.9)`` and varied ``N_iter ∈ {1, …, 25}``;
@@ -6,16 +6,16 @@ this script does the dual experiment — fix ``N_iter = 20`` and vary
 ``alpha ∈ {0.0, 0.1, …, 1.0}`` on the same deterministic anomaly subset
 (``N=10 000, M=10, weakly correlated, f=0.5``, seeds ``{0, 7, 42}``).
 
-Reviewer R2-M7 part 2 asks whether the Fig 5 wobble at ``α ≈ 0.5``
+Reviewer R2-M7 part 2 asks whether the Fig 5 wobble at ``alpha ~= 0.5``
 reflects a mechanistic effect or random noise. To answer it we instrument
 two Phase-2 quantities on every record:
 
 - **Budget coefficient of variation** ``cv(B_k)`` across batches
   (= ``std(B_k) / mean(B_k)``). Pure equal allocation has ``cv = 0`` at
-  ``α = 0``; pure proportional has ``cv ≥ 0`` reflecting the underlying
-  ``C_k`` heterogeneity at ``α = 1``. The mixed regime trades the two
+  ``alpha = 0``; pure proportional has ``cv >= 0`` reflecting the underlying
+  ``C_k`` heterogeneity at ``alpha = 1``. The mixed regime trades the two
   off linearly *in expectation* but the Phase-2 sub-MILP outcomes are
-  not linear in ``B_k``, so a peak in observed gap at ``α ≈ 0.5`` is a
+  not linear in ``B_k``, so a peak in observed gap at ``alpha ~= 0.5`` is a
   candidate signature of "neither robust enough nor proportional
   enough" budget assignment.
 - **Min batch budget** ``min_k B_k``: small budgets push individual
@@ -264,7 +264,7 @@ def _render_report(records: list[dict[str, Any]]) -> str:
 
     lines.append("## Mean across seeds, vs alpha\n")
     lines.append(
-        "| α | mean gap | std gap | mean wall (s) | mean cv(B_k) | mean min B_k |"
+        "| alpha | mean gap | std gap | mean wall (s) | mean cv(B_k) | mean min B_k |"
     )
     lines.append("|---:|---:|---:|---:|---:|---:|")
     for alpha in sorted(by_alpha):
@@ -287,7 +287,7 @@ def _render_report(records: list[dict[str, Any]]) -> str:
         recs.sort(key=lambda r: r["alpha"])
         lines.append(f"\n### `{inst_id}`\n")
         lines.append(
-            "| α | gap | HLD wall (s) | min B_k | max B_k | cv(B_k) | max Phase-3 share |"
+            "| alpha | gap | HLD wall (s) | min B_k | max B_k | cv(B_k) | max Phase-3 share |"
         )
         lines.append("|---:|---:|---:|---:|---:|---:|---:|")
         for r in recs:
@@ -307,7 +307,7 @@ def _render_report(records: list[dict[str, Any]]) -> str:
 
 
 def _interpret(by_alpha: dict[float, list[dict[str, Any]]]) -> str:
-    """Compare gap at α≈0.5 vs the endpoints to test the Fig 5 spike claim."""
+    """Compare gap at alpha ~= 0.5 vs the endpoints to test the Fig 5 spike claim."""
     if not by_alpha:
         return "_no records_\n"
 
@@ -317,7 +317,7 @@ def _interpret(by_alpha: dict[float, list[dict[str, Any]]]) -> str:
     sorted_alphas = sorted(by_alpha)
     if 0.5 not in by_alpha:
         return (
-            "- α=0.5 not in the sweep grid; cannot test the Fig 5 spike "
+            "- alpha=0.5 not in the sweep grid; cannot test the Fig 5 spike "
             "claim quantitatively. Re-run with `--alpha-grid 0.0,0.1,...,1.0`.\n"
         )
 
@@ -327,18 +327,18 @@ def _interpret(by_alpha: dict[float, list[dict[str, Any]]]) -> str:
     g_endpoints = (g_lo + g_hi) / 2.0
     delta = g_mid - g_endpoints
     bits: list[str] = [
-        f"- mean gap at α=0.5 — **{g_mid:+.4%}** "
-        f"(vs α={sorted_alphas[0]:.1f}: {g_lo:+.4%}, "
-        f"α={sorted_alphas[-1]:.1f}: {g_hi:+.4%})\n",
-        f"- α=0.5 vs endpoint mean: {delta:+.4%} "
+        f"- mean gap at alpha=0.5 — **{g_mid:+.4%}** "
+        f"(vs alpha={sorted_alphas[0]:.1f}: {g_lo:+.4%}, "
+        f"alpha={sorted_alphas[-1]:.1f}: {g_hi:+.4%})\n",
+        f"- alpha=0.5 vs endpoint mean: {delta:+.4%} "
         f"({'spike' if delta > 0 else 'dip'}).\n",
     ]
 
     g_max_alpha = max(sorted_alphas, key=mean_gap)
     g_min_alpha = min(sorted_alphas, key=mean_gap)
     bits.append(
-        f"- worst α: **{g_max_alpha:.1f}** "
-        f"({mean_gap(g_max_alpha):+.4%}); best α: **{g_min_alpha:.1f}** "
+        f"- worst alpha: **{g_max_alpha:.1f}** "
+        f"({mean_gap(g_max_alpha):+.4%}); best alpha: **{g_min_alpha:.1f}** "
         f"({mean_gap(g_min_alpha):+.4%}).\n"
     )
 
@@ -346,14 +346,14 @@ def _interpret(by_alpha: dict[float, list[dict[str, Any]]]) -> str:
     cv_mid = stats.fmean(r["budget_cv"] for r in by_alpha[0.5])
     cv_hi = stats.fmean(r["budget_cv"] for r in by_alpha[sorted_alphas[-1]])
     bits.append(
-        f"- mean cv(B_k) at α=0.0/0.5/1.0 = "
+        f"- mean cv(B_k) at alpha=0.0/0.5/1.0 = "
         f"{cv_lo:.3f} / {cv_mid:.3f} / {cv_hi:.3f} "
-        "— linear in α as expected (Phase-2 design).\n"
+        "— linear in alpha as expected (Phase-2 design).\n"
     )
 
     if math.isclose(delta, 0.0, abs_tol=5e-5):
         bits.append(
-            "- **Verdict: NO MECHANISTIC SPIKE.** The α=0.5 row is "
+            "- **Verdict: NO MECHANISTIC SPIKE.** The alpha=0.5 row is "
             "indistinguishable from the endpoints (|Δ| < 5e-5 = 0.005 %). "
             "The Fig 5 visual wobble is dominated by the HiGHS-tolerance "
             "artefact already addressed in §4.3.5, not by a "
@@ -361,13 +361,13 @@ def _interpret(by_alpha: dict[float, list[dict[str, Any]]]) -> str:
         )
     elif delta > 0:
         bits.append(
-            "- **Verdict: SPIKE CONFIRMED.** α=0.5 has a strictly worse "
+            "- **Verdict: SPIKE CONFIRMED.** alpha=0.5 has a strictly worse "
             "mean gap than either endpoint. Investigate cv(B_k) and "
-            "min B_k at α=0.5 for sub-MILP-regime evidence.\n"
+            "min B_k at alpha=0.5 for sub-MILP-regime evidence.\n"
         )
     else:
         bits.append(
-            "- **Verdict: DIP, not spike.** α=0.5 has a strictly better "
+            "- **Verdict: DIP, not spike.** alpha=0.5 has a strictly better "
             "mean gap than either endpoint. The Fig 5 visual is "
             "monotone-with-noise; the apparent spike is a plotting/sampling "
             "artefact.\n"

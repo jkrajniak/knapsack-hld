@@ -1,4 +1,4 @@
-"""Anomaly investigation driver (openspec §4.3.1 + §4.3.2).
+"""Anomaly investigation driver.
 
 End-to-end:
 
