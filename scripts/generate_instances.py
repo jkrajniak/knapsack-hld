@@ -65,7 +65,7 @@ def _generate_one(
     stem = instance_id(N=N, M=M, correlation=correlation, f=f, seed=seed)
     rel_dir = Path(correlation) / f"N{N}_M{M}"
     target = out_root / rel_dir / f"{stem}.json.gz"
-    if target.exists() and not force:
+    if target.exists() and not force and target.stat().st_size > 0:
         return target
     inst = generate_instance(N=N, M=M, correlation=correlation, f=f, seed=seed)
     return save_instance(inst, target)

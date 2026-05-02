@@ -12,6 +12,8 @@ from __future__ import annotations
 
 import gzip
 import json
+import os
+import tempfile
 from pathlib import Path
 
 from instances.schema import CorrelationKind, InstanceModel
@@ -36,11 +38,21 @@ def save_instance(instance: InstanceModel, path: str | Path) -> Path:
     payload = instance.model_dump(mode="json")
     encoded = json.dumps(payload, separators=(",", ":")).encode("utf-8")
     path.parent.mkdir(parents=True, exist_ok=True)
-    if path.suffix == ".gz":
-        with gzip.open(path, "wb") as fh:
-            fh.write(encoded)
-    else:
-        path.write_bytes(encoded)
+    # Write atomically via temp file + rename to avoid empty/partial files
+    # on crash or worker interruption.
+    fd, tmp = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+    os.close(fd)
+    try:
+        tmp_path = Path(tmp)
+        if path.suffix == ".gz":
+            with gzip.open(tmp_path, "wb") as fh:
+                fh.write(encoded)
+        else:
+            tmp_path.write_bytes(encoded)
+        tmp_path.rename(path)
+    except BaseException:
+        Path(tmp).unlink(missing_ok=True)
+        raise
     return path
 
 

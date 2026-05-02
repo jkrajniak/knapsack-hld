@@ -111,7 +111,7 @@ run_cmd uv run python scripts/verify_instances.py --archive "${archive}"
 
 print_step python summarize_manifest
 if [[ "${dry_run}" -eq 0 ]]; then
-    ARCHIVE="${archive}" EXPECTED_FILES="${expected_files}" SUMMARY_PATH="${summary_path}" python - <<'PY'
+    ARCHIVE="${archive}" EXPECTED_FILES="${expected_files}" SUMMARY_PATH="${summary_path}" uv run python - <<'PY'
 import json
 import os
 from pathlib import Path
