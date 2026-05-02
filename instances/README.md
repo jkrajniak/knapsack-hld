@@ -46,6 +46,17 @@ uv run python scripts/generate_instances.py \
 uv run python scripts/verify_instances.py --archive instances
 ```
 
+For a large machine, prefer the logged wrapper and generate into a candidate
+directory first:
+
+```bash
+scripts/run_full_archive.sh --out instances_full_candidate --jobs 16
+```
+
+The wrapper runs `uv sync`, calls `scripts/generate_instances.py` with
+`scripts/configs/archive_full.yaml`, verifies the archive, and writes a
+timestamped log under `logs/full_archive_*.log`.
+
 ## Tuning vs. test split
 
 The split is computed by `code/instances/split.py` from a single recorded

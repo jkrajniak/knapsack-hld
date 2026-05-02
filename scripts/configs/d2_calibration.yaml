@@ -1,0 +1,22 @@
+# D2 calibration grid (manuscript §3.7.1 / openspec §3.7.1).
+#
+# The hardest documented HLD regime: very-large N, inversely strongly
+# correlated profits/weights, three budget tightness levels covering
+# the very-tight, mid, and slack regimes.
+#
+# Two N tiers are generated:
+#   N = 10 000  -- headline calibration cell. The §3.11 boundary
+#                 ("$N \gtrsim 10^{4}$") and large enough to demonstrate
+#                 the regime while keeping HiGHS within a 60 s budget.
+#   N = 100 000 -- scaling stress test. At this scale HiGHS no longer
+#                 honours `time_limit` (presolve / initial LP outrun
+#                 the wall-clock limit) and serves as direct evidence
+#                 that HLD is the only viable open-source option in
+#                 this regime.
+#
+# 2 (N) * 1 (M) * 1 (corr) * 3 (f) * 5 (seeds) = 30 instances.
+N: [10000, 100000]
+M: [10]
+correlation: [inversely_strongly]
+f: [0.1, 0.5, 0.9]
+seeds: [0, 1, 2, 3, 4]
