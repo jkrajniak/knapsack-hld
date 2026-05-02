@@ -9,6 +9,7 @@ These scripts are the **public** reproduction surface; everything else under
 | `verify_instances.py`        | Re-hash the archive and compare with `MANIFEST.json`           |
 | `run_full_archive.sh`        | Big-machine wrapper: sync deps, generate the full archive, verify it, and log the run |
 | `finalize_full_archive.sh`   | Verify, summarize, and optionally promote a completed full archive |
+| `run_smac_canary.sh`         | Verify promoted archive and run a small SMAC3 canary before the full campaign |
 | `run_baselines.py`           | Run all baselines (HiGHS/SCIP/CBC/mcknap/heuristics) on the test set |
 | `run_hld.py`                 | Run the HLD algorithm on the test set                          |
 | `run_tuning.py`              | Launch the SMAC3 parameter-tuning campaign on the tuning set   |
@@ -46,3 +47,12 @@ promote the candidate archive to the canonical `instances/` path:
 ```bash
 scripts/finalize_full_archive.sh --archive instances_full_candidate --promote
 ```
+
+Then run a small SMAC3 canary against the promoted archive:
+
+```bash
+scripts/run_smac_canary.sh --archive instances
+```
+
+The canary verifies the promoted archive, records its size, and runs a
+5-trial / 12-instance tuning smoke test in `tuning/smac_run/full_canary/`.
