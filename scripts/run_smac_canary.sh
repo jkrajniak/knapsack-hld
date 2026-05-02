@@ -141,7 +141,7 @@ fi
 
 run_cmd scripts/finalize_full_archive.sh --archive "${archive}" --expected-files "${expected_files}"
 run_cmd du -sh "${archive}"
-run_cmd uv run python -m tuning.smac_run \
+run_cmd uv run python code/tuning/smac_run.py \
     --archive "${archive}" \
     --out-dir "${out_dir}" \
     --budget "${budget}" \

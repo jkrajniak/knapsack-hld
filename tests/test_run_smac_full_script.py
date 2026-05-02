@@ -29,7 +29,7 @@ def test_smac_full_script_dry_run_shows_unique_full_campaign_steps() -> None:
     assert completed.returncode == 0
     assert "scripts/finalize_full_archive.sh --archive instances --expected-files 9000" in completed.stdout
     assert "du -sh instances" in completed.stdout
-    assert "uv run python -m tuning.smac_run" in completed.stdout
+    assert "uv run python code/tuning/smac_run.py" in completed.stdout
     assert "--archive instances" in completed.stdout
     assert "--out-dir results/smac_run/full_" in completed.stdout
     assert "--budget 5000" in completed.stdout
