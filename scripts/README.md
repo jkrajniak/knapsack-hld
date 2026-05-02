@@ -10,6 +10,7 @@ These scripts are the **public** reproduction surface; everything else under
 | `run_full_archive.sh`        | Big-machine wrapper: sync deps, generate the full archive, verify it, and log the run |
 | `finalize_full_archive.sh`   | Verify, summarize, and optionally promote a completed full archive |
 | `run_smac_canary.sh`         | Verify promoted archive and run a small SMAC3 canary before the full campaign |
+| `run_smac_full.sh`           | Verify promoted archive and launch the full 5,000-trial SMAC3 campaign |
 | `run_baselines.py`           | Run all baselines (HiGHS/SCIP/CBC/mcknap/heuristics) on the test set |
 | `run_hld.py`                 | Run the HLD algorithm on the test set                          |
 | `run_tuning.py`              | Launch the SMAC3 parameter-tuning campaign on the tuning set   |
@@ -56,3 +57,12 @@ scripts/run_smac_canary.sh --archive instances
 
 The canary verifies the promoted archive, records its size, and runs a
 5-trial / 12-instance tuning smoke test in `tuning/smac_run/full_canary/`.
+
+If the canary completes, launch the full tuning campaign:
+
+```bash
+scripts/run_smac_full.sh --archive instances
+```
+
+The full runner writes logs to `logs/smac_full_*.log` and writes outputs
+to a fresh timestamped directory under `results/smac_run/full_*/`.
