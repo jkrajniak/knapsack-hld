@@ -44,6 +44,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from joblib import Parallel, delayed
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from instances.io import load_instance
@@ -116,6 +118,7 @@ def load_tuning_archive(
     max_n: int | None = None,
     reference_cache: Path | None = None,
     time_limit_s: float | None = None,
+    jobs: int = 1,
 ) -> TuningArchive:
     """Read manifest, load tuning-subset instances, populate HiGHS oracle."""
     archive_root = Path(archive_root)
@@ -154,6 +157,7 @@ def load_tuning_archive(
         time_limit_s=time_limit_s,
         tuning_ratio=manifest.get("tuning_ratio", DEFAULT_TUNING_RATIO),
         master_seed=manifest.get("master_seed", DEFAULT_MASTER_SEED),
+        jobs=jobs,
     )
     if reference_cache is not None:
         _save_reference_cache(reference_cache, items)
@@ -183,38 +187,67 @@ def _build_tuning_items(
     time_limit_s: float | None,
     tuning_ratio: float,
     master_seed: int,
+    jobs: int = 1,
 ) -> list[TuningInstance]:
-    ref_solver = get_solver(REFERENCE_SOLVER)
-    items: list[TuningInstance] = []
-    for entry in tuning_entries:
-        path = archive_root / entry["path"]
-        inst = load_instance(path)
-        cell_seeds = sorted(seeds_per_cell[CellKey.from_instance(inst)])
-        assert_tuning_only(
-            inst,
-            cell_seeds=cell_seeds,
+    worker = delayed(_build_one_tuning_item)
+    return Parallel(n_jobs=jobs, return_as="list")(
+        worker(
+            archive_root=archive_root,
+            entry=entry,
+            cell_seeds=sorted(seeds_per_cell[_cell_key_from_entry(entry)]),
+            cached=cache.get(entry["path"]),
+            time_limit_s=time_limit_s,
             tuning_ratio=tuning_ratio,
             master_seed=master_seed,
         )
-        cached = cache.get(entry["path"])
-        if cached is not None:
-            ref_profit = int(cached["profit"])
-            ref_time = float(cached["time_s"])
-        else:
-            t0 = time.perf_counter()
-            ref = ref_solver.solve(inst, time_limit_s=time_limit_s)
-            ref_time = time.perf_counter() - t0
-            ref_profit = int(ref.profit)
-            LOGGER.info("reference[%s]: profit=%d time=%.2fs", entry["path"], ref_profit, ref_time)
-        items.append(
-            TuningInstance(
-                rel_path=entry["path"],
-                inst=inst,
-                ref_profit=ref_profit,
-                ref_time_s=ref_time,
-            )
-        )
-    return items
+        for entry in tuning_entries
+    )
+
+
+def _cell_key_from_entry(entry: dict[str, Any]) -> CellKey:
+    return CellKey(
+        N=entry["cell"]["N"],
+        M=entry["cell"]["M"],
+        correlation=entry["cell"]["correlation"],
+        f=entry["cell"]["f"],
+    )
+
+
+def _build_one_tuning_item(
+    *,
+    archive_root: Path,
+    entry: dict[str, Any],
+    cell_seeds: list[int],
+    cached: dict[str, float] | None,
+    time_limit_s: float | None,
+    tuning_ratio: float,
+    master_seed: int,
+) -> TuningInstance:
+    path = archive_root / entry["path"]
+    inst = load_instance(path)
+    assert_tuning_only(
+        inst,
+        cell_seeds=cell_seeds,
+        tuning_ratio=tuning_ratio,
+        master_seed=master_seed,
+    )
+    if cached is not None:
+        ref_profit = int(cached["profit"])
+        ref_time = float(cached["time_s"])
+    else:
+        t0 = time.perf_counter()
+        ref = get_solver(REFERENCE_SOLVER).solve(inst, time_limit_s=time_limit_s)
+        ref_time = time.perf_counter() - t0
+        ref_profit = int(ref.profit)
+        LOGGER.info("reference[%s]: profit=%d time=%.2fs", entry["path"], ref_profit, ref_time)
+    if ref_profit <= 0:
+        raise RuntimeError(f"Invalid non-positive reference profit for {entry['path']}: {ref_profit}")
+    return TuningInstance(
+        rel_path=entry["path"],
+        inst=inst,
+        ref_profit=ref_profit,
+        ref_time_s=ref_time,
+    )
 
 
 def _load_reference_cache(path: Path) -> dict[str, dict[str, float]]:
@@ -338,6 +371,7 @@ def run_smac_campaign(
     budget: int,
     seed: int,
     eval_time_limit_s: float | None = None,
+    jobs: int = 1,
     name: str = "hld_smac",
 ) -> tuple[Any, list[HldEvaluation]]:
     """Run the SMAC AlgorithmConfigurationFacade and return ``(incumbent, evaluations)``."""
@@ -353,11 +387,10 @@ def run_smac_campaign(
         n_trials=int(budget),
         instances=archive.instance_ids,
         seed=int(seed),
+        n_workers=int(jobs),
     )
 
-    evaluations: list[HldEvaluation] = []
-
-    def target_function(config: Any, instance: str, seed: int) -> float:
+    def target_function(config: Any, instance: str, seed: int) -> tuple[float, dict[str, Any]]:
         item = archive.by_id[instance]
         assert_tuning_only(
             item.inst,
@@ -367,12 +400,62 @@ def run_smac_campaign(
         )
         cfg = HldConfig.from_mapping(dict(config))
         ev = evaluate_hld(item, cfg, seed=int(seed), time_limit_s=eval_time_limit_s)
-        evaluations.append(ev)
-        return ev.optimality_gap
+        return ev.optimality_gap, _evaluation_to_info(ev)
 
     smac = AlgorithmConfigurationFacade(scenario, target_function)
-    incumbent = smac.optimize()
+    try:
+        incumbent = smac.optimize()
+        evaluations = _evaluations_from_runhistory(smac.runhistory)
+    finally:
+        _close_smac_runner(smac)
     return incumbent, evaluations
+
+
+def _close_smac_runner(smac: Any) -> None:
+    runner = getattr(smac, "_runner", None)
+    close = getattr(runner, "close", None)
+    if close is not None:
+        close()
+    if hasattr(runner, "_close_client_at_del"):
+        runner._close_client_at_del = False
+
+
+def _evaluation_to_info(ev: HldEvaluation) -> dict[str, Any]:
+    return {
+        "instance_id": ev.instance_id,
+        "config": {
+            "n_iter": ev.config.n_iter,
+            "alpha": ev.config.alpha,
+            "k": ev.config.k,
+            "lambda_max": ev.config.lambda_max,
+        },
+        "seed": ev.seed,
+        "profit": ev.profit,
+        "ref_profit": ev.ref_profit,
+        "optimality_gap": ev.optimality_gap,
+        "wall_time_s": ev.wall_time_s,
+    }
+
+
+def _evaluation_from_info(info: dict[str, Any]) -> HldEvaluation:
+    return HldEvaluation(
+        instance_id=str(info["instance_id"]),
+        config=HldConfig.from_mapping(info["config"]),
+        seed=int(info["seed"]),
+        profit=int(info["profit"]),
+        ref_profit=int(info["ref_profit"]),
+        optimality_gap=float(info["optimality_gap"]),
+        wall_time_s=float(info["wall_time_s"]),
+    )
+
+
+def _evaluations_from_runhistory(runhistory: Any) -> list[HldEvaluation]:
+    evaluations: list[HldEvaluation] = []
+    for _, trial_value in runhistory.items():
+        info = trial_value.additional_info
+        if "instance_id" in info:
+            evaluations.append(_evaluation_from_info(info))
+    return evaluations
 
 
 # ---------------------------------------------------------------------------
@@ -412,12 +495,13 @@ def evaluate_incumbent_full(
     *,
     seed: int = 0,
     eval_time_limit_s: float | None = None,
+    jobs: int = 1,
 ) -> list[HldEvaluation]:
     """Re-evaluate the incumbent on every tuning instance for unbiased reporting."""
-    return [
-        evaluate_hld(item, config, seed=seed, time_limit_s=eval_time_limit_s)
+    return Parallel(n_jobs=jobs, return_as="list")(
+        delayed(evaluate_hld)(item, config, seed=seed, time_limit_s=eval_time_limit_s)
         for item in archive.items
-    ]
+    )
 
 
 def write_incumbent_json(
@@ -475,6 +559,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                    help="Cap on tuning instances (default: all in subset).")
     p.add_argument("--max-N", dest="max_n", type=int, default=None,
                    help="Exclude tuning instances with N above this value (default: no cap).")
+    p.add_argument("--jobs", type=int, default=1,
+                   help="Parallel workers for reference cache and incumbent evaluation (default: 1).")
     p.add_argument("--eval-time-limit-s", type=float, default=None,
                    help="Per-trial HLD wall-clock cap (default: none).")
     p.add_argument("--ref-time-limit-s", type=float, default=None,
@@ -506,6 +592,7 @@ def main(argv: list[str] | None = None) -> int:
         max_n=args.max_n,
         reference_cache=out_dir / "reference_profits.json",
         time_limit_s=args.ref_time_limit_s,
+        jobs=args.jobs,
     )
     LOGGER.info("Tuning subset: %d instances across %d cells",
                 len(archive.items), len(archive.seeds_per_cell))
@@ -516,6 +603,7 @@ def main(argv: list[str] | None = None) -> int:
         budget=budget,
         seed=args.seed,
         eval_time_limit_s=args.eval_time_limit_s,
+        jobs=args.jobs,
     )
     config = HldConfig.from_mapping(dict(incumbent))
     LOGGER.info("Incumbent: n_iter=%d alpha=%.3f k=%d lambda_max=%.3f",
@@ -524,7 +612,7 @@ def main(argv: list[str] | None = None) -> int:
     write_evaluations_csv(out_dir / "evaluations.csv", evaluations)
     LOGGER.info("Re-evaluating incumbent on full tuning subset for unbiased CI...")
     incumbent_evals = evaluate_incumbent_full(
-        archive, config, seed=args.seed, eval_time_limit_s=args.eval_time_limit_s
+        archive, config, seed=args.seed, eval_time_limit_s=args.eval_time_limit_s, jobs=args.jobs
     )
     write_incumbent_json(
         out_dir / "incumbent.json",

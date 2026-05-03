@@ -16,6 +16,7 @@ Options:
   --expected-files N         Expected manifest file count (default: 9000)
   --budget N                 SMAC trial budget (default: 5000)
   --max-N N                  Exclude tuning instances with larger N (default: 10000)
+  --jobs N                   Parallel workers for references/final CI (default: 8)
   --seed N                   SMAC seed (default: 7)
   --ref-time-limit-s SECONDS HiGHS reference cap per instance (default: 60)
   --eval-time-limit-s SEC    HLD evaluation cap per trial (default: 60)
@@ -38,6 +39,7 @@ out_dir=""
 expected_files="9000"
 budget="5000"
 max_n="10000"
+jobs="8"
 seed="7"
 ref_time_limit_s="60"
 eval_time_limit_s="60"
@@ -69,6 +71,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --max-N)
             max_n="$2"
+            shift 2
+            ;;
+        --jobs)
+            jobs="$2"
             shift 2
             ;;
         --seed)
@@ -145,6 +151,7 @@ else
         echo "out_dir=${out_dir}"
         echo "budget=${budget}"
         echo "max_N=${max_n}"
+        echo "jobs=${jobs}"
         echo "seed=${seed}"
     } | tee "${log_file}"
 fi
@@ -160,6 +167,7 @@ run_cmd uv run python code/tuning/smac_run.py \
     --out-dir "${out_dir}" \
     --budget "${budget}" \
     --max-N "${max_n}" \
+    --jobs "${jobs}" \
     --seed "${seed}" \
     --ref-time-limit-s "${ref_time_limit_s}" \
     --eval-time-limit-s "${eval_time_limit_s}"

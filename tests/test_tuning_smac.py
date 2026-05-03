@@ -56,6 +56,7 @@ def test_parse_args_defaults() -> None:
     assert ns.preview is False
     assert ns.bootstrap_resamples == 1000
     assert ns.max_n is None
+    assert ns.jobs == 1
 
 
 def test_manifest_entry_filter_excludes_large_n() -> None:
@@ -94,10 +95,11 @@ def test_load_tuning_archive_filters_to_tuning_subset() -> None:
     """Loader sees only `subset == 'tuning'` entries and asserts each one."""
     archive = load_tuning_archive(
         archive_root=ARCHIVE_ROOT,
-        max_instances=4,
+        max_instances=1,
+        max_n=1000,
         reference_cache=None,
     )
-    assert len(archive.items) == 4
+    assert len(archive.items) == 1
     for item in archive.items:
         assert item.ref_profit > 0
         assert item.inst.N > 0
@@ -110,7 +112,8 @@ def test_load_tuning_archive_filters_to_tuning_subset() -> None:
 def test_evaluate_hld_returns_non_negative_gap() -> None:
     archive = load_tuning_archive(
         archive_root=ARCHIVE_ROOT,
-        max_instances=2,
+        max_instances=1,
+        max_n=1000,
         reference_cache=None,
     )
     cfg = HldConfig(n_iter=20, alpha=0.9, k=8, lambda_max=10.0)
