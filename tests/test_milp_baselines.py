@@ -80,7 +80,6 @@ def test_highs_mip_rel_gap_kwarg_records_tolerance() -> None:
 def test_highs_mip_rel_gap_rejects_negative() -> None:
     """Negative tolerances are nonsense and must raise."""
     import pytest
-
     from solvers.highs import HighsAdapter
 
     with pytest.raises(ValueError, match="non-negative"):

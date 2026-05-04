@@ -31,7 +31,10 @@ def test_smac_canary_script_dry_run_shows_archive_and_tuning_steps() -> None:
     )
 
     assert completed.returncode == 0
-    assert "scripts/finalize_full_archive.sh --archive instances --expected-files 9000" in completed.stdout
+    assert (
+        "scripts/finalize_full_archive.sh --archive instances --expected-files 9000"
+        in completed.stdout
+    )
     assert "du -sh instances" in completed.stdout
     assert "uv run python code/tuning/smac_run.py" in completed.stdout
     assert "--archive instances" in completed.stdout

@@ -117,9 +117,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Skip matplotlib plots (useful in headless / quick runs).",
     )
-    p.add_argument(
-        "--log-level", type=str, default="INFO", choices=["DEBUG", "INFO", "WARNING"]
-    )
+    p.add_argument("--log-level", type=str, default="INFO", choices=["DEBUG", "INFO", "WARNING"])
     return p.parse_args(argv)
 
 
@@ -241,7 +239,9 @@ def _render_report(analyses: list[dict]) -> str:
     for inst_id, recs in sorted(by_inst.items()):
         recs.sort(key=lambda r: r["record"]["n_iter"])
         lines.append(f"\n### `{inst_id}`\n")
-        lines.append("| N_iter | gap | HLD wall (s) | λ_final | gap to B | λ-spread | sign-flips | max-batch share | H1 | H2 |")
+        lines.append(
+            "| N_iter | gap | HLD wall (s) | λ_final | gap to B | λ-spread | sign-flips | max-batch share | H1 | H2 |"
+        )
         lines.append("|---:|---:|---:|---:|---:|---:|---:|---:|:---:|:---:|")
         for a in recs:
             r = a["record"]
@@ -327,22 +327,14 @@ H1_LOW_NITER_BOUNDARY: int = 15  # N_iter <= boundary is "still-narrowing bisect
 def _h1_rate_by_regime(analyses: list[dict]) -> tuple[float, float]:
     low = [a for a in analyses if a["record"]["n_iter"] <= H1_LOW_NITER_BOUNDARY]
     high = [a for a in analyses if a["record"]["n_iter"] > H1_LOW_NITER_BOUNDARY]
-    low_rate = (
-        sum(1 for a in low if a["verdicts"].h1_degenerate_dual) / len(low)
-        if low
-        else 0.0
-    )
+    low_rate = sum(1 for a in low if a["verdicts"].h1_degenerate_dual) / len(low) if low else 0.0
     high_rate = (
-        sum(1 for a in high if a["verdicts"].h1_degenerate_dual) / len(high)
-        if high
-        else 0.0
+        sum(1 for a in high if a["verdicts"].h1_degenerate_dual) / len(high) if high else 0.0
     )
     return low_rate, high_rate
 
 
-def _interpret(
-    h1_rate: float, h2_rate: float, h1_rate_low: float, h1_rate_high: float
-) -> str:
+def _interpret(h1_rate: float, h2_rate: float, h1_rate_low: float, h1_rate_high: float) -> str:
     bits: list[str] = []
     if h1_rate_high >= 0.5:
         bits.append(
@@ -364,8 +356,7 @@ def _interpret(
         )
     else:
         bits.append(
-            "- H1 not supported by this run. Phase-1 converges in the "
-            "majority of records.\n"
+            "- H1 not supported by this run. Phase-1 converges in the majority of records.\n"
         )
     if h2_rate >= 0.5:
         bits.append(
@@ -376,8 +367,7 @@ def _interpret(
         )
     else:
         bits.append(
-            "- H2 not supported by this run. Phase-3 wall time is balanced "
-            "across batches.\n"
+            "- H2 not supported by this run. Phase-3 wall time is balanced across batches.\n"
         )
     return "".join(bits)
 

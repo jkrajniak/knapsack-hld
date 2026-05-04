@@ -201,9 +201,7 @@ def analyse_record(
             rel_spread_threshold=rel_spread_threshold,
             sign_flip_threshold=sign_flip_threshold,
         ),
-        h2_straggler=is_h2_straggler(
-            p3, max_batch_share_threshold=max_batch_share_threshold
-        ),
+        h2_straggler=is_h2_straggler(p3, max_batch_share_threshold=max_batch_share_threshold),
     )
 
 

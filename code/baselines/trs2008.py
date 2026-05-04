@@ -195,9 +195,7 @@ class Trs2008Adapter:
         budget = int(instance.B)
 
         a_profit, a_cost, deferred = _phase_a_class_greedy(instance, selected, budget)
-        b_profit, b_cost = _phase_b_item_greedy(
-            instance, deferred, selected, budget - a_cost
-        )
+        b_profit, b_cost = _phase_b_item_greedy(instance, deferred, selected, budget - a_cost)
 
         total_profit = a_profit + b_profit
         total_cost = a_cost + b_cost
@@ -206,7 +204,9 @@ class Trs2008Adapter:
         meta: dict[str, Any] = {
             "phase_a_profit": a_profit,
             "phase_a_cost": a_cost,
-            "phase_a_classes_selected": sum(1 for i in range(instance.N) if selected[i] is not None and i not in deferred),
+            "phase_a_classes_selected": sum(
+                1 for i in range(instance.N) if selected[i] is not None and i not in deferred
+            ),
             "phase_b_profit": b_profit,
             "phase_b_cost": b_cost,
             "phase_b_classes_deferred": len(deferred),

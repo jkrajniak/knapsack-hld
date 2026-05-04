@@ -38,7 +38,7 @@ jobs:
         run: uv run ruff format --check .
 
       - name: Run tests (pytest)
-        run: uv run pytest -q
+        run: uv run python -m pytest -q
 
       - name: Smoke archive — generate
         run: |

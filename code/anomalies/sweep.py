@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Any
 
 from instances.schema import InstanceModel
-from solvers.base import SolveResult, Solver, SolverStatus
+from solvers.base import Solver, SolveResult, SolverStatus
 from solvers.highs import HighsAdapter
 from solvers.hld import DEFAULT_ALPHA, HldAdapter
 from solvers.registry import get_solver
@@ -146,11 +146,7 @@ def run_one(
     t0 = time.perf_counter()
     res: SolveResult = hld.solve(item.inst, time_limit_s=eval_time_limit_s)
     wall = time.perf_counter() - t0
-    gap = (
-        (opt_profit - res.profit) / opt_profit
-        if opt_profit > 0
-        else float("nan")
-    )
+    gap = (opt_profit - res.profit) / opt_profit if opt_profit > 0 else float("nan")
     return SweepRecord(
         inst_id=item.inst_id,
         n_iter=n_iter,
@@ -167,9 +163,7 @@ def run_one(
     )
 
 
-def _build_reference_solver(
-    name: str, mip_rel_gap: float | None
-) -> Solver:
+def _build_reference_solver(name: str, mip_rel_gap: float | None) -> Solver:
     """Construct the reference solver, honouring an optional tight `mip_rel_gap`.
 
     HiGHS's default `mip_rel_gap` (0.01%) lets the solver declare
@@ -392,7 +386,7 @@ def reference_cache_from_tight_validation(
     The §4.3.5 validation file stores both the default- and tight-
     tolerance HiGHS optima for each anomaly instance. The §4.3.4 alpha
     sweep wants the *tight* optimum (true integer optimum on seeds 7
-    and 42; tight time-out incumbent on seed 0) so that the gap-vs-α
+    and 42; tight time-out incumbent on seed 0) so that the gap-vs-alpha
     curve is not contaminated by the HiGHS-default tolerance artefact
     we already understand.
     """

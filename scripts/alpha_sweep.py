@@ -71,9 +71,7 @@ LOG = logging.getLogger("alpha_sweep")
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--archive-root", type=Path, default=Path("instances"))
-    p.add_argument(
-        "--out-dir", type=Path, default=Path("results/anomalies/full_alpha")
-    )
+    p.add_argument("--out-dir", type=Path, default=Path("results/anomalies/full_alpha"))
     p.add_argument("--sweep-path", type=Path, default=None)
     p.add_argument(
         "--seeds",
@@ -121,9 +119,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--sub-solver", type=str, default="highs")
     p.add_argument("--skip-sweep", action="store_true")
     p.add_argument("--no-plots", action="store_true")
-    p.add_argument(
-        "--log-level", type=str, default="INFO", choices=["DEBUG", "INFO", "WARNING"]
-    )
+    p.add_argument("--log-level", type=str, default="INFO", choices=["DEBUG", "INFO", "WARNING"])
     return p.parse_args(argv)
 
 
@@ -137,9 +133,7 @@ def _parse_float_list(raw: str) -> tuple[float, ...]:
 
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
-    logging.basicConfig(
-        level=args.log_level, format="%(asctime)s %(levelname)s %(message)s"
-    )
+    logging.basicConfig(level=args.log_level, format="%(asctime)s %(levelname)s %(message)s")
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     sweep_path = args.sweep_path or (args.out_dir / "sweep.jsonl")
@@ -263,9 +257,7 @@ def _render_report(records: list[dict[str, Any]]) -> str:
     )
 
     lines.append("## Mean across seeds, vs alpha\n")
-    lines.append(
-        "| alpha | mean gap | std gap | mean wall (s) | mean cv(B_k) | mean min B_k |"
-    )
+    lines.append("| alpha | mean gap | std gap | mean wall (s) | mean cv(B_k) | mean min B_k |")
     lines.append("|---:|---:|---:|---:|---:|---:|")
     for alpha in sorted(by_alpha):
         recs = by_alpha[alpha]
@@ -330,8 +322,7 @@ def _interpret(by_alpha: dict[float, list[dict[str, Any]]]) -> str:
         f"- mean gap at alpha=0.5 — **{g_mid:+.4%}** "
         f"(vs alpha={sorted_alphas[0]:.1f}: {g_lo:+.4%}, "
         f"alpha={sorted_alphas[-1]:.1f}: {g_hi:+.4%})\n",
-        f"- alpha=0.5 vs endpoint mean: {delta:+.4%} "
-        f"({'spike' if delta > 0 else 'dip'}).\n",
+        f"- alpha=0.5 vs endpoint mean: {delta:+.4%} ({'spike' if delta > 0 else 'dip'}).\n",
     ]
 
     g_max_alpha = max(sorted_alphas, key=mean_gap)

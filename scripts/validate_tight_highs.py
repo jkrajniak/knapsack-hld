@@ -22,8 +22,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "code"))
 
-from anomalies.sweep import DEFAULT_CELL, ensure_anomaly_subset
-from solvers.highs import HighsAdapter
+from anomalies.sweep import DEFAULT_CELL, ensure_anomaly_subset  # noqa: E402
+from solvers.highs import HighsAdapter  # noqa: E402
 
 OUT_PATH = ROOT / "results/anomalies/tight_gap_validation.json"
 SWEEP_PATH = ROOT / "results/anomalies/full/sweep.jsonl"
@@ -99,8 +99,7 @@ def main() -> int:
     OUT_PATH.write_text(json.dumps(out, indent=2))
     print(f"\nWrote {OUT_PATH}\n")
 
-    print("| instance | HiGHS default | HiGHS tight (1e-9) | best HLD | "
-          "HLD-default | HLD-tight |")
+    print("| instance | HiGHS default | HiGHS tight (1e-9) | best HLD | HLD-default | HLD-tight |")
     print("|---|---:|---:|---:|---:|---:|")
     for r in out:
         print(

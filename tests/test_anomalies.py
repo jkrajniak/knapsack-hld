@@ -41,7 +41,9 @@ def _conv_traj(n: int, budget: int, lambda_star: float = 0.5) -> list[dict]:
         else:
             cost = budget - 100
             hi = mid
-        traj.append({"iter": it, "lambda_lo": lo, "lambda_mid": mid, "lambda_hi": hi, "total_cost": cost})
+        traj.append(
+            {"iter": it, "lambda_lo": lo, "lambda_mid": mid, "lambda_hi": hi, "total_cost": cost}
+        )
     return traj
 
 
@@ -51,7 +53,9 @@ def _osc_traj(n: int, budget: int) -> list[dict]:
     for it in range(n):
         mid = 0.4 if it % 2 == 0 else 0.6
         cost = budget + 100 if it % 2 == 0 else budget - 100
-        traj.append({"iter": it, "lambda_lo": 0.0, "lambda_mid": mid, "lambda_hi": 1.0, "total_cost": cost})
+        traj.append(
+            {"iter": it, "lambda_lo": 0.0, "lambda_mid": mid, "lambda_hi": 1.0, "total_cost": cost}
+        )
     return traj
 
 

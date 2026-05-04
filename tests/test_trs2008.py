@@ -151,16 +151,13 @@ def test_trs2008_is_feasible_and_dominated_by_optimum(
     assert heur.status is SolverStatus.FEASIBLE
     assert opt.status is SolverStatus.OPTIMAL
     assert heur.profit <= opt.profit, (
-        f"trs2008 profit {heur.profit} exceeded optimum {opt.profit} "
-        f"on {correlation} seed={seed}"
+        f"trs2008 profit {heur.profit} exceeded optimum {opt.profit} on {correlation} seed={seed}"
     )
 
 
 def test_metadata_phase_split_sums_to_total() -> None:
     """Phase-A + Phase-B profit must equal total profit reported."""
-    inst = generate_instance(
-        N=20, M=5, correlation=CorrelationKind.UNCORRELATED, f=0.5, seed=42
-    )
+    inst = generate_instance(N=20, M=5, correlation=CorrelationKind.UNCORRELATED, f=0.5, seed=42)
     result = get_solver("trs2008").solve(inst)
     meta = result.solver_metadata
     assert meta["phase_a_profit"] + meta["phase_b_profit"] == result.profit

@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "code"))
 
@@ -21,7 +19,6 @@ from anomalies.sweep import (
     run_one,
 )
 from instances.schema import GENERATOR_VERSION, CorrelationKind, InstanceModel
-from solvers.base import SolveResult, SolverStatus
 
 
 def test_default_alpha_grid_spans_unit_interval() -> None:
