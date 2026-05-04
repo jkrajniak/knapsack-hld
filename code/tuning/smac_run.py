@@ -91,6 +91,17 @@ class TuningInstance:
     ref_time_s: float
 
 
+@dataclass(frozen=True)
+class SkippedReference:
+    """Tuning entry skipped because no usable positive reference was available."""
+
+    rel_path: str
+    ref_profit: int
+    ref_time_s: float
+    status: str
+    reason: str
+
+
 @dataclass
 class TuningArchive:
     """The set of tuning instances driving one SMAC campaign."""
@@ -190,7 +201,7 @@ def _build_tuning_items(
     jobs: int = 1,
 ) -> list[TuningInstance]:
     worker = delayed(_build_one_tuning_item)
-    return Parallel(n_jobs=jobs, return_as="list")(
+    results = Parallel(n_jobs=jobs, return_as="list")(
         worker(
             archive_root=archive_root,
             entry=entry,
@@ -202,6 +213,20 @@ def _build_tuning_items(
         )
         for entry in tuning_entries
     )
+    items = [result for result in results if isinstance(result, TuningInstance)]
+    skipped = [result for result in results if isinstance(result, SkippedReference)]
+    for skipped_ref in skipped:
+        LOGGER.warning(
+            "skipping reference[%s]: profit=%d status=%s time=%.2fs reason=%s",
+            skipped_ref.rel_path,
+            skipped_ref.ref_profit,
+            skipped_ref.status,
+            skipped_ref.ref_time_s,
+            skipped_ref.reason,
+        )
+    if not items:
+        raise RuntimeError("No tuning instances have positive reference profits.")
+    return items
 
 
 def _cell_key_from_entry(entry: dict[str, Any]) -> CellKey:
@@ -222,7 +247,7 @@ def _build_one_tuning_item(
     time_limit_s: float | None,
     tuning_ratio: float,
     master_seed: int,
-) -> TuningInstance:
+) -> TuningInstance | SkippedReference:
     path = archive_root / entry["path"]
     inst = load_instance(path)
     assert_tuning_only(
@@ -234,14 +259,22 @@ def _build_one_tuning_item(
     if cached is not None:
         ref_profit = int(cached["profit"])
         ref_time = float(cached["time_s"])
+        ref_status = str(cached.get("status", "cached"))
     else:
         t0 = time.perf_counter()
         ref = get_solver(REFERENCE_SOLVER).solve(inst, time_limit_s=time_limit_s)
         ref_time = time.perf_counter() - t0
         ref_profit = int(ref.profit)
+        ref_status = str(ref.status)
         LOGGER.info("reference[%s]: profit=%d time=%.2fs", entry["path"], ref_profit, ref_time)
     if ref_profit <= 0:
-        raise RuntimeError(f"Invalid non-positive reference profit for {entry['path']}: {ref_profit}")
+        return SkippedReference(
+            rel_path=entry["path"],
+            ref_profit=ref_profit,
+            ref_time_s=ref_time,
+            status=ref_status,
+            reason="non_positive_reference",
+        )
     return TuningInstance(
         rel_path=entry["path"],
         inst=inst,
