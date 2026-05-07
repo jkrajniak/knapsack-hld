@@ -8,6 +8,7 @@ is exercised separately by ``scripts``-level preview runs.
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 
 import pytest
@@ -139,6 +140,45 @@ def test_load_tuning_archive_skips_non_positive_cached_references(tmp_path: Path
 
     assert archive.instance_ids == [entries[1]["path"]]
     assert archive.items[0].ref_profit == 123
+
+
+@pytest.mark.skipif(
+    not (ARCHIVE_ROOT / "MANIFEST.json").exists(),
+    reason="instance archive not present (preview not generated)",
+)
+def test_load_tuning_archive_logs_reference_progress(
+    tmp_path: Path,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    manifest = json.loads((ARCHIVE_ROOT / "MANIFEST.json").read_text())
+    entries = sorted(
+        [
+            entry
+            for entry in manifest["files"]
+            if entry.get("subset") == "tuning" and _entry_passes_filters(entry, max_n=1000)
+        ],
+        key=lambda entry: entry["path"],
+    )[:2]
+    cache_path = tmp_path / "reference_profits.json"
+    cache_path.write_text(
+        json.dumps(
+            {
+                entries[0]["path"]: {"profit": 101, "time_s": 1.0},
+                entries[1]["path"]: {"profit": 123, "time_s": 1.0},
+            }
+        )
+    )
+
+    with caplog.at_level(logging.INFO, logger="tuning.smac_run"):
+        load_tuning_archive(
+            archive_root=ARCHIVE_ROOT,
+            max_instances=2,
+            max_n=1000,
+            reference_cache=cache_path,
+        )
+
+    assert "Reference build: 2 entries" in caplog.text
+    assert "reference progress 2/2" in caplog.text
 
 
 @pytest.mark.skipif(

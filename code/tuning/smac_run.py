@@ -200,8 +200,17 @@ def _build_tuning_items(
     master_seed: int,
     jobs: int = 1,
 ) -> list[TuningInstance]:
+    cached_count = sum(1 for entry in tuning_entries if entry["path"] in cache)
+    LOGGER.info(
+        "Reference build: %d entries (%d cached, %d to solve), jobs=%d, time_limit_s=%s",
+        len(tuning_entries),
+        cached_count,
+        len(tuning_entries) - cached_count,
+        jobs,
+        time_limit_s,
+    )
     worker = delayed(_build_one_tuning_item)
-    results = Parallel(n_jobs=jobs, return_as="list")(
+    result_stream = Parallel(n_jobs=jobs, return_as="generator_unordered")(
         worker(
             archive_root=archive_root,
             entry=entry,
@@ -213,7 +222,35 @@ def _build_tuning_items(
         )
         for entry in tuning_entries
     )
+    results: list[TuningInstance | SkippedReference] = []
+    valid_count = 0
+    skipped_count = 0
+    t0 = time.perf_counter()
+    for completed, result in enumerate(result_stream, start=1):
+        results.append(result)
+        if isinstance(result, TuningInstance):
+            valid_count += 1
+            rel_path = result.rel_path
+            ref_profit = result.ref_profit
+            ref_time_s = result.ref_time_s
+        else:
+            skipped_count += 1
+            rel_path = result.rel_path
+            ref_profit = result.ref_profit
+            ref_time_s = result.ref_time_s
+        LOGGER.info(
+            "reference progress %d/%d valid=%d skipped=%d elapsed=%.1fs last=%s profit=%d time=%.2fs",
+            completed,
+            len(tuning_entries),
+            valid_count,
+            skipped_count,
+            time.perf_counter() - t0,
+            rel_path,
+            ref_profit,
+            ref_time_s,
+        )
     items = [result for result in results if isinstance(result, TuningInstance)]
+    items.sort(key=lambda item: item.rel_path)
     skipped = [result for result in results if isinstance(result, SkippedReference)]
     for skipped_ref in skipped:
         LOGGER.warning(
@@ -296,8 +333,7 @@ def _load_reference_cache(path: Path) -> dict[str, dict[str, float]]:
 def _save_reference_cache(path: Path, items: Iterable[TuningInstance]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
-        item.rel_path: {"profit": item.ref_profit, "time_s": item.ref_time_s}
-        for item in items
+        item.rel_path: {"profit": item.ref_profit, "time_s": item.ref_time_s} for item in items
     }
     path.write_text(json.dumps(payload, indent=2, sort_keys=True))
 
@@ -386,14 +422,22 @@ def build_configspace() -> Any:
 
     ps = PARAM_SPACE
     cs = ConfigurationSpace()
-    cs.add(Integer("n_iter", (ps["n_iter"]["low"], ps["n_iter"]["high"]),
-                   default=ps["n_iter"]["default"]))
-    cs.add(Float("alpha", (ps["alpha"]["low"], ps["alpha"]["high"]),
-                 default=ps["alpha"]["default"]))
-    cs.add(Integer("k", (ps["k"]["low"], ps["k"]["high"]),
-                   default=ps["k"]["default"]))
-    cs.add(Float("lambda_max", (ps["lambda_max"]["low"], ps["lambda_max"]["high"]),
-                 default=ps["lambda_max"]["default"]))
+    cs.add(
+        Integer(
+            "n_iter", (ps["n_iter"]["low"], ps["n_iter"]["high"]), default=ps["n_iter"]["default"]
+        )
+    )
+    cs.add(
+        Float("alpha", (ps["alpha"]["low"], ps["alpha"]["high"]), default=ps["alpha"]["default"])
+    )
+    cs.add(Integer("k", (ps["k"]["low"], ps["k"]["high"]), default=ps["k"]["default"]))
+    cs.add(
+        Float(
+            "lambda_max",
+            (ps["lambda_max"]["low"], ps["lambda_max"]["high"]),
+            default=ps["lambda_max"]["default"],
+        )
+    )
     return cs
 
 
@@ -501,25 +545,35 @@ def write_evaluations_csv(path: Path, evaluations: list[HldEvaluation]) -> None:
 
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
-        "instance_id", "n_iter", "alpha", "k", "lambda_max",
-        "seed", "profit", "ref_profit", "optimality_gap", "wall_time_s",
+        "instance_id",
+        "n_iter",
+        "alpha",
+        "k",
+        "lambda_max",
+        "seed",
+        "profit",
+        "ref_profit",
+        "optimality_gap",
+        "wall_time_s",
     ]
     with path.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=fieldnames)
         w.writeheader()
         for ev in evaluations:
-            w.writerow({
-                "instance_id": ev.instance_id,
-                "n_iter": ev.config.n_iter,
-                "alpha": ev.config.alpha,
-                "k": ev.config.k,
-                "lambda_max": ev.config.lambda_max,
-                "seed": ev.seed,
-                "profit": ev.profit,
-                "ref_profit": ev.ref_profit,
-                "optimality_gap": ev.optimality_gap,
-                "wall_time_s": ev.wall_time_s,
-            })
+            w.writerow(
+                {
+                    "instance_id": ev.instance_id,
+                    "n_iter": ev.config.n_iter,
+                    "alpha": ev.config.alpha,
+                    "k": ev.config.k,
+                    "lambda_max": ev.config.lambda_max,
+                    "seed": ev.seed,
+                    "profit": ev.profit,
+                    "ref_profit": ev.ref_profit,
+                    "optimality_gap": ev.optimality_gap,
+                    "wall_time_s": ev.wall_time_s,
+                }
+            )
 
 
 def evaluate_incumbent_full(
@@ -578,30 +632,76 @@ def write_incumbent_json(
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--archive", type=Path, default=Path("instances"),
-                   help="Root of the instance archive (default: instances/).")
-    p.add_argument("--manifest", type=Path, default=None,
-                   help="Manifest path (default: <archive>/MANIFEST.json).")
-    p.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR,
-                   help=f"Output directory (default: {DEFAULT_OUT_DIR}).")
-    p.add_argument("--budget", type=int, default=DEFAULT_BUDGET,
-                   help=f"Total SMAC trial budget (default: {DEFAULT_BUDGET}).")
-    p.add_argument("--seed", type=int, default=DEFAULT_SEED,
-                   help=f"SMAC random seed (default: {DEFAULT_SEED}).")
-    p.add_argument("--max-instances", type=int, default=None,
-                   help="Cap on tuning instances (default: all in subset).")
-    p.add_argument("--max-N", dest="max_n", type=int, default=None,
-                   help="Exclude tuning instances with N above this value (default: no cap).")
-    p.add_argument("--jobs", type=int, default=1,
-                   help="Parallel workers for reference cache and incumbent evaluation (default: 1).")
-    p.add_argument("--eval-time-limit-s", type=float, default=None,
-                   help="Per-trial HLD wall-clock cap (default: none).")
-    p.add_argument("--ref-time-limit-s", type=float, default=None,
-                   help="HiGHS oracle wall-clock cap per instance (default: none).")
-    p.add_argument("--bootstrap-resamples", type=int, default=1000,
-                   help="Bootstrap resamples for incumbent CI (default: 1000).")
-    p.add_argument("--preview", action="store_true",
-                   help="Use preview budget + write to <out-dir>/preview/.")
+    p.add_argument(
+        "--archive",
+        type=Path,
+        default=Path("instances"),
+        help="Root of the instance archive (default: instances/).",
+    )
+    p.add_argument(
+        "--manifest",
+        type=Path,
+        default=None,
+        help="Manifest path (default: <archive>/MANIFEST.json).",
+    )
+    p.add_argument(
+        "--out-dir",
+        type=Path,
+        default=DEFAULT_OUT_DIR,
+        help=f"Output directory (default: {DEFAULT_OUT_DIR}).",
+    )
+    p.add_argument(
+        "--budget",
+        type=int,
+        default=DEFAULT_BUDGET,
+        help=f"Total SMAC trial budget (default: {DEFAULT_BUDGET}).",
+    )
+    p.add_argument(
+        "--seed",
+        type=int,
+        default=DEFAULT_SEED,
+        help=f"SMAC random seed (default: {DEFAULT_SEED}).",
+    )
+    p.add_argument(
+        "--max-instances",
+        type=int,
+        default=None,
+        help="Cap on tuning instances (default: all in subset).",
+    )
+    p.add_argument(
+        "--max-N",
+        dest="max_n",
+        type=int,
+        default=None,
+        help="Exclude tuning instances with N above this value (default: no cap).",
+    )
+    p.add_argument(
+        "--jobs",
+        type=int,
+        default=1,
+        help="Parallel workers for reference cache and incumbent evaluation (default: 1).",
+    )
+    p.add_argument(
+        "--eval-time-limit-s",
+        type=float,
+        default=None,
+        help="Per-trial HLD wall-clock cap (default: none).",
+    )
+    p.add_argument(
+        "--ref-time-limit-s",
+        type=float,
+        default=None,
+        help="HiGHS oracle wall-clock cap per instance (default: none).",
+    )
+    p.add_argument(
+        "--bootstrap-resamples",
+        type=int,
+        default=1000,
+        help="Bootstrap resamples for incumbent CI (default: 1000).",
+    )
+    p.add_argument(
+        "--preview", action="store_true", help="Use preview budget + write to <out-dir>/preview/."
+    )
     return p.parse_args(argv)
 
 
@@ -613,7 +713,9 @@ def _resolve_out_dir(args: argparse.Namespace) -> tuple[Path, int]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s | %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s | %(message)s"
+    )
     args = parse_args(argv)
     out_dir, budget = _resolve_out_dir(args)
 
@@ -627,8 +729,11 @@ def main(argv: list[str] | None = None) -> int:
         time_limit_s=args.ref_time_limit_s,
         jobs=args.jobs,
     )
-    LOGGER.info("Tuning subset: %d instances across %d cells",
-                len(archive.items), len(archive.seeds_per_cell))
+    LOGGER.info(
+        "Tuning subset: %d instances across %d cells",
+        len(archive.items),
+        len(archive.seeds_per_cell),
+    )
 
     incumbent, evaluations = run_smac_campaign(
         archive,
@@ -639,8 +744,13 @@ def main(argv: list[str] | None = None) -> int:
         jobs=args.jobs,
     )
     config = HldConfig.from_mapping(dict(incumbent))
-    LOGGER.info("Incumbent: n_iter=%d alpha=%.3f k=%d lambda_max=%.3f",
-                config.n_iter, config.alpha, config.k, config.lambda_max)
+    LOGGER.info(
+        "Incumbent: n_iter=%d alpha=%.3f k=%d lambda_max=%.3f",
+        config.n_iter,
+        config.alpha,
+        config.k,
+        config.lambda_max,
+    )
 
     write_evaluations_csv(out_dir / "evaluations.csv", evaluations)
     LOGGER.info("Re-evaluating incumbent on full tuning subset for unbiased CI...")
