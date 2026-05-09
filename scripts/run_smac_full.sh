@@ -17,6 +17,7 @@ Options:
   --budget N                 SMAC trial budget (default: 5000)
   --max-N N                  Exclude tuning instances with larger N (default: 10000)
   --jobs N                   Parallel workers for references/final CI (default: 8)
+  --reference-cache PATH      Reusable HiGHS reference cache (default: <out-root>/reference_profits_maxN<max-N>_ref<ref-time-limit-s>.json)
   --seed N                   SMAC seed (default: 7)
   --ref-time-limit-s SECONDS HiGHS reference cap per instance (default: 60)
   --eval-time-limit-s SEC    HLD evaluation cap per trial (default: 60)
@@ -40,6 +41,7 @@ expected_files="9000"
 budget="5000"
 max_n="10000"
 jobs="8"
+reference_cache=""
 seed="7"
 ref_time_limit_s="60"
 eval_time_limit_s="60"
@@ -75,6 +77,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --jobs)
             jobs="$2"
+            shift 2
+            ;;
+        --reference-cache)
+            reference_cache="$2"
             shift 2
             ;;
         --seed)
@@ -119,6 +125,9 @@ timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
 if [[ -z "${out_dir}" ]]; then
     out_dir="${out_root}/full_${timestamp}"
 fi
+if [[ -z "${reference_cache}" ]]; then
+    reference_cache="${out_root}/reference_profits_maxN${max_n}_ref${ref_time_limit_s}.json"
+fi
 log_file="${log_dir}/smac_full_${timestamp}.log"
 
 print_step() {
@@ -152,6 +161,7 @@ else
         echo "budget=${budget}"
         echo "max_N=${max_n}"
         echo "jobs=${jobs}"
+        echo "reference_cache=${reference_cache}"
         echo "seed=${seed}"
     } | tee "${log_file}"
 fi
@@ -168,6 +178,7 @@ run_cmd uv run python code/tuning/smac_run.py \
     --budget "${budget}" \
     --max-N "${max_n}" \
     --jobs "${jobs}" \
+    --reference-cache "${reference_cache}" \
     --seed "${seed}" \
     --ref-time-limit-s "${ref_time_limit_s}" \
     --eval-time-limit-s "${eval_time_limit_s}"

@@ -39,7 +39,6 @@ import logging
 import sys
 import time
 from collections import defaultdict
-from collections.abc import Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -165,13 +164,12 @@ def load_tuning_archive(
         tuning_entries=tuning_entries,
         seeds_per_cell=seeds_per_cell,
         cache=cache,
+        cache_path=reference_cache,
         time_limit_s=time_limit_s,
         tuning_ratio=manifest.get("tuning_ratio", DEFAULT_TUNING_RATIO),
         master_seed=manifest.get("master_seed", DEFAULT_MASTER_SEED),
         jobs=jobs,
     )
-    if reference_cache is not None:
-        _save_reference_cache(reference_cache, items)
 
     return TuningArchive(
         archive_root=archive_root,
@@ -194,7 +192,8 @@ def _build_tuning_items(
     archive_root: Path,
     tuning_entries: list[dict[str, Any]],
     seeds_per_cell: dict[CellKey, list[int]],
-    cache: dict[str, dict[str, float]],
+    cache: dict[str, dict[str, Any]],
+    cache_path: Path | None,
     time_limit_s: float | None,
     tuning_ratio: float,
     master_seed: int,
@@ -228,6 +227,9 @@ def _build_tuning_items(
     t0 = time.perf_counter()
     for completed, result in enumerate(result_stream, start=1):
         results.append(result)
+        if cache_path is not None:
+            cache[result.rel_path] = _reference_cache_entry(result)
+            _save_reference_cache(cache_path, cache)
         if isinstance(result, TuningInstance):
             valid_count += 1
             rel_path = result.rel_path
@@ -320,7 +322,7 @@ def _build_one_tuning_item(
     )
 
 
-def _load_reference_cache(path: Path) -> dict[str, dict[str, float]]:
+def _load_reference_cache(path: Path) -> dict[str, dict[str, Any]]:
     if not path.exists():
         return {}
     try:
@@ -330,12 +332,22 @@ def _load_reference_cache(path: Path) -> dict[str, dict[str, float]]:
         return {}
 
 
-def _save_reference_cache(path: Path, items: Iterable[TuningInstance]) -> None:
+def _reference_cache_entry(result: TuningInstance | SkippedReference) -> dict[str, Any]:
+    if isinstance(result, SkippedReference):
+        return {
+            "profit": result.ref_profit,
+            "time_s": result.ref_time_s,
+            "status": result.status,
+            "reason": result.reason,
+        }
+    return {"profit": result.ref_profit, "time_s": result.ref_time_s, "status": "ok"}
+
+
+def _save_reference_cache(path: Path, cache: dict[str, dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    payload = {
-        item.rel_path: {"profit": item.ref_profit, "time_s": item.ref_time_s} for item in items
-    }
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True))
+    tmp_path = path.with_name(f"{path.name}.tmp")
+    tmp_path.write_text(json.dumps(cache, indent=2, sort_keys=True))
+    tmp_path.replace(path)
 
 
 # ---------------------------------------------------------------------------
@@ -694,6 +706,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="HiGHS oracle wall-clock cap per instance (default: none).",
     )
     p.add_argument(
+        "--reference-cache",
+        type=Path,
+        default=None,
+        help="Reusable HiGHS reference cache path (default: <out-dir>/reference_profits.json).",
+    )
+    p.add_argument(
         "--bootstrap-resamples",
         type=int,
         default=1000,
@@ -718,14 +736,20 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parse_args(argv)
     out_dir, budget = _resolve_out_dir(args)
+    reference_cache = args.reference_cache or (out_dir / "reference_profits.json")
 
-    LOGGER.info("Loading tuning archive from %s (manifest=%s)", args.archive, args.manifest)
+    LOGGER.info(
+        "Loading tuning archive from %s (manifest=%s, reference_cache=%s)",
+        args.archive,
+        args.manifest,
+        reference_cache,
+    )
     archive = load_tuning_archive(
         archive_root=args.archive,
         manifest_path=args.manifest,
         max_instances=args.max_instances,
         max_n=args.max_n,
-        reference_cache=out_dir / "reference_profits.json",
+        reference_cache=reference_cache,
         time_limit_s=args.ref_time_limit_s,
         jobs=args.jobs,
     )

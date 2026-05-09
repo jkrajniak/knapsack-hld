@@ -42,6 +42,7 @@ def test_smac_canary_script_dry_run_shows_archive_and_tuning_steps() -> None:
     assert "--budget 5" in completed.stdout
     assert "--max-instances 12" in completed.stdout
     assert "--jobs 4" in completed.stdout
+    assert "--reference-cache tuning/smac_run/reference_profits_canary.json" in completed.stdout
     assert "--ref-time-limit-s 60" in completed.stdout
     assert "--eval-time-limit-s 60" in completed.stdout
     assert "logs/smac_canary_" in completed.stdout

@@ -16,6 +16,7 @@ Options:
   --budget N                 SMAC trial budget (default: 5)
   --max-instances N          Tuning instances to load (default: 12)
   --jobs N                   Parallel workers for references/final CI (default: 4)
+  --reference-cache PATH      Reusable HiGHS reference cache (default: tuning/smac_run/reference_profits_canary.json)
   --seed N                   SMAC seed (default: 7)
   --ref-time-limit-s SECONDS HiGHS reference cap per instance (default: 60)
   --eval-time-limit-s SEC    HLD evaluation cap per trial (default: 60)
@@ -38,6 +39,7 @@ expected_files="9000"
 budget="5"
 max_instances="12"
 jobs="4"
+reference_cache="tuning/smac_run/reference_profits_canary.json"
 seed="7"
 ref_time_limit_s="60"
 eval_time_limit_s="60"
@@ -69,6 +71,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --jobs)
             jobs="$2"
+            shift 2
+            ;;
+        --reference-cache)
+            reference_cache="$2"
             shift 2
             ;;
         --seed)
@@ -138,6 +144,7 @@ else
         echo "budget=${budget}"
         echo "max_instances=${max_instances}"
         echo "jobs=${jobs}"
+        echo "reference_cache=${reference_cache}"
         echo "seed=${seed}"
     } | tee "${log_file}"
 fi
@@ -155,6 +162,7 @@ run_cmd uv run python code/tuning/smac_run.py \
     --seed "${seed}" \
     --max-instances "${max_instances}" \
     --jobs "${jobs}" \
+    --reference-cache "${reference_cache}" \
     --ref-time-limit-s "${ref_time_limit_s}" \
     --eval-time-limit-s "${eval_time_limit_s}"
 

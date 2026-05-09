@@ -38,6 +38,10 @@ def test_smac_full_script_dry_run_shows_unique_full_campaign_steps() -> None:
     assert "--budget 5000" in completed.stdout
     assert "--max-N 10000" in completed.stdout
     assert "--jobs 8" in completed.stdout
+    assert (
+        "--reference-cache results/smac_run/reference_profits_maxN10000_ref60.json"
+        in completed.stdout
+    )
     assert "--seed 7" in completed.stdout
     assert "--ref-time-limit-s 60" in completed.stdout
     assert "--eval-time-limit-s 60" in completed.stdout

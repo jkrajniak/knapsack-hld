@@ -13,11 +13,14 @@ from pathlib import Path
 
 import pytest
 
+import tuning.smac_run as smac_run
 from tuning.smac_run import (
     DEFAULT_BUDGET,
     DEFAULT_PREVIEW_BUDGET,
     PARAM_SPACE,
     HldConfig,
+    TuningInstance,
+    _build_tuning_items,
     _entry_passes_filters,
     _resolve_out_dir,
     build_configspace,
@@ -59,6 +62,7 @@ def test_parse_args_defaults() -> None:
     assert ns.bootstrap_resamples == 1000
     assert ns.max_n is None
     assert ns.jobs == 1
+    assert ns.reference_cache is None
 
 
 def test_manifest_entry_filter_excludes_large_n() -> None:
@@ -179,6 +183,61 @@ def test_load_tuning_archive_logs_reference_progress(
 
     assert "Reference build: 2 entries" in caplog.text
     assert "reference progress 2/2" in caplog.text
+
+
+def test_build_tuning_items_updates_reference_cache_incrementally(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    entries = [
+        {
+            "path": "weakly/N1000_M5/first.json.gz",
+            "seed": 1,
+            "cell": {"N": 1000, "M": 5, "correlation": "weakly", "f": 0.1},
+        },
+        {
+            "path": "weakly/N1000_M5/second.json.gz",
+            "seed": 2,
+            "cell": {"N": 1000, "M": 5, "correlation": "weakly", "f": 0.1},
+        },
+    ]
+    cache_path = tmp_path / "reference_profits.json"
+
+    def fake_build_one_tuning_item(**kwargs: object) -> TuningInstance:
+        entry = kwargs["entry"]
+        assert isinstance(entry, dict)
+        if entry["path"].endswith("second.json.gz"):
+            raise RuntimeError("interrupted")
+        return TuningInstance(
+            rel_path=str(entry["path"]),
+            inst=object(),  # type: ignore[arg-type]
+            ref_profit=101,
+            ref_time_s=1.5,
+        )
+
+    monkeypatch.setattr(smac_run, "_build_one_tuning_item", fake_build_one_tuning_item)
+
+    with pytest.raises(RuntimeError, match="interrupted"):
+        _build_tuning_items(
+            archive_root=tmp_path,
+            tuning_entries=entries,
+            seeds_per_cell={smac_run.CellKey(N=1000, M=5, correlation="weakly", f=0.1): [1, 2]},
+            cache={},
+            cache_path=cache_path,
+            time_limit_s=60,
+            tuning_ratio=0.3,
+            master_seed=7,
+            jobs=1,
+        )
+
+    cache = json.loads(cache_path.read_text())
+    assert cache == {
+        "weakly/N1000_M5/first.json.gz": {
+            "profit": 101,
+            "status": "ok",
+            "time_s": 1.5,
+        }
+    }
 
 
 @pytest.mark.skipif(
