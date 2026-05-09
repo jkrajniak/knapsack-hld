@@ -1,0 +1,7 @@
+{
+  "source_run": "results/smac_run/full_20260508T192425Z",
+  "n_iter": 35,
+  "alpha": 0.998,
+  "k": 58,
+  "lambda_max": 80.745
+}
