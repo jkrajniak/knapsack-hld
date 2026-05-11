@@ -71,11 +71,23 @@ archive_path="${artifact_dir}/final_experiments_${run_id}.tar.gz"
 checksum_path="${archive_path}.sha256"
 
 tar_inputs=("${result_dir}/results.csv" "${result_dir}/summary")
-if [[ -f "${result_dir}/time_limit_sensitivity.csv" ]]; then
+if [[ "${dry_run}" -eq 1 || -f "${result_dir}/time_limit_sensitivity.csv" ]]; then
     tar_inputs+=("${result_dir}/time_limit_sensitivity.csv")
 fi
-if [[ -d "${result_dir}/time_limit_sensitivity_summary" ]]; then
+if [[ "${dry_run}" -eq 1 || -d "${result_dir}/time_limit_sensitivity_summary" ]]; then
     tar_inputs+=("${result_dir}/time_limit_sensitivity_summary")
+fi
+if [[ "${dry_run}" -eq 1 || -f "${result_dir}/heuristic_baselines.csv" ]]; then
+    tar_inputs+=("${result_dir}/heuristic_baselines.csv")
+fi
+if [[ "${dry_run}" -eq 1 || -f "${result_dir}/highs_baseline_maxN10000.csv" ]]; then
+    tar_inputs+=("${result_dir}/highs_baseline_maxN10000.csv")
+fi
+if [[ "${dry_run}" -eq 1 || -d "${result_dir}/comparison_summary" ]]; then
+    tar_inputs+=("${result_dir}/comparison_summary")
+fi
+if [[ "${dry_run}" -eq 1 || -d "${result_dir}/paper_tables" ]]; then
+    tar_inputs+=("${result_dir}/paper_tables")
 fi
 
 print_step() {
