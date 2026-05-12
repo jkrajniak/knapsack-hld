@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 
 from instances.io import load_instance
 from solvers import SolveResult, get_solver, validate_solution
+from solvers.highs import HighsAdapter
 from solvers.hld import HldAdapter
 
 LOGGER = logging.getLogger("run_final_experiments")
@@ -101,6 +102,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--jobs", type=int, default=1, help="Parallel workers (default: 1).")
     parser.add_argument("--seed", type=int, default=7, help="Random seed passed to solvers.")
     parser.add_argument(
+        "--highs-threads",
+        type=int,
+        default=None,
+        help="Override HiGHS internal thread count for highs baseline runs.",
+    )
+    parser.add_argument(
         "--time-limit-s",
         type=float,
         default=60,
@@ -169,11 +176,12 @@ def run_one(
     hld_settings: HldSettings,
     seed: int,
     time_limit_s: float | None,
+    highs_threads: int | None = None,
 ) -> dict[str, Any]:
     t0 = time.perf_counter()
     try:
         inst = load_instance(archive_root / entry.rel_path)
-        solver = _make_solver(solver_name, hld_settings)
+        solver = _make_solver(solver_name, hld_settings, highs_threads=highs_threads)
         result = solver.solve(inst, time_limit_s=time_limit_s, random_seed=seed)
         validate_solution(inst, result)
         return _row_from_result(
@@ -193,7 +201,12 @@ def run_one(
         )
 
 
-def _make_solver(solver_name: str, hld_settings: HldSettings) -> Any:
+def _make_solver(
+    solver_name: str,
+    hld_settings: HldSettings,
+    *,
+    highs_threads: int | None = None,
+) -> Any:
     if solver_name == "hld":
         return HldAdapter(
             n_iter=hld_settings.n_iter,
@@ -201,6 +214,8 @@ def _make_solver(solver_name: str, hld_settings: HldSettings) -> Any:
             k=hld_settings.k,
             lambda_max_override=hld_settings.lambda_max,
         )
+    if solver_name == "highs" and highs_threads is not None:
+        return HighsAdapter(threads=highs_threads)
     return get_solver(solver_name)
 
 
@@ -296,6 +311,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"solvers: {' '.join(args.solvers)}")
     print(f"eligible_instances: {len(entries)}")
     print(f"jobs: {args.jobs}")
+    print(f"highs_threads: {args.highs_threads}")
     print(f"time_limit_s: {args.time_limit_s}")
     if args.dry_run:
         return 0
@@ -321,6 +337,7 @@ def main(argv: list[str] | None = None) -> int:
             hld_settings=hld_settings,
             seed=args.seed,
             time_limit_s=args.time_limit_s,
+            highs_threads=args.highs_threads,
         )
         for solver_name, entry in work
     )

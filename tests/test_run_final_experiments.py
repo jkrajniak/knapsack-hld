@@ -26,6 +26,8 @@ def test_final_experiments_dry_run_reports_plan() -> None:
             "hld",
             "--jobs",
             "8",
+            "--highs-threads",
+            "1",
         ],
         cwd=ROOT,
         check=False,
@@ -40,6 +42,7 @@ def test_final_experiments_dry_run_reports_plan() -> None:
     assert "subset: test" in completed.stdout
     assert "solvers: hld" in completed.stdout
     assert "jobs: 8" in completed.stdout
+    assert "highs_threads: 1" in completed.stdout
 
 
 def test_final_experiments_manifest_filter_counts_test_subset(tmp_path: Path) -> None:

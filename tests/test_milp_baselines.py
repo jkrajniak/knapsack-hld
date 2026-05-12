@@ -84,3 +84,22 @@ def test_highs_mip_rel_gap_rejects_negative() -> None:
 
     with pytest.raises(ValueError, match="non-negative"):
         HighsAdapter(mip_rel_gap=-1.0)
+
+
+def test_highs_threads_kwarg_records_thread_cap() -> None:
+    """HighsAdapter(threads=...) must surface the override in metadata."""
+    from solvers.highs import HighsAdapter
+
+    inst = generate_instance(N=20, M=3, correlation="uncorrelated", f=0.5, seed=3)
+    result = HighsAdapter(threads=1).solve(inst, time_limit_s=30.0)
+
+    assert result.solver_metadata.get("threads_set") == 1
+
+
+def test_highs_threads_rejects_non_positive() -> None:
+    """Non-positive thread caps are invalid."""
+    import pytest
+    from solvers.highs import HighsAdapter
+
+    with pytest.raises(ValueError, match="threads"):
+        HighsAdapter(threads=0)

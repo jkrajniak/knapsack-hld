@@ -32,14 +32,21 @@ class HighsAdapter:
         otherwise produce visibly negative gaps for high-quality
         heuristics. The chosen tolerance is recorded in
         ``solver_metadata['mip_rel_gap_set']`` for traceability.
+    threads:
+        Optional override for HiGHS's internal thread count. This is useful
+        when many independent HiGHS solves are executed in parallel; capping
+        each solve to one thread avoids CPU oversubscription.
     """
 
     name: str = "highs"
 
-    def __init__(self, *, mip_rel_gap: float | None = None) -> None:
+    def __init__(self, *, mip_rel_gap: float | None = None, threads: int | None = None) -> None:
         if mip_rel_gap is not None and mip_rel_gap < 0:
             raise ValueError(f"mip_rel_gap must be non-negative, got {mip_rel_gap}")
+        if threads is not None and threads < 1:
+            raise ValueError(f"threads must be >= 1, got {threads}")
         self._mip_rel_gap = mip_rel_gap
+        self._threads = threads
 
     def solve(
         self,
@@ -58,6 +65,8 @@ class HighsAdapter:
             h.setOptionValue("random_seed", int(random_seed) % (2**31 - 1))
         if self._mip_rel_gap is not None:
             h.setOptionValue("mip_rel_gap", float(self._mip_rel_gap))
+        if self._threads is not None:
+            h.setOptionValue("threads", int(self._threads))
 
         var_index = self._build(h, instance)
         t0 = time.perf_counter()
@@ -81,6 +90,7 @@ class HighsAdapter:
                     "mip_rel_gap_set": (
                         float(self._mip_rel_gap) if self._mip_rel_gap is not None else None
                     ),
+                    "threads_set": int(self._threads) if self._threads is not None else None,
                 },
             )
 
@@ -99,6 +109,7 @@ class HighsAdapter:
             "mip_rel_gap_set": (
                 float(self._mip_rel_gap) if self._mip_rel_gap is not None else None
             ),
+            "threads_set": int(self._threads) if self._threads is not None else None,
             "objective_value": float(getattr(info, "objective_function_value", profit)),
             "simplex_iterations": int(getattr(info, "simplex_iteration_count", 0)),
             "mip_node_count": int(getattr(info, "mip_node_count", 0)),
