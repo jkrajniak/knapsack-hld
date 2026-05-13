@@ -27,6 +27,7 @@ Implementation notes
 from __future__ import annotations
 
 import time
+from collections import Counter
 from typing import Any
 
 from instances.schema import GENERATOR_VERSION, CorrelationKind, InstanceModel
@@ -100,8 +101,9 @@ class PartitionOptimalAdapter:
             "sub_solver": self.sub_solver,
             "per_batch_budget": per_batch_budget,
             "batches": sub_meta,
+            "sub_status_counts": dict(Counter(batch["status"] for batch in sub_meta)),
         }
-        status = SolverStatus.FEASIBLE
+        status = _aggregate_status(sub_meta)
         return SolveResult(
             profit=profit,
             items_selected=selected,
@@ -145,6 +147,15 @@ def _remaining_time(limit: float | None, t0: float) -> float | None:
         return None
     elapsed = time.perf_counter() - t0
     return max(0.001, float(limit) - elapsed)
+
+
+def _aggregate_status(sub_meta: list[dict[str, Any]]) -> SolverStatus:
+    statuses = {str(batch["status"]) for batch in sub_meta}
+    if str(SolverStatus.ERROR) in statuses:
+        return SolverStatus.ERROR
+    if str(SolverStatus.TIMEOUT) in statuses:
+        return SolverStatus.TIMEOUT
+    return SolverStatus.FEASIBLE
 
 
 @register("partition_optimal")

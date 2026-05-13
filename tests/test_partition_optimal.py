@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
+import heuristics.partition_optimal as partition_optimal
 import pytest
 from heuristics.partition_optimal import PartitionOptimalAdapter
 from instances.generator import generate_instance
 from instances.schema import CorrelationKind
-from solvers import get_solver, validate_solution
+from solvers import SolveResult, SolverStatus, get_solver, validate_solution
 
 
 def test_partition_optimal_is_registered() -> None:
@@ -57,6 +58,37 @@ def test_partition_optimal_records_per_batch_metadata() -> None:
     keys = {"batch", "n_classes", "B_k", "profit", "cost", "status", "sub_milp_wall_s"}
     for batch in batches:
         assert keys.issubset(batch.keys())
+
+
+def test_partition_optimal_reports_timeout_when_subsolvers_find_no_incumbent(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """All-zero timeout sub-solves should not be reported as feasible."""
+
+    class TimeoutSolver:
+        name = "timeout_subsolver"
+
+        def solve(self, instance, *, time_limit_s=None, random_seed=None) -> SolveResult:
+            return SolveResult(
+                profit=0,
+                items_selected={i: None for i in range(instance.N)},
+                total_cost=0,
+                wall_time_s=0.01,
+                status=SolverStatus.TIMEOUT,
+            )
+
+    monkeypatch.setattr(partition_optimal, "get_solver", lambda _name: TimeoutSolver())
+    inst = generate_instance(N=8, M=3, correlation=CorrelationKind.UNCORRELATED, f=0.5, seed=5)
+
+    res = PartitionOptimalAdapter(k=4, sub_solver="timeout_subsolver").solve(
+        inst,
+        time_limit_s=1.0,
+    )
+
+    validate_solution(inst, res)
+    assert res.status is SolverStatus.TIMEOUT
+    assert res.profit == 0
+    assert res.solver_metadata["sub_status_counts"] == {"timeout": 4}
 
 
 def test_invalid_k_raises() -> None:
