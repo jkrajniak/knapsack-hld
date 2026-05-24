@@ -32,6 +32,8 @@ def test_archive_final_experiments_dry_run_uses_private_artifact_dir() -> None:
         in completed.stdout
     )
     assert "results/final_experiments/comparison_summary" in completed.stdout
+    assert "results/final_experiments/heuristic_baselines_refreshed.csv" in completed.stdout
+    assert "results/final_experiments/partition_optimal_refreshed.csv" in completed.stdout
 
 
 def test_archive_final_experiments_writes_tarball_and_checksum(tmp_path: Path) -> None:
@@ -43,6 +45,8 @@ def test_archive_final_experiments_writes_tarball_and_checksum(tmp_path: Path) -
     (summary_dir / "overall.json").write_text("{}\n")
     (result_dir / "time_limit_sensitivity.csv").write_text("status\ntimeout\n")
     (result_dir / "heuristic_baselines.csv").write_text("status\nfeasible\n")
+    (result_dir / "heuristic_baselines_refreshed.csv").write_text("status\nfeasible\n")
+    (result_dir / "partition_optimal_refreshed.csv").write_text("status\nfeasible\n")
     (result_dir / "highs_baseline_maxN10000.csv").write_text("status\noptimal\n")
     (result_dir / "comparison_summary").mkdir()
     (result_dir / "comparison_summary" / "aggregate_profit_gaps.csv").write_text("ok\n")

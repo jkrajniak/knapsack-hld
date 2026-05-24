@@ -80,6 +80,12 @@ fi
 if [[ "${dry_run}" -eq 1 || -f "${result_dir}/heuristic_baselines.csv" ]]; then
     tar_inputs+=("${result_dir}/heuristic_baselines.csv")
 fi
+if [[ "${dry_run}" -eq 1 || -f "${result_dir}/heuristic_baselines_refreshed.csv" ]]; then
+    tar_inputs+=("${result_dir}/heuristic_baselines_refreshed.csv")
+fi
+if [[ "${dry_run}" -eq 1 || -f "${result_dir}/partition_optimal_refreshed.csv" ]]; then
+    tar_inputs+=("${result_dir}/partition_optimal_refreshed.csv")
+fi
 if [[ "${dry_run}" -eq 1 || -f "${result_dir}/highs_baseline_maxN10000.csv" ]]; then
     tar_inputs+=("${result_dir}/highs_baseline_maxN10000.csv")
 fi
