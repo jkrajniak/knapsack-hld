@@ -65,6 +65,48 @@ class HldSettings:
     lambda_max: float
 
 
+@dataclass(frozen=True)
+class CellSpec:
+    n_items: int
+    n_classes: int
+    correlation: str
+    f_value: float
+
+
+def parse_cell_spec(value: str) -> CellSpec:
+    parts = value.split(",")
+    if len(parts) != 4:
+        raise argparse.ArgumentTypeError(
+            f"Cell must have form N,M,CORRELATION,F; got {value!r}"
+        )
+    n_raw, m_raw, correlation, f_raw = parts
+    return CellSpec(
+        n_items=int(n_raw),
+        n_classes=int(m_raw),
+        correlation=correlation,
+        f_value=float(f_raw),
+    )
+
+
+def filter_entries_by_cells(
+    entries: list[ExperimentEntry], cells: list[CellSpec]
+) -> list[ExperimentEntry]:
+    if not cells:
+        return entries
+    selected = set(cells)
+    return [
+        entry
+        for entry in entries
+        if CellSpec(
+            n_items=int(entry.cell["N"]),
+            n_classes=int(entry.cell["M"]),
+            correlation=str(entry.cell["correlation"]),
+            f_value=float(entry.cell["f"]),
+        )
+        in selected
+    ]
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -98,6 +140,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=int,
         default=None,
         help="Exclude instances with N above this value (default: no cap).",
+    )
+    parser.add_argument(
+        "--cell",
+        action="append",
+        default=None,
+        metavar="N,M,CORRELATION,F",
+        help=(
+            "Restrict to one or more cell tuples (repeatable). Format: "
+            "'N,M,CORRELATION,F'. If omitted, all manifest entries pass."
+        ),
     )
     parser.add_argument("--max-instances", type=int, default=None, help="Cap instance count.")
     parser.add_argument("--jobs", type=int, default=1, help="Parallel workers (default: 1).")
@@ -321,13 +373,19 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parse_args(argv)
     hld_settings = load_hld_settings(args.config)
-    entries = load_entries(
-        archive_root=args.archive,
-        manifest_path=args.manifest,
-        subset=args.subset,
-        max_n=args.max_n,
-        max_instances=args.max_instances,
+    cells = [parse_cell_spec(value) for value in (args.cell or [])]
+    entries = filter_entries_by_cells(
+        load_entries(
+            archive_root=args.archive,
+            manifest_path=args.manifest,
+            subset=args.subset,
+            max_n=args.max_n,
+            max_instances=None,
+        ),
+        cells,
     )
+    if args.max_instances is not None:
+        entries = entries[: args.max_instances]
 
     print(f"archive: {args.archive}")
     print(f"manifest: {args.manifest or args.archive / 'MANIFEST.json'}")
@@ -335,6 +393,9 @@ def main(argv: list[str] | None = None) -> int:
     print(f"out_csv: {args.out_csv}")
     print(f"subset: {args.subset}")
     print(f"solvers: {' '.join(args.solvers)}")
+    print(f"selected_cells: {len(cells)}")
+    for cell in cells:
+        print(f"cell: {cell.n_items},{cell.n_classes},{cell.correlation},{cell.f_value:g}")
     print(f"eligible_instances: {len(entries)}")
     print(f"jobs: {args.jobs}")
     print(f"highs_threads: {args.highs_threads}")

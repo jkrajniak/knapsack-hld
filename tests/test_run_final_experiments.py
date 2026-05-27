@@ -73,6 +73,88 @@ def test_final_experiments_class_ordering_flag_accepts_random() -> None:
     assert "class_ordering: random" in completed.stdout
 
 
+def test_final_experiments_cell_filter_keeps_only_matching_cells(tmp_path: Path) -> None:
+    """`--cell` filters the manifest to the listed (N, M, correlation, f) tuples."""
+    manifest = {
+        "files": [
+            {
+                "path": "strongly/N100000_M5/keep1.json.gz",
+                "seed": 1,
+                "subset": "test",
+                "cell": {"N": 100000, "M": 5, "correlation": "strongly", "f": 0.75},
+            },
+            {
+                "path": "strongly/N100000_M5/keep2.json.gz",
+                "seed": 2,
+                "subset": "test",
+                "cell": {"N": 100000, "M": 5, "correlation": "strongly", "f": 0.75},
+            },
+            {
+                "path": "weakly/N100000_M5/drop.json.gz",
+                "seed": 3,
+                "subset": "test",
+                "cell": {"N": 100000, "M": 5, "correlation": "weakly", "f": 0.75},
+            },
+            {
+                "path": "strongly/N1000_M5/drop_n.json.gz",
+                "seed": 4,
+                "subset": "test",
+                "cell": {"N": 1000, "M": 5, "correlation": "strongly", "f": 0.75},
+            },
+        ]
+    }
+    manifest_path = tmp_path / "MANIFEST.json"
+    manifest_path.write_text(json.dumps(manifest))
+
+    completed = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            str(SCRIPT),
+            "--dry-run",
+            "--archive",
+            str(tmp_path),
+            "--manifest",
+            str(manifest_path),
+            "--cell",
+            "100000,5,strongly,0.75",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0
+    assert "selected_cells: 1" in completed.stdout
+    assert "cell: 100000,5,strongly,0.75" in completed.stdout
+    assert "eligible_instances: 2" in completed.stdout
+
+
+def test_final_experiments_cell_filter_rejects_malformed_spec(tmp_path: Path) -> None:
+    completed = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            str(SCRIPT),
+            "--dry-run",
+            "--archive",
+            "instances",
+            "--cell",
+            "100000,5,strongly",  # missing f
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode != 0
+    assert "must have form N,M,CORRELATION,F" in completed.stderr
+
+
 def test_final_experiments_class_ordering_rejects_unknown_value() -> None:
     completed = subprocess.run(
         [
