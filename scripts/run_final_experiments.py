@@ -45,6 +45,7 @@ FIELDNAMES = [
     "k",
     "lambda_max",
     "class_ordering",
+    "fallback_equal_split",
     "error_message",
 ]
 
@@ -302,6 +303,7 @@ def _row_from_result(
     hld_settings: HldSettings | None,
     class_ordering: ClassOrdering | None,
 ) -> dict[str, Any]:
+    fallback = result.solver_metadata.get("fallback_equal_split")
     return {
         "instance_id": entry.rel_path,
         "subset": entry.subset,
@@ -321,6 +323,7 @@ def _row_from_result(
         "k": "" if hld_settings is None else hld_settings.k,
         "lambda_max": "" if hld_settings is None else hld_settings.lambda_max,
         "class_ordering": "" if class_ordering is None else class_ordering,
+        "fallback_equal_split": "" if fallback is None else int(bool(fallback)),
         "error_message": "",
     }
 
@@ -353,6 +356,7 @@ def _error_row(
         "k": "" if hld_settings is None else hld_settings.k,
         "lambda_max": "" if hld_settings is None else hld_settings.lambda_max,
         "class_ordering": "" if class_ordering is None else class_ordering,
+        "fallback_equal_split": "",
         "error_message": error_message,
     }
 

@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import subprocess
+import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "run_final_experiments.py"
+sys.path.insert(0, str(ROOT / "scripts"))
 
 
 def test_final_experiments_dry_run_reports_plan() -> None:
@@ -153,6 +157,61 @@ def test_final_experiments_cell_filter_rejects_malformed_spec(tmp_path: Path) ->
 
     assert completed.returncode != 0
     assert "must have form N,M,CORRELATION,F" in completed.stderr
+
+
+def test_row_records_fallback_for_hld_and_blank_for_other_solvers() -> None:
+    """`_row_from_result` exposes fallback_equal_split for HLD and leaves it empty otherwise."""
+    from run_final_experiments import HldSettings, _row_from_result
+
+    @dataclass(frozen=True)
+    class _FakeEntry:
+        rel_path: str = "x.json.gz"
+        subset: str = "test"
+        seed: int = 1
+        cell: dict[str, object] | None = None
+
+        def __post_init__(self) -> None:
+            object.__setattr__(self, "cell", {"N": 1, "M": 1, "correlation": "uncorrelated", "f": 0.5})
+
+    @dataclass
+    class _FakeResult:
+        profit: int = 0
+        total_cost: int = 0
+        n_classes_selected: int = 0
+        status: str = "feasible"
+        solver_metadata: dict[str, object] | None = None
+
+    settings = HldSettings(n_iter=1, alpha=0.9, k=1, lambda_max=10.0)
+
+    fallback_true = _row_from_result(
+        entry=_FakeEntry(),
+        solver_name="hld",
+        result=_FakeResult(solver_metadata={"fallback_equal_split": True}),
+        wall_time_s=0.1,
+        hld_settings=settings,
+        class_ordering="sequential",
+    )
+    assert fallback_true["fallback_equal_split"] == 1
+
+    fallback_false = _row_from_result(
+        entry=_FakeEntry(),
+        solver_name="hld",
+        result=_FakeResult(solver_metadata={"fallback_equal_split": False}),
+        wall_time_s=0.1,
+        hld_settings=settings,
+        class_ordering="sequential",
+    )
+    assert fallback_false["fallback_equal_split"] == 0
+
+    non_hld = _row_from_result(
+        entry=_FakeEntry(),
+        solver_name="highs",
+        result=_FakeResult(solver_metadata={}),
+        wall_time_s=0.1,
+        hld_settings=None,
+        class_ordering=None,
+    )
+    assert non_hld["fallback_equal_split"] == ""
 
 
 def test_final_experiments_class_ordering_rejects_unknown_value() -> None:
