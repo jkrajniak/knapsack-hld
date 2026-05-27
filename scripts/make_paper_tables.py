@@ -5,13 +5,30 @@ from __future__ import annotations
 
 import argparse
 import csv
+import statistics
+from collections import defaultdict
 from pathlib import Path
 
 DEFAULT_FINAL_SUMMARY_DIR = Path("results") / "final_experiments" / "summary"
 DEFAULT_SENSITIVITY_SUMMARY_DIR = (
     Path("results") / "final_experiments" / "time_limit_sensitivity_summary"
 )
+DEFAULT_COMPARISON_SUMMARY_DIR = (
+    Path("results") / "final_experiments" / "comparison_summary"
+)
 DEFAULT_OUT_DIR = Path("results") / "final_experiments" / "paper_tables"
+
+PAIRED_SUMMARY_FIELDNAMES = [
+    "N",
+    "paired_rows",
+    "hld_wins",
+    "baseline_wins",
+    "ties",
+    "median_gain_pct",
+    "mean_gain_pct",
+    "median_hld_wall_time_s",
+    "median_baseline_wall_time_s",
+]
 
 FINAL_CELL_FIELDNAMES = [
     "N",
@@ -54,6 +71,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=Path,
         default=DEFAULT_SENSITIVITY_SUMMARY_DIR,
         help=f"Sensitivity summary directory (default: {DEFAULT_SENSITIVITY_SUMMARY_DIR}).",
+    )
+    parser.add_argument(
+        "--comparison-summary-dir",
+        type=Path,
+        default=DEFAULT_COMPARISON_SUMMARY_DIR,
+        help=f"Comparison summary directory (default: {DEFAULT_COMPARISON_SUMMARY_DIR}).",
     )
     parser.add_argument(
         "--out-dir",
@@ -125,7 +148,52 @@ def build_sensitivity_gain_rows(rows: list[dict[str, str]]) -> list[dict[str, st
     ]
 
 
-def write_latex_table(path: Path, rows: list[dict[str, str]], *, columns: list[str]) -> None:
+def build_paired_summary_rows(
+    rows: list[dict[str, str]],
+    *,
+    baseline_solver: str,
+) -> list[dict[str, str]]:
+    """Aggregate paired_profit_gaps.csv rows by N for a single baseline."""
+    by_n: dict[int, list[dict[str, str]]] = defaultdict(list)
+    for row in rows:
+        if row["baseline_solver"] != baseline_solver:
+            continue
+        by_n[int(row["N"])].append(row)
+
+    summary: list[dict[str, str]] = []
+    for n_val in sorted(by_n):
+        bucket = by_n[n_val]
+        gains = [float(row["hld_vs_baseline_gain_pct"]) for row in bucket]
+        hld_walls = [float(row["hld_wall_time_s"]) for row in bucket]
+        base_walls = [float(row["baseline_wall_time_s"]) for row in bucket]
+        wins_hld = sum(1 for g in gains if g > 0)
+        wins_base = sum(1 for g in gains if g < 0)
+        ties = sum(1 for g in gains if g == 0)
+        summary.append(
+            {
+                "N": str(n_val),
+                "paired_rows": str(len(bucket)),
+                "hld_wins": str(wins_hld),
+                "baseline_wins": str(wins_base),
+                "ties": str(ties),
+                "median_gain_pct": _format_gain_pct(statistics.median(gains)),
+                "mean_gain_pct": _format_gain_pct(statistics.fmean(gains)),
+                "median_hld_wall_time_s": _decimal(str(statistics.median(hld_walls)), digits=2),
+                "median_baseline_wall_time_s": _decimal(
+                    str(statistics.median(base_walls)), digits=2
+                ),
+            }
+        )
+    return summary
+
+
+def write_latex_table(
+    path: Path,
+    rows: list[dict[str, str]],
+    *,
+    columns: list[str],
+    caption: str | None = None,
+) -> None:
     lines = [
         "\\begin{tabular}{" + "l" * len(columns) + "}",
         " \\toprule",
@@ -134,7 +202,10 @@ def write_latex_table(path: Path, rows: list[dict[str, str]], *, columns: list[s
     ]
     for row in rows:
         lines.append(" & ".join(_latex_escape(row[column]) for column in columns) + " \\\\")
-    lines.extend([" \\bottomrule", "\\end{tabular}", ""])
+    lines.extend([" \\bottomrule", "\\end{tabular}"])
+    if caption is not None:
+        lines.insert(0, f"% {caption}")
+    lines.append("")
     path.write_text("\n".join(lines))
 
 
@@ -144,6 +215,19 @@ def _percent(value: str) -> str:
 
 def _decimal(value: str, *, digits: int) -> str:
     return f"{float(value):.{digits}f}"
+
+
+def _format_gain_pct(value: float | str) -> str:
+    """Format a percentage already expressed in percent units, with sign.
+
+    Project number-cadence convention (PI L152 ruling 2026-05-26):
+    percentages with |x| >= 1 reported to 2 decimals; sub-1 % keep 4
+    decimals to stay informative when 2 decimals would round to zero.
+    """
+    x = float(value)
+    if abs(x) < 1.0:
+        return f"{x:+.4f}"
+    return f"{x:+.2f}"
 
 
 def _latex_label(value: str) -> str:
@@ -158,6 +242,12 @@ def _latex_label(value: str) -> str:
         "mean_gain_pct": "Mean gain (\\%)",
         "median_gain_pct": "Median gain (\\%)",
         "max_gain_pct": "Max gain (\\%)",
+        "paired_rows": "Paired rows",
+        "hld_wins": "HLD wins",
+        "baseline_wins": "Baseline wins",
+        "ties": "Ties",
+        "median_hld_wall_time_s": "Median HLD time (s)",
+        "median_baseline_wall_time_s": "Median baseline time (s)",
     }
     return labels.get(value, _latex_escape(value))
 
@@ -177,6 +267,16 @@ def main(argv: list[str] | None = None) -> int:
     gain_rows = build_sensitivity_gain_rows(
         read_csv(args.sensitivity_summary_dir / "profit_gains.csv")
     )
+
+    paired_csv = args.comparison_summary_dir / "paired_profit_gaps.csv"
+    paired_available = paired_csv.exists()
+    if paired_available:
+        paired_rows = read_csv(paired_csv)
+        po_summary = build_paired_summary_rows(paired_rows, baseline_solver="partition_optimal")
+        highs_summary = build_paired_summary_rows(paired_rows, baseline_solver="highs")
+    else:
+        po_summary = []
+        highs_summary = []
 
     write_csv(
         args.out_dir / "final_cell_status_runtime.csv",
@@ -203,11 +303,39 @@ def main(argv: list[str] | None = None) -> int:
         gain_rows,
         columns=SENSITIVITY_GAIN_FIELDNAMES,
     )
+    if paired_available:
+        write_csv(
+            args.out_dir / "hld_vs_partition_summary.csv",
+            po_summary,
+            fieldnames=PAIRED_SUMMARY_FIELDNAMES,
+        )
+        write_csv(
+            args.out_dir / "hld_vs_highs_summary.csv",
+            highs_summary,
+            fieldnames=PAIRED_SUMMARY_FIELDNAMES,
+        )
+        write_latex_table(
+            args.out_dir / "hld_vs_partition_summary.tex",
+            po_summary,
+            columns=PAIRED_SUMMARY_FIELDNAMES,
+            caption="Paired HLD vs Partition-Optimal aggregated by N",
+        )
+        write_latex_table(
+            args.out_dir / "hld_vs_highs_summary.tex",
+            highs_summary,
+            columns=PAIRED_SUMMARY_FIELDNAMES,
+            caption="Paired HLD vs HiGHS aggregated by N",
+        )
 
     print(f"out_dir: {args.out_dir}")
     print(f"final_cell_status_runtime.csv: {len(final_rows)} rows")
     print(f"sensitivity_time_limit_status.csv: {len(status_rows)} rows")
     print(f"sensitivity_profit_gains.csv: {len(gain_rows)} rows")
+    if paired_available:
+        print(f"hld_vs_partition_summary.csv: {len(po_summary)} rows")
+        print(f"hld_vs_highs_summary.csv: {len(highs_summary)} rows")
+    else:
+        print(f"hld_vs_partition_summary.csv: skipped ({paired_csv} not found)")
     return 0
 
 
