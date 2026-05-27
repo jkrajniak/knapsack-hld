@@ -55,8 +55,9 @@ Solver-metadata schema
 from __future__ import annotations
 
 import math
+import random
 import time
-from typing import Any
+from typing import Any, Literal
 
 from instances.schema import GENERATOR_VERSION, CorrelationKind, InstanceModel
 
@@ -67,6 +68,10 @@ DEFAULT_N_ITER = 20
 DEFAULT_ALPHA = 0.9
 DEFAULT_K = 8
 DEFAULT_SUB_SOLVER = "highs"
+
+ClassOrdering = Literal["sequential", "random", "adversarial"]
+CLASS_ORDERINGS: tuple[ClassOrdering, ...] = ("sequential", "random", "adversarial")
+DEFAULT_CLASS_ORDERING: ClassOrdering = "sequential"
 
 
 class HldAdapter:
@@ -82,6 +87,7 @@ class HldAdapter:
         k: int = DEFAULT_K,
         sub_solver: str = DEFAULT_SUB_SOLVER,
         lambda_max_override: float | None = None,
+        class_ordering: ClassOrdering = DEFAULT_CLASS_ORDERING,
     ) -> None:
         if n_iter < 1:
             raise ValueError(f"n_iter must be >= 1, got {n_iter}")
@@ -89,11 +95,16 @@ class HldAdapter:
             raise ValueError(f"alpha must be in [0, 1], got {alpha}")
         if k < 1:
             raise ValueError(f"k must be >= 1, got {k}")
+        if class_ordering not in CLASS_ORDERINGS:
+            raise ValueError(
+                f"class_ordering must be one of {CLASS_ORDERINGS}, got {class_ordering!r}"
+            )
         self.n_iter = int(n_iter)
         self.alpha = float(alpha)
         self.k = int(k)
         self.sub_solver = str(sub_solver)
         self.lambda_max_override = lambda_max_override
+        self.class_ordering: ClassOrdering = class_ordering
 
     def solve(
         self,
@@ -112,7 +123,10 @@ class HldAdapter:
         )
 
         k = min(self.k, instance.N)
-        batches = _split_classes(instance.N, k)
+        class_order = _class_order(
+            instance, ordering=self.class_ordering, random_seed=random_seed
+        )
+        batches = _split_classes(instance.N, k, order=class_order)
         per_batch_estimated, fallback = _phase2_estimate(
             instance, batches=batches, lambda_est=lambda_est
         )
@@ -175,6 +189,7 @@ class HldAdapter:
                 "k": k,
                 "lambda_max": lambda_max,
                 "sub_solver": self.sub_solver,
+                "class_ordering": self.class_ordering,
             },
         }
         status = (
@@ -310,15 +325,66 @@ def _phase2_allocate(
     return out
 
 
-def _split_classes(n: int, k: int) -> list[list[int]]:
+def _split_classes(n: int, k: int, *, order: list[int] | None = None) -> list[list[int]]:
+    """Split `n` class indices into `k` contiguous batches along `order`.
+
+    Default `order=None` keeps the legacy `range(n)` (sequential) behaviour.
+    Pass a permutation of `range(n)` (produced by `_class_order`) to apply
+    a non-sequential ordering before the equal-size split.
+    """
+    indices = list(range(n)) if order is None else list(order)
+    if len(indices) != n or sorted(indices) != list(range(n)):
+        raise ValueError(
+            f"order must be a permutation of range({n}); got len={len(indices)}"
+        )
     base, extra = divmod(n, k)
     out: list[list[int]] = []
     start = 0
     for b in range(k):
         size = base + (1 if b < extra else 0)
-        out.append(list(range(start, start + size)))
+        out.append(indices[start : start + size])
         start += size
     return out
+
+
+def _class_order(
+    instance: InstanceModel,
+    *,
+    ordering: ClassOrdering,
+    random_seed: int | None,
+) -> list[int]:
+    """Return a permutation of `range(N)` per the requested ordering.
+
+    - `sequential` is the identity: `[0, 1, ..., N-1]`.
+    - `random` uses an instance-local `random.Random(random_seed)` so the
+      shuffle is reproducible from `random_seed` alone (independent of
+      any global RNG state). When `random_seed is None` we derive a
+      stable seed from `instance.seed` so the same instance still gives
+      the same shuffle across runs.
+    - `adversarial` sorts classes by descending max-profit-per-cost
+      ratio with the class index as a stable tie-breaker. The highest
+      profit-per-cost class therefore lands in batch 0, which stresses
+      any equal-budget decomposition and exercises HLD's Phase-2
+      proportional-allocation path. Classes with no positive-cost item
+      receive ratio 0 and sort to the end.
+    """
+    if ordering == "sequential":
+        return list(range(instance.N))
+    if ordering == "random":
+        seed = random_seed if random_seed is not None else int(instance.seed)
+        rng = random.Random(seed)
+        order = list(range(instance.N))
+        rng.shuffle(order)
+        return order
+    if ordering == "adversarial":
+        def max_pc_ratio(i: int) -> float:
+            return max(
+                (float(p) / float(c) for (p, c) in instance.items[i] if c > 0),
+                default=0.0,
+            )
+
+        return sorted(range(instance.N), key=lambda i: (-max_pc_ratio(i), i))
+    raise ValueError(f"unknown class_ordering: {ordering!r}")
 
 
 def _sub_instance(instance: InstanceModel, class_indices: list[int], budget: int) -> InstanceModel:

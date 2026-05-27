@@ -43,6 +43,57 @@ def test_final_experiments_dry_run_reports_plan() -> None:
     assert "solvers: hld" in completed.stdout
     assert "jobs: 8" in completed.stdout
     assert "highs_threads: 1" in completed.stdout
+    assert "class_ordering: sequential" in completed.stdout
+
+
+def test_final_experiments_class_ordering_flag_accepts_random() -> None:
+    completed = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            str(SCRIPT),
+            "--dry-run",
+            "--archive",
+            "instances",
+            "--config",
+            "configs/hld_smac_best.json",
+            "--solvers",
+            "hld",
+            "--class-ordering",
+            "random",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0
+    assert "class_ordering: random" in completed.stdout
+
+
+def test_final_experiments_class_ordering_rejects_unknown_value() -> None:
+    completed = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            str(SCRIPT),
+            "--dry-run",
+            "--archive",
+            "instances",
+            "--class-ordering",
+            "not-a-real-ordering",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode != 0
+    assert "invalid choice" in completed.stderr.lower()
 
 
 def test_final_experiments_manifest_filter_counts_test_subset(tmp_path: Path) -> None:

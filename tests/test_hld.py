@@ -10,10 +10,13 @@ from instances.generator import generate_instance
 from instances.schema import CorrelationKind
 from solvers import get_solver, validate_solution
 from solvers.hld import (
+    CLASS_ORDERINGS,
     DEFAULT_ALPHA,
+    DEFAULT_CLASS_ORDERING,
     DEFAULT_K,
     DEFAULT_N_ITER,
     HldAdapter,
+    _class_order,
     _instance_dependent_lambda_max,
     _split_classes,
 )
@@ -136,3 +139,82 @@ def test_sub_solver_is_swappable() -> None:
     validate_solution(inst, cbc_res)
     validate_solution(inst, highs_res)
     assert cbc_res.profit == highs_res.profit
+
+
+# ---------------------------------------------------------------------------
+# class_ordering (Task 3.3.1 of revision-finalization-2026)
+# ---------------------------------------------------------------------------
+
+
+def test_default_class_ordering_is_sequential() -> None:
+    """Default keeps the legacy sequential behaviour (manuscript §3.6)."""
+    solver = HldAdapter()
+    assert solver.class_ordering == DEFAULT_CLASS_ORDERING == "sequential"
+    assert set(CLASS_ORDERINGS) == {"sequential", "random", "adversarial"}
+
+
+def test_class_ordering_invalid_raises() -> None:
+    with pytest.raises(ValueError, match="class_ordering"):
+        HldAdapter(class_ordering="not-a-real-ordering")
+
+
+def test_class_order_sequential_is_identity() -> None:
+    inst = generate_instance(N=12, M=3, correlation=CorrelationKind.UNCORRELATED, f=0.5, seed=61)
+    assert _class_order(inst, ordering="sequential", random_seed=None) == list(range(12))
+
+
+def test_class_order_random_is_permutation_and_deterministic_with_seed() -> None:
+    inst = generate_instance(N=20, M=3, correlation=CorrelationKind.UNCORRELATED, f=0.5, seed=62)
+    a = _class_order(inst, ordering="random", random_seed=7)
+    b = _class_order(inst, ordering="random", random_seed=7)
+    c = _class_order(inst, ordering="random", random_seed=8)
+    assert sorted(a) == list(range(20))  # is a permutation
+    assert a == b  # seed-deterministic
+    assert a != list(range(20))  # actually shuffled (probabilistic, but with N=20 essentially certain)
+    assert a != c  # different seed -> different order
+
+
+def test_class_order_adversarial_sorts_by_descending_max_pc_ratio() -> None:
+    """Adversarial puts the highest profit/cost-ratio class first (stresses equal-split decomposition)."""
+    inst = generate_instance(N=15, M=4, correlation=CorrelationKind.WEAKLY, f=0.5, seed=63)
+    order = _class_order(inst, ordering="adversarial", random_seed=None)
+    assert sorted(order) == list(range(15))
+
+    def max_ratio(i: int) -> float:
+        return max(
+            (p / c for (p, c) in inst.items[i] if c > 0),
+            default=0.0,
+        )
+
+    ratios_in_order = [max_ratio(i) for i in order]
+    for prev, nxt in itertools.pairwise(ratios_in_order):
+        assert prev >= nxt
+
+
+def test_class_ordering_random_does_not_change_solution_feasibility() -> None:
+    inst = generate_instance(N=14, M=3, correlation=CorrelationKind.WEAKLY, f=0.5, seed=64)
+    res = HldAdapter(k=4, class_ordering="random").solve(
+        inst, time_limit_s=20.0, random_seed=123
+    )
+    validate_solution(inst, res)
+    assert res.total_cost <= inst.B
+    assert res.solver_metadata["params"]["class_ordering"] == "random"
+    # The phase-3 batches must collectively cover every class index exactly once.
+    selected = res.items_selected
+    assert set(selected.keys()) == set(range(inst.N))
+
+
+def test_class_ordering_adversarial_records_meta() -> None:
+    inst = generate_instance(N=10, M=3, correlation=CorrelationKind.STRONGLY, f=0.5, seed=65)
+    res = HldAdapter(k=3, class_ordering="adversarial").solve(inst, time_limit_s=20.0)
+    validate_solution(inst, res)
+    assert res.solver_metadata["params"]["class_ordering"] == "adversarial"
+
+
+def test_class_ordering_random_reproducible_end_to_end() -> None:
+    """Same `random_seed` -> same HLD solution under random ordering."""
+    inst = generate_instance(N=12, M=3, correlation=CorrelationKind.UNCORRELATED, f=0.5, seed=66)
+    a = HldAdapter(k=3, class_ordering="random").solve(inst, time_limit_s=20.0, random_seed=42)
+    b = HldAdapter(k=3, class_ordering="random").solve(inst, time_limit_s=20.0, random_seed=42)
+    assert a.profit == b.profit
+    assert a.items_selected == b.items_selected

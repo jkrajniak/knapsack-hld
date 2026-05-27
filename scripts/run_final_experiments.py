@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from instances.io import load_instance
 from solvers import SolveResult, get_solver, validate_solution
 from solvers.highs import HighsAdapter
-from solvers.hld import HldAdapter
+from solvers.hld import CLASS_ORDERINGS, DEFAULT_CLASS_ORDERING, ClassOrdering, HldAdapter
 
 LOGGER = logging.getLogger("run_final_experiments")
 
@@ -44,6 +44,7 @@ FIELDNAMES = [
     "alpha",
     "k",
     "lambda_max",
+    "class_ordering",
     "error_message",
 ]
 
@@ -106,6 +107,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=int,
         default=None,
         help="Override HiGHS internal thread count for highs baseline runs.",
+    )
+    parser.add_argument(
+        "--class-ordering",
+        type=str,
+        default=DEFAULT_CLASS_ORDERING,
+        choices=list(CLASS_ORDERINGS),
+        help=(
+            "Class-ordering strategy applied before HLD partitions into K batches. "
+            "Used by the §3.6 batch-ordering ablation (Task 3.3.2). "
+            "When running multiple orderings, point each to a distinct --out-csv."
+        ),
     )
     parser.add_argument(
         "--time-limit-s",
@@ -177,11 +189,17 @@ def run_one(
     seed: int,
     time_limit_s: float | None,
     highs_threads: int | None = None,
+    class_ordering: ClassOrdering = DEFAULT_CLASS_ORDERING,
 ) -> dict[str, Any]:
     t0 = time.perf_counter()
     try:
         inst = load_instance(archive_root / entry.rel_path)
-        solver = _make_solver(solver_name, hld_settings, highs_threads=highs_threads)
+        solver = _make_solver(
+            solver_name,
+            hld_settings,
+            highs_threads=highs_threads,
+            class_ordering=class_ordering,
+        )
         result = solver.solve(inst, time_limit_s=time_limit_s, random_seed=seed)
         validate_solution(inst, result)
         return _row_from_result(
@@ -190,6 +208,7 @@ def run_one(
             result=result,
             wall_time_s=time.perf_counter() - t0,
             hld_settings=hld_settings if solver_name == "hld" else None,
+            class_ordering=class_ordering if solver_name == "hld" else None,
         )
     except Exception as exc:
         return _error_row(
@@ -198,6 +217,7 @@ def run_one(
             wall_time_s=time.perf_counter() - t0,
             hld_settings=hld_settings if solver_name == "hld" else None,
             error_message=f"{type(exc).__name__}: {exc}",
+            class_ordering=class_ordering if solver_name == "hld" else None,
         )
 
 
@@ -206,6 +226,7 @@ def _make_solver(
     hld_settings: HldSettings,
     *,
     highs_threads: int | None = None,
+    class_ordering: ClassOrdering = DEFAULT_CLASS_ORDERING,
 ) -> Any:
     if solver_name == "hld":
         return HldAdapter(
@@ -213,6 +234,7 @@ def _make_solver(
             alpha=hld_settings.alpha,
             k=hld_settings.k,
             lambda_max_override=hld_settings.lambda_max,
+            class_ordering=class_ordering,
         )
     if solver_name == "highs" and highs_threads is not None:
         return HighsAdapter(threads=highs_threads)
@@ -226,6 +248,7 @@ def _row_from_result(
     result: SolveResult,
     wall_time_s: float,
     hld_settings: HldSettings | None,
+    class_ordering: ClassOrdering | None,
 ) -> dict[str, Any]:
     return {
         "instance_id": entry.rel_path,
@@ -245,6 +268,7 @@ def _row_from_result(
         "alpha": "" if hld_settings is None else hld_settings.alpha,
         "k": "" if hld_settings is None else hld_settings.k,
         "lambda_max": "" if hld_settings is None else hld_settings.lambda_max,
+        "class_ordering": "" if class_ordering is None else class_ordering,
         "error_message": "",
     }
 
@@ -256,6 +280,7 @@ def _error_row(
     wall_time_s: float,
     hld_settings: HldSettings | None,
     error_message: str,
+    class_ordering: ClassOrdering | None,
 ) -> dict[str, Any]:
     return {
         "instance_id": entry.rel_path,
@@ -275,6 +300,7 @@ def _error_row(
         "alpha": "" if hld_settings is None else hld_settings.alpha,
         "k": "" if hld_settings is None else hld_settings.k,
         "lambda_max": "" if hld_settings is None else hld_settings.lambda_max,
+        "class_ordering": "" if class_ordering is None else class_ordering,
         "error_message": error_message,
     }
 
@@ -312,6 +338,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"eligible_instances: {len(entries)}")
     print(f"jobs: {args.jobs}")
     print(f"highs_threads: {args.highs_threads}")
+    print(f"class_ordering: {args.class_ordering}")
     print(f"time_limit_s: {args.time_limit_s}")
     if args.dry_run:
         return 0
@@ -338,6 +365,7 @@ def main(argv: list[str] | None = None) -> int:
             seed=args.seed,
             time_limit_s=args.time_limit_s,
             highs_threads=args.highs_threads,
+            class_ordering=args.class_ordering,
         )
         for solver_name, entry in work
     )
