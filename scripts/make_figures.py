@@ -46,7 +46,21 @@ DEFAULT_PAIRED_CSV = (
     / "comparison_summary"
     / "paired_profit_gaps.csv"
 )
+DEFAULT_RESULTS_CSV = Path("results") / "final_experiments" / "results.csv"
 DEFAULT_OUT_DIR = Path("figures")
+
+# Plotted solvers for `large_scale_scaling_ab` — pivot-aligned subset.
+SCALING_SOLVERS = ["hld", "partition_optimal", "highs"]
+SCALING_LABEL = {
+    "hld": "HLD",
+    "partition_optimal": "Partition-Optimal",
+    "highs": "HiGHS (reference)",
+}
+SCALING_COLOR = {
+    "hld": "tab:blue",
+    "partition_optimal": "tab:orange",
+    "highs": "tab:green",
+}
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -56,6 +70,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=Path,
         default=DEFAULT_PAIRED_CSV,
         help=f"comparison_summary/paired_profit_gaps.csv (default: {DEFAULT_PAIRED_CSV}).",
+    )
+    parser.add_argument(
+        "--results-csv",
+        type=Path,
+        action="append",
+        default=None,
+        help="Raw per-instance results CSV. Repeatable; when omitted, defaults "
+        f"to {DEFAULT_RESULTS_CSV} only (HLD). In the pinned archive layout, "
+        "Partition-Optimal lives in partition_optimal_refreshed.csv and "
+        "HiGHS in highs_baseline_maxN10000.csv; pass all three to get the "
+        "full HLD / PO / HiGHS scaling figure.",
     )
     parser.add_argument(
         "--out-dir",
@@ -192,8 +217,121 @@ def make_hld_vs_partition_paired_gains(args: argparse.Namespace) -> None:
     )
 
 
+def _aggregate_by_solver_n(
+    rows: list[dict[str, str]],
+    solvers: list[str],
+) -> dict[str, dict[int, dict[str, float | int]]]:
+    """Group rows by solver -> N and compute median wall time and profit."""
+    by_solver_n: dict[str, dict[int, list[dict[str, str]]]] = {s: {} for s in solvers}
+    for row in rows:
+        solver = row["solver"]
+        if solver not in by_solver_n:
+            continue
+        n = int(row["N"])
+        by_solver_n[solver].setdefault(n, []).append(row)
+
+    out: dict[str, dict[int, dict[str, float | int]]] = {}
+    for solver, by_n in by_solver_n.items():
+        if not by_n:
+            continue
+        out[solver] = {}
+        for n, bucket in sorted(by_n.items()):
+            walls = [float(r["wall_time_s"]) for r in bucket]
+            profits = [float(r["profit"]) for r in bucket]
+            out[solver][n] = {
+                "n": len(bucket),
+                "median_wall_time_s": statistics.median(walls),
+                "median_profit": statistics.median(profits),
+            }
+    return out
+
+
+def make_large_scale_scaling_ab(args: argparse.Namespace) -> None:
+    """Two-panel Fig 9 replacement: (a) wall time vs N, (b) profit vs N.
+
+    Plots the pivot-aligned solver subset {HLD, Partition-Optimal,
+    HiGHS reference} from the pinned final_experiments archive.
+    Replaces the legacy four-panel large_scale_validation figure;
+    panels (c) memory and (d) efficiency were dropped per PI D5
+    ruling 2026-05-27 (Task 3.2.4).
+    """
+    figure_name = "large_scale_scaling_ab"
+    results_csvs = args.results_csv or [DEFAULT_RESULTS_CSV]
+    rows: list[dict[str, str]] = []
+    for path in results_csvs:
+        with path.open(newline="") as fh:
+            rows.extend(csv.DictReader(fh))
+
+    feasible_rows = [row for row in rows if row["status"] != "error"]
+    agg = _aggregate_by_solver_n(feasible_rows, SCALING_SOLVERS)
+    if not agg:
+        raise SystemExit(
+            f"no rows for solvers {SCALING_SOLVERS} in {[str(p) for p in results_csvs]}; "
+            "is the archive contents-correct?"
+        )
+
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+    pdf_path = args.out_dir / f"{figure_name}.pdf"
+
+    fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(10.0, 3.8))
+    for solver in SCALING_SOLVERS:
+        if solver not in agg:
+            continue
+        ns = sorted(agg[solver])
+        walls = [agg[solver][n]["median_wall_time_s"] for n in ns]
+        profits = [agg[solver][n]["median_profit"] for n in ns]
+        ax_a.plot(
+            ns,
+            walls,
+            marker="o",
+            color=SCALING_COLOR[solver],
+            label=SCALING_LABEL[solver],
+        )
+        ax_b.plot(
+            ns,
+            profits,
+            marker="o",
+            color=SCALING_COLOR[solver],
+            label=SCALING_LABEL[solver],
+        )
+
+    for ax, title, ylabel in (
+        (ax_a, "(a) Median wall time", "Median wall time (s)"),
+        (ax_b, "(b) Median profit", "Median profit"),
+    ):
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.set_xlabel("Number of decision classes $N$")
+        ax.set_ylabel(ylabel)
+        ax.set_title(title)
+        ax.grid(True, which="both", alpha=0.3)
+        ax.legend(loc="best", fontsize=8)
+
+    fig.tight_layout()
+    fig.savefig(pdf_path)
+    plt.close(fig)
+
+    stats = {
+        solver: {str(n): per_n for n, per_n in by_n.items()}
+        for solver, by_n in agg.items()
+    }
+    meta = {
+        "figure": figure_name,
+        "script": "scripts/make_figures.py",
+        "command": shlex.join(sys.argv),
+        "generated_at": _now_iso(),
+        "archive": {"id": args.archive_id, "sha256": args.archive_sha256},
+        "source_csv": [str(p) for p in results_csvs],
+        "solvers": [s for s in SCALING_SOLVERS if s in agg],
+        "stats": stats,
+    }
+    meta_path = pdf_path.with_suffix(".meta.json")
+    meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
+
+
 FIGURE_GENERATORS: dict[str, Callable[[argparse.Namespace], None]] = {
     "hld_vs_partition_paired_gains": make_hld_vs_partition_paired_gains,
+    "large_scale_scaling_ab": make_large_scale_scaling_ab,
 }
 
 
