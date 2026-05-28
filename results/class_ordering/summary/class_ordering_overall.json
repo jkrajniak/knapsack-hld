@@ -1,0 +1,38 @@
+{
+  "adversarial": {
+    "error_count": 0,
+    "max_gap_pct": 77.21158145412778,
+    "mean_gap_pct": 20.931340017063217,
+    "mean_wall_s": 69.1947490636614,
+    "median_gap_pct": 9.009630718297217,
+    "n_instances": 210,
+    "std_gap_pct": 23.52113556491742,
+    "timeout_count": 209,
+    "win_count": 95,
+    "win_rate": 0.4523809523809524
+  },
+  "random": {
+    "error_count": 0,
+    "max_gap_pct": 98.49926544826627,
+    "mean_gap_pct": 48.20534324733301,
+    "mean_wall_s": 66.14433888750777,
+    "median_gap_pct": 51.4369911111596,
+    "n_instances": 210,
+    "std_gap_pct": 38.5008811679804,
+    "timeout_count": 209,
+    "win_count": 50,
+    "win_rate": 0.23809523809523808
+  },
+  "sequential": {
+    "error_count": 0,
+    "max_gap_pct": 98.60667444946043,
+    "mean_gap_pct": 38.69701449398091,
+    "mean_wall_s": 64.44122082863053,
+    "median_gap_pct": 25.191749682413658,
+    "n_instances": 210,
+    "std_gap_pct": 39.708285936191274,
+    "timeout_count": 209,
+    "win_count": 66,
+    "win_rate": 0.3142857142857143
+  }
+}
