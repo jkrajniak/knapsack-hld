@@ -100,7 +100,7 @@ else
     remote_cmd="cd ${remote_root} && \
 mkdir -p ${summary_subdir} && \
 uv run python scripts/summarize_class_ordering.py \
-    --inputs ${results_subdir}/sequential.csv ${results_subdir}/random.csv ${results_subdir}/adversarial.csv \
+    --results-dir ${results_subdir} \
     --out-dir ${summary_subdir}"
     run_cmd "${ssh_cmd[@]}" zsh -lc "'${remote_cmd}'"
 fi
