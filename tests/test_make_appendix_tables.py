@@ -176,8 +176,9 @@ def test_appendix_emits_latex_per_scale(tmp_path: Path) -> None:
 
     tex = (out / "appendix_N100000.tex").read_text()
     assert "\\begin{tabular}" in tex
-    assert "partition_optimal" in tex
+    assert r"partition\_optimal" in tex
     assert "strongly" in tex
+    assert "_" not in tex.replace("\\_", "")
 
 
 def test_appendix_handles_missing_n_gracefully(tmp_path: Path) -> None:

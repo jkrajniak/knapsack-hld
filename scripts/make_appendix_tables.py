@@ -138,10 +138,18 @@ def write_appendix_csv(path: Path, rows: list[dict[str, object]]) -> None:
         writer.writerows(rows)
 
 
+def _tex_escape_underscores(text: str) -> str:
+    """Escape `_` for LaTeX text mode. Required for correlation /
+    reference-solver labels that contain underscores (e.g. `inversely_strongly`,
+    `partition_optimal`); without escaping these break compilation with
+    "Missing $ inserted" because `_` is the subscript operator."""
+    return text.replace("_", r"\_")
+
+
 def write_appendix_tex(path: Path, n: int, rows: list[dict[str, object]]) -> None:
     if not rows:
         return
-    ref = rows[0]["reference_solver"]
+    ref = _tex_escape_underscores(str(rows[0]["reference_solver"]))
     lines = [
         "\\begin{tabular}{rlrrrrrrr}",
         "\\hline",
@@ -153,7 +161,7 @@ def write_appendix_tex(path: Path, n: int, rows: list[dict[str, object]]) -> Non
     ]
     for row in rows:
         lines.append(
-            f"{row['M']} & {row['correlation']} & {row['f']} & "
+            f"{row['M']} & {_tex_escape_underscores(str(row['correlation']))} & {row['f']} & "
             f"{row['n_paired']} & "
             f"{_format_wall(float(row['hld_median_wall_s']))} & "
             f"{_format_wall(float(row['hld_max_wall_s']))} & "
