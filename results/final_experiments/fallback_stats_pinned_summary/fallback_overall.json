@@ -1,0 +1,22 @@
+{
+  "by_N": {
+    "1000": {
+      "fallback_rate": 0.0,
+      "n_fallbacks": 0,
+      "n_rows": 2100
+    },
+    "10000": {
+      "fallback_rate": 0.0,
+      "n_fallbacks": 0,
+      "n_rows": 2100
+    },
+    "100000": {
+      "fallback_rate": 0.0,
+      "n_fallbacks": 0,
+      "n_rows": 2100
+    }
+  },
+  "fallback_rate": 0.0,
+  "n_fallbacks": 0,
+  "n_rows": 6300
+}

@@ -1,0 +1,43 @@
+2026-05-29 15:03:53,447 INFO replay_hld_fallback | planned 6300 instances
+2026-05-29 15:15:12,023 INFO replay_hld_fallback | replay progress 200/6300 elapsed=678.6s fallbacks=0
+2026-05-29 16:48:13,111 INFO replay_hld_fallback | replay progress 400/6300 elapsed=1626.0s fallbacks=0
+2026-05-29 16:52:06,836 INFO replay_hld_fallback | replay progress 600/6300 elapsed=1859.7s fallbacks=0
+2026-05-29 16:53:35,755 INFO replay_hld_fallback | replay progress 800/6300 elapsed=1948.7s fallbacks=0
+2026-05-29 16:54:41,004 INFO replay_hld_fallback | replay progress 1000/6300 elapsed=2013.9s fallbacks=0
+2026-05-29 16:54:54,565 INFO replay_hld_fallback | replay progress 1200/6300 elapsed=2027.5s fallbacks=0
+2026-05-29 16:55:05,697 INFO replay_hld_fallback | replay progress 1400/6300 elapsed=2038.6s fallbacks=0
+2026-05-29 16:56:26,796 INFO replay_hld_fallback | replay progress 1600/6300 elapsed=2119.7s fallbacks=0
+2026-05-29 17:09:59,563 INFO replay_hld_fallback | replay progress 1800/6300 elapsed=2932.5s fallbacks=0
+2026-05-29 17:25:04,918 INFO replay_hld_fallback | replay progress 2000/6300 elapsed=3837.8s fallbacks=0
+2026-05-29 17:28:48,055 INFO replay_hld_fallback | replay progress 2200/6300 elapsed=4061.0s fallbacks=0
+2026-05-29 17:30:31,025 INFO replay_hld_fallback | replay progress 2400/6300 elapsed=4163.9s fallbacks=0
+2026-05-29 17:31:30,355 INFO replay_hld_fallback | replay progress 2600/6300 elapsed=4223.3s fallbacks=0
+2026-05-29 17:31:41,181 INFO replay_hld_fallback | replay progress 2800/6300 elapsed=4234.1s fallbacks=0
+2026-05-29 17:31:52,633 INFO replay_hld_fallback | replay progress 3000/6300 elapsed=4245.5s fallbacks=0
+2026-05-29 17:34:40,015 INFO replay_hld_fallback | replay progress 3200/6300 elapsed=4412.9s fallbacks=0
+2026-05-29 17:49:50,510 INFO replay_hld_fallback | replay progress 3400/6300 elapsed=5323.4s fallbacks=0
+2026-05-29 18:03:41,868 INFO replay_hld_fallback | replay progress 3600/6300 elapsed=6154.8s fallbacks=0
+2026-05-29 18:06:52,808 INFO replay_hld_fallback | replay progress 3800/6300 elapsed=6345.7s fallbacks=0
+2026-05-29 18:08:47,111 INFO replay_hld_fallback | replay progress 4000/6300 elapsed=6460.0s fallbacks=0
+2026-05-29 18:09:37,712 INFO replay_hld_fallback | replay progress 4200/6300 elapsed=6510.6s fallbacks=0
+2026-05-29 18:09:45,499 INFO replay_hld_fallback | replay progress 4400/6300 elapsed=6518.4s fallbacks=0
+2026-05-29 18:09:56,322 INFO replay_hld_fallback | replay progress 4600/6300 elapsed=6529.2s fallbacks=0
+2026-05-29 18:13:54,091 INFO replay_hld_fallback | replay progress 4800/6300 elapsed=6767.0s fallbacks=0
+2026-05-29 18:29:20,453 INFO replay_hld_fallback | replay progress 5000/6300 elapsed=7693.3s fallbacks=0
+2026-05-29 18:40:39,195 INFO replay_hld_fallback | replay progress 5200/6300 elapsed=8372.1s fallbacks=0
+2026-05-29 18:42:59,412 INFO replay_hld_fallback | replay progress 5400/6300 elapsed=8512.3s fallbacks=0
+2026-05-29 18:44:53,880 INFO replay_hld_fallback | replay progress 5600/6300 elapsed=8626.8s fallbacks=0
+2026-05-29 18:45:26,945 INFO replay_hld_fallback | replay progress 5800/6300 elapsed=8659.8s fallbacks=0
+2026-05-29 18:45:34,939 INFO replay_hld_fallback | replay progress 6000/6300 elapsed=8667.8s fallbacks=0
+2026-05-29 18:45:44,098 INFO replay_hld_fallback | replay progress 6200/6300 elapsed=8677.0s fallbacks=0
+2026-05-29 18:45:46,010 INFO replay_hld_fallback | replay progress 6300/6300 elapsed=8678.9s fallbacks=0
+archive: instances
+manifest: instances/MANIFEST.json
+subset: test
+config: configs/hld_smac_best.json
+class_ordering: sequential
+out_csv: results/final_experiments/fallback_stats_pinned.csv
+n_instances: 6300
+n_fallbacks: 0
+fallback_rate: 0.0000
+wall_time_s: 8678.90
