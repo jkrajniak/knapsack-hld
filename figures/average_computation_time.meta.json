@@ -1,0 +1,111 @@
+{
+  "archive": {
+    "id": "final_experiments_20260524T202545Z_partition_refreshed_v2.tar.gz + fig2_smallN_rerun_20260601T130729Z.tar.gz",
+    "sha256": "126fa995b4d818fff32a6fd7a1671035c7ef0d50b8dc2e51efadcd3556702572 + 165b3bc4555e9a64fbfb711aeed9926bda05a83beaf004163d430719173bf824"
+  },
+  "command": "scripts/make_figures.py --results-csv results/final_experiments_pinned_unpacked/results.csv --results-csv results/final_experiments_pinned_unpacked/partition_optimal_refreshed.csv --results-csv results/final_experiments_pinned_unpacked/highs_baseline_maxN10000.csv --results-csv results/fig2_smallN/results_hld_po_20260601T130729Z.csv --results-csv results/fig2_smallN/results_highs_maxN5000_20260601T180711Z.csv --archive-id 'final_experiments_20260524T202545Z_partition_refreshed_v2.tar.gz + fig2_smallN_rerun_20260601T130729Z.tar.gz' --archive-sha256 '126fa995b4d818fff32a6fd7a1671035c7ef0d50b8dc2e51efadcd3556702572 + 165b3bc4555e9a64fbfb711aeed9926bda05a83beaf004163d430719173bf824' --only average_computation_time --out-dir figures",
+  "figure": "average_computation_time",
+  "generated_at": "2026-06-01T18:48:21+00:00",
+  "notes": "HiGHS at N=50000 is excluded: model preprocessing alone exceeds the 60 s per-instance wall budget; see results_highs_N50000_preprocessing_cliff_*.csv for the negative-result evidence (64 instances, all profit=0, median wall 660 s).",
+  "script": "scripts/make_figures.py",
+  "solvers": [
+    "hld",
+    "partition_optimal",
+    "highs"
+  ],
+  "source_csv": [
+    "results/final_experiments_pinned_unpacked/results.csv",
+    "results/final_experiments_pinned_unpacked/partition_optimal_refreshed.csv",
+    "results/final_experiments_pinned_unpacked/highs_baseline_maxN10000.csv",
+    "results/fig2_smallN/results_hld_po_20260601T130729Z.csv",
+    "results/fig2_smallN/results_highs_maxN5000_20260601T180711Z.csv"
+  ],
+  "stats": {
+    "highs": {
+      "1000": {
+        "mean_wall_time_s": 7.530114957884821,
+        "median_wall_time_s": 1.1649952504994872,
+        "n_instances": 2100
+      },
+      "10000": {
+        "mean_wall_time_s": 40.32683373840568,
+        "median_wall_time_s": 16.41457791700168,
+        "n_instances": 2100
+      },
+      "500": {
+        "mean_wall_time_s": 7.955711331961987,
+        "median_wall_time_s": 0.6035638959729113,
+        "n_instances": 600
+      },
+      "5000": {
+        "mean_wall_time_s": 21.95208893170949,
+        "median_wall_time_s": 13.753190666437149,
+        "n_instances": 600
+      }
+    },
+    "hld": {
+      "1000": {
+        "mean_wall_time_s": 1.6058126078527823,
+        "median_wall_time_s": 0.35538443750556326,
+        "n_instances": 2100
+      },
+      "10000": {
+        "mean_wall_time_s": 17.35328167578469,
+        "median_wall_time_s": 6.3757530210059485,
+        "n_instances": 2100
+      },
+      "100000": {
+        "mean_wall_time_s": 58.33346655137021,
+        "median_wall_time_s": 61.99583220850036,
+        "n_instances": 2100
+      },
+      "500": {
+        "mean_wall_time_s": 0.88391019556749,
+        "median_wall_time_s": 0.3571302500204183,
+        "n_instances": 600
+      },
+      "5000": {
+        "mean_wall_time_s": 15.054351372003245,
+        "median_wall_time_s": 5.045570750429761,
+        "n_instances": 600
+      },
+      "50000": {
+        "mean_wall_time_s": 49.48854699724199,
+        "median_wall_time_s": 60.8428029580391,
+        "n_instances": 600
+      }
+    },
+    "partition_optimal": {
+      "1000": {
+        "mean_wall_time_s": 6.770165633982802,
+        "median_wall_time_s": 1.2282769164994534,
+        "n_instances": 2100
+      },
+      "10000": {
+        "mean_wall_time_s": 27.378373337386737,
+        "median_wall_time_s": 19.117476333000013,
+        "n_instances": 2100
+      },
+      "100000": {
+        "mean_wall_time_s": 75.35767126940058,
+        "median_wall_time_s": 66.66337843800284,
+        "n_instances": 2100
+      },
+      "500": {
+        "mean_wall_time_s": 3.5026531066621343,
+        "median_wall_time_s": 0.7542968330089934,
+        "n_instances": 600
+      },
+      "5000": {
+        "mean_wall_time_s": 18.463248088531934,
+        "median_wall_time_s": 7.386510104057379,
+        "n_instances": 600
+      },
+      "50000": {
+        "mean_wall_time_s": 114.086695807751,
+        "median_wall_time_s": 68.00174529151991,
+        "n_instances": 600
+      }
+    }
+  }
+}

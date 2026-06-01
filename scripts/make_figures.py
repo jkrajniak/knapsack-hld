@@ -329,9 +329,113 @@ def make_large_scale_scaling_ab(args: argparse.Namespace) -> None:
     meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
 
 
+def make_average_computation_time(args: argparse.Namespace) -> None:
+    """Fig 2 (manuscript): mean wall time vs N for HLD, Partition-Optimal, HiGHS.
+
+    Replaces the legacy `average_computation_time.pdf` asset that lacked a
+    provenance sidecar. Reads any combination of per-instance result CSVs
+    (pinned final-experiments + small-N rerun) via `--results-csv`,
+    aggregates mean and median wall time per (solver, N), and writes a
+    single-panel log-log line plot plus a `.meta.json` sidecar.
+
+    HiGHS at N=50000 is intentionally excluded from the line: HiGHS model
+    preprocessing alone exceeds the 60 s wall budget at that size (see
+    `results_highs_N50000_preprocessing_cliff_*.csv` for the negative-
+    result evidence). The caption is expected to call this out.
+    """
+    figure_name = "average_computation_time"
+    results_csvs = args.results_csv or [DEFAULT_RESULTS_CSV]
+    rows: list[dict[str, str]] = []
+    for path in results_csvs:
+        with path.open(newline="") as fh:
+            rows.extend(csv.DictReader(fh))
+
+    plotted_rows = [
+        row
+        for row in rows
+        if row["solver"] in SCALING_SOLVERS and row["status"] != "error"
+    ]
+    agg = _aggregate_by_solver_n(plotted_rows, SCALING_SOLVERS)
+    if not agg:
+        raise SystemExit(
+            f"no rows for solvers {SCALING_SOLVERS} in {[str(p) for p in results_csvs]};"
+            " is the archive contents-correct?"
+        )
+
+    mean_wall = {
+        solver: {
+            n: statistics.fmean(
+                float(r["wall_time_s"])
+                for r in plotted_rows
+                if r["solver"] == solver and int(r["N"]) == n
+            )
+            for n in by_n
+        }
+        for solver, by_n in agg.items()
+    }
+
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+    pdf_path = args.out_dir / f"{figure_name}.pdf"
+
+    fig, ax = plt.subplots(figsize=(6.0, 3.8))
+    for solver in SCALING_SOLVERS:
+        if solver not in agg:
+            continue
+        ns = sorted(agg[solver])
+        means = [mean_wall[solver][n] for n in ns]
+        ax.plot(
+            ns,
+            means,
+            marker="o",
+            color=SCALING_COLOR[solver],
+            label=SCALING_LABEL[solver],
+        )
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlabel("Number of decision classes $N$")
+    ax.set_ylabel("Mean wall time (s)")
+    ax.grid(True, which="both", alpha=0.3)
+    ax.legend(loc="best", fontsize=9)
+    fig.tight_layout()
+    fig.savefig(pdf_path)
+    plt.close(fig)
+
+    stats = {
+        solver: {
+            str(n): {
+                "n_instances": agg[solver][n]["n"],
+                "mean_wall_time_s": mean_wall[solver][n],
+                "median_wall_time_s": agg[solver][n]["median_wall_time_s"],
+            }
+            for n in sorted(agg[solver])
+        }
+        for solver in agg
+    }
+    meta = {
+        "figure": figure_name,
+        "script": "scripts/make_figures.py",
+        "command": shlex.join(sys.argv),
+        "generated_at": _now_iso(),
+        "archive": {"id": args.archive_id, "sha256": args.archive_sha256},
+        "source_csv": [str(p) for p in results_csvs],
+        "solvers": [s for s in SCALING_SOLVERS if s in agg],
+        "stats": stats,
+        "notes": (
+            "HiGHS at N=50000 is excluded: model preprocessing alone "
+            "exceeds the 60 s per-instance wall budget; see "
+            "results_highs_N50000_preprocessing_cliff_*.csv for the "
+            "negative-result evidence (64 instances, all profit=0, "
+            "median wall 660 s)."
+        ),
+    }
+    meta_path = pdf_path.with_suffix(".meta.json")
+    meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
+
+
 FIGURE_GENERATORS: dict[str, Callable[[argparse.Namespace], None]] = {
     "hld_vs_partition_paired_gains": make_hld_vs_partition_paired_gains,
     "large_scale_scaling_ab": make_large_scale_scaling_ab,
+    "average_computation_time": make_average_computation_time,
 }
 
 
