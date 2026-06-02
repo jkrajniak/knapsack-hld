@@ -209,6 +209,77 @@ def write_latex_table(
     path.write_text("\n".join(lines))
 
 
+# Manuscript-facing paired-summary tables (\ref{tab:hld_vs_partition_summary},
+# \ref{tab:hld_vs_highs_summary}, §3.9). Column ordering, math-wrapped N,
+# \,-grouped thousands, and \hline rules match the rest of main.tex by
+# convention so the manuscript layout stays consistent across regenerations.
+PAIRED_MANUSCRIPT_COLUMNS = [
+    "N",
+    "paired_rows",
+    "mean_gain_pct",
+    "median_gain_pct",
+    "hld_wins",
+    "baseline_wins",
+    "ties",
+]
+PAIRED_MANUSCRIPT_HEADERS = [
+    "$N$",
+    "paired $n$",
+    "mean gain (\\%)",
+    "median gain (\\%)",
+    "HLD wins",
+    "ref wins",
+    "ties",
+]
+
+
+def _format_thousands(value: str) -> str:
+    """Render an integer with LaTeX \\, thousands separators (e.g. 2100 → 2\\,100)."""
+    n = int(value)
+    sign = "-" if n < 0 else ""
+    digits = str(abs(n))
+    groups = []
+    while digits:
+        groups.append(digits[-3:])
+        digits = digits[:-3]
+    return sign + "\\,".join(reversed(groups))
+
+
+def write_paired_summary_latex(
+    path: Path,
+    rows: list[dict[str, str]],
+    *,
+    caption: str,
+) -> None:
+    """Emit paired-summary table in the manuscript's table style.
+
+    Differs from `write_latex_table` (booktabs, generic column spec): uses
+    right-aligned `rrrrrrr` columns, `\\hline` rules, math-wrapped `$N$`,
+    and `\\,`-grouped thousands to match the surrounding §3 tables.
+    """
+    n_cols = len(PAIRED_MANUSCRIPT_COLUMNS)
+    lines = [
+        f"% {caption}",
+        "\\begin{tabular}{" + "r" * n_cols + "}",
+        "\\hline",
+        " & ".join(PAIRED_MANUSCRIPT_HEADERS) + " \\\\",
+        "\\hline",
+    ]
+    for row in rows:
+        rendered = [
+            "$" + _format_thousands(row["N"]) + "$",
+            _format_thousands(row["paired_rows"]),
+            row["mean_gain_pct"],
+            row["median_gain_pct"],
+            _format_thousands(row["hld_wins"]),
+            _format_thousands(row["baseline_wins"]),
+            _format_thousands(row["ties"]),
+        ]
+        lines.append(" & ".join(rendered) + " \\\\")
+    lines.extend(["\\hline", "\\end{tabular}", ""])
+    path.write_text("\n".join(lines))
+
+
 def _percent(value: str) -> str:
     return _decimal(str(float(value) * 100), digits=1)
 
@@ -314,16 +385,14 @@ def main(argv: list[str] | None = None) -> int:
             highs_summary,
             fieldnames=PAIRED_SUMMARY_FIELDNAMES,
         )
-        write_latex_table(
+        write_paired_summary_latex(
             args.out_dir / "hld_vs_partition_summary.tex",
             po_summary,
-            columns=PAIRED_SUMMARY_FIELDNAMES,
             caption="Paired HLD vs Partition-Optimal aggregated by N",
         )
-        write_latex_table(
+        write_paired_summary_latex(
             args.out_dir / "hld_vs_highs_summary.tex",
             highs_summary,
-            columns=PAIRED_SUMMARY_FIELDNAMES,
             caption="Paired HLD vs HiGHS aggregated by N",
         )
 
