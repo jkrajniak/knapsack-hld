@@ -11,60 +11,52 @@ manuscript as a correctness/optimality sanity check.
 
 ## Source
 
-Originally distributed from David Pisinger's web page:
-
 > http://hjemmesider.diku.dk/~pisinger/codes.html
 
-The archive (`test_mcknap.tgz`) bundles `.in` files grouped by
-correlation type (`uncorr`, `weakcorr`, `strongcorr`, `inverse`) and
-size (`n10`, `n50`, ...).
+**IMPORTANT (correction filed 2026-06-05 in `FINDING_2026_06_05.md`):**
+the upstream Pisinger codes page does **not** host a separate test-
+instance archive for MCKP. Only the solver source `mcknap.c` is
+distributed; it embeds the instance generator inline (`srand48`-seeded
+RNG, CLI `mcknap k n r type`). All "Pisinger 1995 instances" in the
+literature are regenerated from this code at the parameters published
+in §6 of the 1995 paper. The earlier wording of this README that
+described a `test_mcknap.tgz` archive was speculative and does not
+match upstream reality; the historical retrieval attempts are
+documented in `FINDING_2026_06_05.md`.
 
-## Acquisition (manual step)
-
-The archive is **not** redistributed in this repository. To populate
-this directory:
+## Acquisition (current procedure)
 
 ```bash
-# 1. Download the archive (URL may change; verify in the citation
-#    above).
-curl -fsSLO http://hjemmesider.diku.dk/~pisinger/test_mcknap.tgz
+# 1. Download mcknap.c (solver + generator in one file).
+curl -fsSLO http://hjemmesider.diku.dk/~pisinger/mcknap.c
 
-# 2. Verify the SHA-256 of the downloaded archive against the value
-#    recorded in CHECKSUMS.txt (this file is updated when a new
-#    upstream archive is observed).
-
-# 3. Extract into this directory.
-tar -xzf test_mcknap.tgz -C instances/pisinger_1995/
+# 2. Verify SHA-256 against CHECKSUMS.txt.
+shasum -a 256 mcknap.c
+# Expect: 60c6647341f4794cced2278a87d587df4f25a1793ca0114a1d3f454129961e75
 ```
 
-After extraction, files live under
-`instances/pisinger_1995/<correlation>/<size>/*.in`.
+Local `mcknap.c` is already present in this directory (checked in
+2026-06-05). What happens next depends on the PI's decision in
+`FINDING_2026_06_05.md` (P-port to Python / C-compile / D-descope R.7).
 
 ## Loader
 
-```python
-from pathlib import Path
-from instances.pisinger_loader import load_pisinger_file
+**Not yet implemented.** The previously-planned
+`instances/pisinger_loader.py` assumed `.in` files extracted from an
+upstream archive. Since the archive does not exist (see above), the
+loader will instead be one of:
 
-inst = load_pisinger_file("instances/pisinger_1995/uncorr/n10/inst1.in")
-```
-
-The loader emits the same `InstanceModel` schema as the synthetic
-generator, so the rest of the pipeline (solvers, manifest,
-result-collection) treats Pisinger instances uniformly.
+- a Python port of the `mcknap.c` generator emitting `InstanceModel`
+  records directly (option P-port in `FINDING_2026_06_05.md`), or
+- a thin wrapper around a compiled `mcknap` binary that captures its
+  printed instances (option C-compile).
 
 The Pisinger MCKP form requires every class to contribute exactly one
-item. We feed these instances to BISSA via the explicit
-MCKP→Selective-MCKP transformation documented in `code/solvers/bissa/`
-(adds a dummy zero-cost item per class).
+item. Whichever loader path lands, we feed these instances to BISSA
+via the explicit MCKP→Selective-MCKP transformation documented in
+`code/solvers/bissa/` (adds a dummy zero-cost item per class).
 
 ## CHECKSUMS
 
-Recorded the day the archive is first installed locally. Update the
-file alongside any re-download. As of this writing the upstream archive
-has not been added to the repository workflow; see the project README
-for the current status.
-
-```
-# format: <sha256>  <relative path inside extracted tarball>
-```
+See `CHECKSUMS.txt`. Currently records only `mcknap.c` retrieved
+2026-06-05; new entries land when the P-port or C-compile path lands.
