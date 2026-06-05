@@ -47,6 +47,8 @@ DEFAULT_PAIRED_CSV = (
     / "paired_profit_gaps.csv"
 )
 DEFAULT_RESULTS_CSV = Path("results") / "final_experiments" / "results.csv"
+DEFAULT_LAMBDA_SWEEP = Path("results") / "anomalies" / "full" / "sweep.jsonl"
+DEFAULT_ALPHA_SWEEP = Path("results") / "anomalies" / "full_alpha" / "sweep.jsonl"
 DEFAULT_OUT_DIR = Path("figures")
 
 # Plotted solvers for `large_scale_scaling_ab` — pivot-aligned subset.
@@ -102,6 +104,18 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="SHA-256 of the pinned archive (records provenance).",
     )
     parser.add_argument(
+        "--lambda-sweep-jsonl",
+        type=Path,
+        default=DEFAULT_LAMBDA_SWEEP,
+        help=f"JSONL sweep for lambda_sensitivity figure (default: {DEFAULT_LAMBDA_SWEEP}).",
+    )
+    parser.add_argument(
+        "--alpha-sweep-jsonl",
+        type=Path,
+        default=DEFAULT_ALPHA_SWEEP,
+        help=f"JSONL sweep for allocation_ratio_sensitivity figure (default: {DEFAULT_ALPHA_SWEEP}).",
+    )
+    parser.add_argument(
         "--only",
         type=str,
         action="append",
@@ -109,6 +123,180 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Generate only this named figure (repeatable). Default: all.",
     )
     return parser.parse_args(argv)
+
+
+def _read_jsonl(path: Path) -> list[dict]:
+    with path.open() as fh:
+        return [json.loads(line) for line in fh if line.strip()]
+
+
+def _seed_from_inst_id(inst_id: str) -> int:
+    """Extract seed integer from instance id like '..._seed0' / '..._seed12'."""
+    marker = "_seed"
+    idx = inst_id.rfind(marker)
+    if idx < 0:
+        raise ValueError(f"inst_id missing '_seed' marker: {inst_id!r}")
+    return int(inst_id[idx + len(marker):])
+
+
+def _group_by_x_seed(
+    rows: list[dict], *, x_key: str, y_keys: list[str]
+) -> tuple[list[float], dict[int, dict[float, dict[str, float]]]]:
+    """Group sweep rows by x value and seed.
+
+    Returns (sorted_x_values, {seed: {x: {y_key: value, ...}}}).
+    """
+    by_seed: dict[int, dict[float, dict[str, float]]] = {}
+    x_values: set[float] = set()
+    for row in rows:
+        seed = _seed_from_inst_id(row["inst_id"])
+        x = float(row[x_key])
+        x_values.add(x)
+        by_seed.setdefault(seed, {})[x] = {key: float(row[key]) for key in y_keys}
+    return sorted(x_values), by_seed
+
+
+def _mean_sd_by_x(
+    by_seed: dict[int, dict[float, dict[str, float]]],
+    *,
+    x_values: list[float],
+    y_key: str,
+) -> tuple[list[float], list[float]]:
+    """Compute mean and population SD across seeds for each x value."""
+    means: list[float] = []
+    sds: list[float] = []
+    for x in x_values:
+        per_seed = [by_seed[seed][x][y_key] for seed in sorted(by_seed) if x in by_seed[seed]]
+        means.append(statistics.fmean(per_seed))
+        sds.append(statistics.pstdev(per_seed) if len(per_seed) > 1 else 0.0)
+    return means, sds
+
+
+def _make_sensitivity_figure(
+    args: argparse.Namespace,
+    *,
+    figure_name: str,
+    source_jsonl: Path,
+    x_key: str,
+    x_label: str,
+    selected_marker: tuple[float, str] | None,
+) -> None:
+    """Render a two-panel sensitivity figure (quality + wall time) from a JSONL sweep.
+
+    Plots per-seed lines plus a mean line; gap is expressed as percent.
+    `selected_marker` is an optional (x_value, label) to mark with a vertical
+    dashed line on both panels (e.g. the chosen $N_{\text{iter}} = 20$).
+    """
+    rows = _read_jsonl(source_jsonl)
+    x_values, by_seed = _group_by_x_seed(
+        rows, x_key=x_key, y_keys=["optimality_gap", "hld_wall_s"]
+    )
+    seeds = sorted(by_seed)
+
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+    pdf_path = args.out_dir / f"{figure_name}.pdf"
+
+    fig, (ax_q, ax_t) = plt.subplots(1, 2, figsize=(9.5, 3.8))
+
+    for seed in seeds:
+        seed_xs = sorted(by_seed[seed])
+        gaps_pct = [by_seed[seed][x]["optimality_gap"] * 100.0 for x in seed_xs]
+        walls = [by_seed[seed][x]["hld_wall_s"] for x in seed_xs]
+        ax_q.plot(seed_xs, gaps_pct, marker=".", alpha=0.4, linewidth=0.8,
+                  label=f"seed {seed}")
+        ax_t.plot(seed_xs, walls, marker=".", alpha=0.4, linewidth=0.8,
+                  label=f"seed {seed}")
+
+    mean_gap_pct = [v * 100.0 for v in
+                    _mean_sd_by_x(by_seed, x_values=x_values, y_key="optimality_gap")[0]]
+    mean_wall, _ = _mean_sd_by_x(by_seed, x_values=x_values, y_key="hld_wall_s")
+    ax_q.plot(x_values, mean_gap_pct, color="black", linewidth=1.8, label="mean")
+    ax_t.plot(x_values, mean_wall, color="black", linewidth=1.8, label="mean")
+
+    if selected_marker is not None:
+        x_sel, label_sel = selected_marker
+        for ax in (ax_q, ax_t):
+            ax.axvline(x_sel, color="tab:red", linestyle="--", linewidth=1.0,
+                       alpha=0.7, label=label_sel)
+
+    ax_q.set_xlabel(x_label)
+    ax_q.set_ylabel("Optimality gap (\\%)")
+    ax_q.set_title("(a) Solution quality")
+    ax_q.grid(True, alpha=0.3)
+    ax_q.legend(loc="best", fontsize=8)
+
+    ax_t.set_xlabel(x_label)
+    ax_t.set_ylabel("HLD wall time (s)")
+    ax_t.set_title("(b) Computation time")
+    ax_t.grid(True, alpha=0.3)
+    ax_t.legend(loc="best", fontsize=8)
+
+    fig.tight_layout()
+    fig.savefig(pdf_path)
+    plt.close(fig)
+
+    inst_ids = sorted({row["inst_id"] for row in rows})
+    stats = {
+        "n_rows": len(rows),
+        "n_seeds": len(seeds),
+        "seeds": seeds,
+        "x_values": x_values,
+        "instances": inst_ids,
+        "mean_gap_pct_per_x": dict(zip([str(x) for x in x_values], mean_gap_pct, strict=True)),
+        "mean_wall_s_per_x": dict(zip([str(x) for x in x_values], mean_wall, strict=True)),
+    }
+    meta = {
+        "figure": figure_name,
+        "script": "scripts/make_figures.py",
+        "command": shlex.join(sys.argv),
+        "generated_at": _now_iso(),
+        "archive": {"id": args.archive_id, "sha256": args.archive_sha256},
+        "source_jsonl": str(source_jsonl),
+        "stats": stats,
+        "notes": (
+            "Single-cell anomaly sweep: hardest weakly-correlated cell "
+            "(N=10000, M=10, weakly correlated, f=0.5) across 3 seeds "
+            "(see stats.seeds for actual seed values). Quality panel shows "
+            "per-seed gap traces plus their across-seed mean; time panel "
+            "mirrors the same structure for HLD wall time."
+        ),
+    }
+    meta_path = pdf_path.with_suffix(".meta.json")
+    meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
+
+
+def make_lambda_sensitivity(args: argparse.Namespace) -> None:
+    """§3.5 (R.4 regen): lambda search iterations $N_{\\text{iter}}$ sensitivity.
+
+    Two-panel: (a) optimality gap vs $N_{\\text{iter}}$, (b) HLD wall time
+    vs $N_{\\text{iter}}$. Source: pinned anomalies/full/sweep.jsonl (75 rows
+    = 3 seeds × 25 $N_{\\text{iter}}$ values on a single anomaly cell).
+    """
+    _make_sensitivity_figure(
+        args,
+        figure_name="lambda_sensitivity",
+        source_jsonl=args.lambda_sweep_jsonl,
+        x_key="n_iter",
+        x_label="$N_{\\mathrm{iter}}$ (lambda bisection iterations)",
+        selected_marker=(20.0, "selected $N_{\\mathrm{iter}}=20$"),
+    )
+
+
+def make_allocation_ratio_sensitivity(args: argparse.Namespace) -> None:
+    """§3.6 (R.5 regen): allocation-ratio $\\alpha$ sensitivity.
+
+    Two-panel: (a) optimality gap vs $\\alpha$, (b) HLD wall time vs
+    $\\alpha$. Source: pinned anomalies/full_alpha/sweep.jsonl (33 rows
+    = 3 seeds × 11 $\\alpha$ values, with $N_{\\text{iter}}$ fixed at 20).
+    """
+    _make_sensitivity_figure(
+        args,
+        figure_name="allocation_ratio_sensitivity",
+        source_jsonl=args.alpha_sweep_jsonl,
+        x_key="alpha",
+        x_label="Allocation ratio $\\alpha$",
+        selected_marker=(0.9, "selected $\\alpha=0.9$"),
+    )
 
 
 def _read_paired_rows(path: Path) -> list[dict[str, str]]:
@@ -436,6 +624,8 @@ FIGURE_GENERATORS: dict[str, Callable[[argparse.Namespace], None]] = {
     "hld_vs_partition_paired_gains": make_hld_vs_partition_paired_gains,
     "large_scale_scaling_ab": make_large_scale_scaling_ab,
     "average_computation_time": make_average_computation_time,
+    "lambda_sensitivity": make_lambda_sensitivity,
+    "allocation_ratio_sensitivity": make_allocation_ratio_sensitivity,
 }
 
 
