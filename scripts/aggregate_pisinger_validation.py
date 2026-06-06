@@ -24,7 +24,7 @@ import argparse
 import csv
 import logging
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from statistics import median
@@ -49,18 +49,44 @@ def load_main(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(fh))
 
 
-def index_optima(rows: list[dict[str, str]]) -> dict[str, int]:
-    """Map instance_id -> mcknap optimal profit (status='optimal' rows only)."""
-    opt: dict[str, int] = {}
+def index_optima(rows: list[dict[str, str]]) -> tuple[dict[str, int], dict[str, str]]:
+    """Map instance_id -> reference profit, with mcknap-first / HiGHS-fallback policy.
+
+    Reference precedence:
+      1. mcknap if status=optimal (exact branch-and-bound, gold standard).
+      2. HiGHS if status=optimal (within default mip_rel_gap=1e-4 = 0.01%).
+      3. None — instance dropped from the analysis.
+
+    On Pisinger type-2 k=100,n=100 cells, mcknap times out at the 60s wall
+    (n=235 in the validation grid) so HiGHS becomes the reference there;
+    on every other regime mcknap finishes optimal and is preferred. We
+    return both the profit and the source so the per-cell summary can
+    surface what reference each row used.
+    """
+    by_iid: dict[str, dict[str, dict[str, str]]] = defaultdict(dict)
     for r in rows:
-        if r["solver"] == "mcknap" and r["status"] == "optimal":
-            opt[r["instance_id"]] = int(r["profit"])
-    return opt
+        if r["solver"] in ("mcknap", "highs"):
+            by_iid[r["instance_id"]][r["solver"]] = r
+
+    opt: dict[str, int] = {}
+    src: dict[str, str] = {}
+    for iid, solvers in by_iid.items():
+        m = solvers.get("mcknap")
+        h = solvers.get("highs")
+        if m and m["status"] == "optimal":
+            opt[iid] = int(m["profit"])
+            src[iid] = "mcknap"
+            continue
+        if h and h["status"] == "optimal":
+            opt[iid] = int(h["profit"])
+            src[iid] = "highs"
+    return opt, src
 
 
-def aggregate_by_cell(rows: list[dict[str, str]], opt: dict[str, int]) -> list[dict[str, object]]:
+def aggregate_by_cell(rows: list[dict[str, str]], opt: dict[str, int], src: dict[str, str]) -> list[dict[str, object]]:
     by_cell: dict[CellKey, list[float]] = defaultdict(list)
     by_cell_walls: dict[CellKey, list[float]] = defaultdict(list)
+    by_cell_src: dict[CellKey, Counter] = defaultdict(Counter)
     for r in rows:
         if r["solver"] != "hld" or r["instance_id"] not in opt:
             continue
@@ -71,15 +97,21 @@ def aggregate_by_cell(rows: list[dict[str, str]], opt: dict[str, int]) -> list[d
         key = CellKey(int(r["type_id"]), int(r["k"]), int(r["n"]), int(r["r"]))
         by_cell[key].append(gap)
         by_cell_walls[key].append(float(r["wall_time_s"]))
+        by_cell_src[key][src[r["instance_id"]]] += 1
 
     out: list[dict[str, object]] = []
     for key in sorted(by_cell, key=lambda c: (c.type_id, c.k, c.n, c.r)):
         gaps = sorted(by_cell[key])
         n = len(gaps)
+        ref_counts = by_cell_src[key]
+        ref_label = (
+            f"mcknap={ref_counts.get('mcknap', 0)},highs={ref_counts.get('highs', 0)}"
+        )
         out.append({
             "type_id": key.type_id,
             "k": key.k, "n": key.n, "r": key.r,
             "n_seeds": n,
+            "reference_mix": ref_label,
             "gap_pct_min": f"{gaps[0]:.4f}",
             "gap_pct_p25": f"{gaps[max(0, n // 4)]:.4f}",
             "gap_pct_median": f"{gaps[n // 2]:.4f}",
@@ -309,10 +341,14 @@ def main() -> int:
     lambda_csv = args.lambda_csv or (rdir / "lambda_sweep.csv")
 
     rows = load_main(main_csv)
-    opt = index_optima(rows)
-    LOGGER.info("Loaded %d rows; %d instances with mcknap optimum", len(rows), len(opt))
+    opt, src = index_optima(rows)
+    src_counts = Counter(src.values())
+    LOGGER.info(
+        "Loaded %d rows; %d instances with reference (mcknap=%d, highs=%d)",
+        len(rows), len(opt), src_counts.get("mcknap", 0), src_counts.get("highs", 0),
+    )
 
-    write_csv(aggregate_by_cell(rows, opt), rdir / "summary_by_cell.csv")
+    write_csv(aggregate_by_cell(rows, opt, src), rdir / "summary_by_cell.csv")
     write_csv(aggregate_by_type(rows, opt), rdir / "summary_by_type.csv")
     write_csv(solver_agreement(rows), rdir / "solver_agreement.csv")
     lam = aggregate_lambda_sweep(lambda_csv)
