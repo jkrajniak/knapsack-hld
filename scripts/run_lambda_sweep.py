@@ -96,11 +96,20 @@ def already_done(out_csv: Path) -> set[tuple[str, str]]:
 
 
 def solve_optimum(instance: InstanceModel, time_limit_s: float) -> int:
-    """Get reference optimum via the exact mcknap solver."""
-    solver = get_solver("mcknap")
-    result = solver.solve(instance, time_limit_s=time_limit_s)
+    """Reference profit: mcknap-optimal first, HiGHS-optimal fallback."""
+    mcknap = get_solver("mcknap")
+    result = mcknap.solve(instance, time_limit_s=time_limit_s)
     validate_solution(instance, result)
-    return int(result.profit)
+    if str(result.status) == "optimal":
+        return int(result.profit)
+    highs = get_solver("highs")
+    hres = highs.solve(instance, time_limit_s=time_limit_s)
+    validate_solution(instance, hres)
+    if str(hres.status) != "optimal":
+        raise RuntimeError(
+            f"Neither mcknap ({result.status}) nor HiGHS ({hres.status}) returned optimal"
+        )
+    return int(hres.profit)
 
 
 def solve_hld(
