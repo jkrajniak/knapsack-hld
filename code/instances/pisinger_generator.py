@@ -26,12 +26,19 @@ publish alongside the manuscript).
 
 Scope
 -----
-Types 1 (uncorrelated), 2 (weakly correlated), and 3 (strongly
-correlated cumulative) are implemented because §3.13 of the
-manuscript references types 1 and 2 and the schema's
-`CorrelationKind` enum cleanly maps to all three. Types 4-6
-(subset-sum, zig-zag, 0-1 KP) are out of scope; calling them raises
-`NotImplementedError`.
+All six Pisinger 1995 instance types are implemented:
+
+    1. uncorrelated                 (CorrelationKind.UNCORRELATED)
+    2. weakly correlated            (CorrelationKind.WEAKLY)
+    3. strongly correlated cumul.   (CorrelationKind.STRONGLY)
+    4. subset-sum (p == w)          (CorrelationKind.SUBSET_SUM)
+    5. similar-weights (sorted)     (CorrelationKind.SIMILAR_WEIGHTS)
+    6. uncorrelated with skip       (CorrelationKind.UNCORRELATED_WITH_SKIP)
+
+Each type is a faithful port of the corresponding `case` in
+`mcknap.c::maketest` (L740-789). The Drand48 LCG and the
+`_capacity_pisinger` capacity formula are shared across all types,
+matching the C code exactly.
 """
 
 from __future__ import annotations
@@ -49,6 +56,9 @@ PISINGER_TYPES: Final[dict[int, CorrelationKind]] = {
     1: CorrelationKind.UNCORRELATED,
     2: CorrelationKind.WEAKLY,
     3: CorrelationKind.STRONGLY,
+    4: CorrelationKind.SUBSET_SUM,
+    5: CorrelationKind.SIMILAR_WEIGHTS,
+    6: CorrelationKind.UNCORRELATED_WITH_SKIP,
 }
 
 
@@ -88,9 +98,14 @@ def _make_class_items(rng: Drand48, n_items: int, r: int, type_id: int) -> list[
         return _items_type_2(rng, n_items, r)
     if type_id == 3:
         return _items_type_3(rng, n_items, r)
+    if type_id == 4:
+        return _items_type_4(rng, n_items, r)
+    if type_id == 5:
+        return _items_type_5(rng, n_items, r)
+    if type_id == 6:
+        return _items_type_6(rng, n_items, r)
     raise NotImplementedError(
-        f"Pisinger type {type_id} (subset_sum / zig-zag / 0-1 KP) is out of scope; "
-        "supported types are {1: uncorrelated, 2: weakly, 3: strongly}."
+        f"Pisinger type {type_id} not supported; valid types are {sorted(PISINGER_TYPES)}."
     )
 
 
@@ -127,6 +142,53 @@ def _items_type_3(rng: Drand48, n: int, r: int) -> list[list[int]]:
         ws_acc += w_sorted[i]
         ps_acc += p_sorted[i]
         items.append([ps_acc, ws_acc])
+    return items
+
+
+def _items_type_4(rng: Drand48, n: int, r: int) -> list[list[int]]:
+    """Subset-sum class (mcknap.c case 4): p == w == random(r)+1."""
+    items: list[list[int]] = []
+    for _ in range(n):
+        w = rng.random_below(r) + 1
+        items.append([w, w])
+    return items
+
+
+def _items_type_5(rng: Drand48, n: int, r: int) -> list[list[int]]:
+    """Similar-weights class (mcknap.c case 5).
+
+    Pre-loop: draw n weights and n profits independently in [1, r]; sort
+    each ascending; assign in sorted-pair order. This induces strong
+    rank correlation without the cumulative growth of type 3.
+
+    Note: matches C code's pre-allocation order — w[k] is drawn before
+    p[k] for each k, so the LCG stream is interleaved (w0, p0, w1, p1,
+    ...). This preserves bit-exact reproduction relative to mcknap.c.
+    """
+    w_raw: list[int] = []
+    p_raw: list[int] = []
+    for _ in range(n):
+        w_raw.append(rng.random_below(r) + 1)
+        p_raw.append(rng.random_below(r) + 1)
+    w_sorted = sorted(w_raw)
+    p_sorted = sorted(p_raw)
+    return [[p_sorted[i], w_sorted[i]] for i in range(n)]
+
+
+def _items_type_6(rng: Drand48, n: int, r: int) -> list[list[int]]:
+    """Uncorrelated with skip class (mcknap.c case 6).
+
+    First item in each class is forced to (p=0, w=0), making it a free
+    "skip" option. Remaining items follow the type-1 uncorrelated
+    distribution. Note: the C code's `if (i == j->fset) { wsum=0; psum=0;
+    break; }` short-circuits via the switch's `break`, so the first
+    item consumes NO LCG draws.
+    """
+    items: list[list[int]] = [[0, 0]]
+    for _ in range(n - 1):
+        w = rng.random_below(r) + 1
+        p = rng.random_below(r) + 1
+        items.append([p, w])
     return items
 
 

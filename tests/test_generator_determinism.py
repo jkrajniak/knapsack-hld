@@ -13,11 +13,35 @@ from instances import (
 )
 
 
-@pytest.mark.parametrize("correlation", list(CorrelationKind))
+_NATIVE_CORRELATIONS = [
+    CorrelationKind.UNCORRELATED,
+    CorrelationKind.WEAKLY,
+    CorrelationKind.STRONGLY,
+    CorrelationKind.INVERSELY_STRONGLY,
+]
+
+
+@pytest.mark.parametrize("correlation", _NATIVE_CORRELATIONS)
 def test_same_seed_same_instance(correlation: CorrelationKind) -> None:
     a = generate_instance(N=20, M=5, correlation=correlation, f=0.5, seed=42)
     b = generate_instance(N=20, M=5, correlation=correlation, f=0.5, seed=42)
     assert a.model_dump() == b.model_dump()
+
+
+@pytest.mark.parametrize(
+    "correlation",
+    [
+        CorrelationKind.SUBSET_SUM,
+        CorrelationKind.SIMILAR_WEIGHTS,
+        CorrelationKind.UNCORRELATED_WITH_SKIP,
+    ],
+)
+def test_native_generator_rejects_pisinger_only_kinds(correlation: CorrelationKind) -> None:
+    """The project's own generator does not support Pisinger-only kinds.
+    These are produced exclusively by `instances.pisinger_generator`.
+    """
+    with pytest.raises(ValueError, match="unknown correlation"):
+        generate_instance(N=4, M=4, correlation=correlation, f=0.5, seed=0)
 
 
 def test_different_seeds_differ() -> None:

@@ -99,6 +99,53 @@ def test_type_3_strongly_correlated_is_cumulative_within_class() -> None:
             assert cls[j][1] > cls[j - 1][1]
 
 
+def test_type_4_subset_sum_has_profit_equal_cost() -> None:
+    inst = generate_pisinger_instance(n_classes=4, n_items=50, r=1000, type_id=4, seed=44)
+    assert inst.correlation == CorrelationKind.SUBSET_SUM
+    for cls in inst.items:
+        for p, c in cls:
+            assert 1 <= c <= 1000
+            assert p == c
+
+
+def test_type_5_similar_weights_sorted_pairs_within_class() -> None:
+    inst = generate_pisinger_instance(n_classes=3, n_items=30, r=1000, type_id=5, seed=55)
+    assert inst.correlation == CorrelationKind.SIMILAR_WEIGHTS
+    for cls in inst.items:
+        for j in range(1, len(cls)):
+            assert cls[j][0] >= cls[j - 1][0]
+            assert cls[j][1] >= cls[j - 1][1]
+        for p, c in cls:
+            assert 1 <= p <= 1000
+            assert 1 <= c <= 1000
+
+
+def test_type_6_first_item_is_zero_skip_in_every_class() -> None:
+    inst = generate_pisinger_instance(n_classes=5, n_items=20, r=1000, type_id=6, seed=66)
+    assert inst.correlation == CorrelationKind.UNCORRELATED_WITH_SKIP
+    for cls in inst.items:
+        assert cls[0] == [0, 0]
+        for p, c in cls[1:]:
+            assert 1 <= p <= 1000
+            assert 1 <= c <= 1000
+
+
+def test_type_6_consumes_no_lcg_draws_for_first_item() -> None:
+    """Type 6 first item is hard-coded (0,0); LCG stream after one class
+    must equal `2*(n-1)` calls of `random_below(r)+1`."""
+    n = 5
+    r = 100
+    rng_a = Drand48(7)
+    inst = generate_pisinger_instance(n_classes=1, n_items=n, r=r, type_id=6, seed=7)
+    rng_b = Drand48(7)
+    expected_draws = [(rng_b.random_below(r) + 1) for _ in range(2 * (n - 1))]
+    actual_draws: list[int] = []
+    for p, c in inst.items[0][1:]:
+        actual_draws.extend([c, p])
+    assert actual_draws == expected_draws
+    _ = rng_a
+
+
 # ---------------------------------------------------------------------------
 # Capacity: hand-checked formula
 # ---------------------------------------------------------------------------
@@ -157,7 +204,7 @@ def test_emit_then_parse_round_trips() -> None:
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("type_id", [0, 4, 5, 6, 7, -1])
+@pytest.mark.parametrize("type_id", [0, 7, 8, -1])
 def test_unsupported_types_raise_not_implemented(type_id: int) -> None:
     with pytest.raises(NotImplementedError, match="Pisinger type"):
         generate_pisinger_instance(n_classes=2, n_items=4, r=100, type_id=type_id, seed=0)

@@ -27,12 +27,21 @@ GENERATOR_VERSION = "0.1.0"
 
 
 class CorrelationKind(StrEnum):
-    """Profit/cost correlation classes (Pisinger 1995, Martello & Toth 1990)."""
+    """Profit/cost correlation classes (Pisinger 1995, Martello & Toth 1990).
+
+    The first four are classical correlation labels reused by the project's
+    own generator. SUBSET_SUM, SIMILAR_WEIGHTS, and UNCORRELATED_WITH_SKIP
+    correspond one-to-one to Pisinger 1995 instance types 4, 5, and 6 and
+    are produced only by `pisinger_generator`.
+    """
 
     UNCORRELATED = "uncorrelated"
     WEAKLY = "weakly"
     STRONGLY = "strongly"
     INVERSELY_STRONGLY = "inversely_strongly"
+    SUBSET_SUM = "subset_sum"
+    SIMILAR_WEIGHTS = "similar_weights"
+    UNCORRELATED_WITH_SKIP = "uncorrelated_with_skip"
 
 
 class InstanceModel(BaseModel):
