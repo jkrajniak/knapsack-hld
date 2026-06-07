@@ -1,0 +1,136 @@
+2026-06-07 21:54:32,097 INFO run_final_experiments | Final experiments: 122 planned rows (0 already complete)
+archive: instances
+manifest: instances/MANIFEST.json
+config: configs/hld_smac_best.json
+out_csv: results/native_recheck/hld_old_incumbent_test_n_le_10000.csv
+subset: test
+solvers: hld
+selected_cells: 0
+eligible_instances: 122
+jobs: 4
+highs_threads: None
+class_ordering: sequential
+time_limit_s: 60.0
+2026-06-07 21:54:33,396 INFO run_final_experiments | final progress 1/122 elapsed=1.3s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.100_seed1.json.gz profit=11974 status=feasible
+2026-06-07 21:54:33,429 INFO run_final_experiments | final progress 2/122 elapsed=1.3s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.100_seed2.json.gz profit=10996 status=feasible
+2026-06-07 21:54:33,759 INFO run_final_experiments | final progress 3/122 elapsed=1.7s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.100_seed4.json.gz profit=11089 status=feasible
+2026-06-07 21:54:33,825 INFO run_final_experiments | final progress 4/122 elapsed=1.7s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.250_seed0.json.gz profit=29843 status=feasible
+2026-06-07 21:54:34,122 INFO run_final_experiments | final progress 5/122 elapsed=2.0s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.250_seed1.json.gz profit=29766 status=feasible
+2026-06-07 21:54:34,189 INFO run_final_experiments | final progress 6/122 elapsed=2.1s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.250_seed4.json.gz profit=28819 status=feasible
+2026-06-07 21:54:34,528 INFO run_final_experiments | final progress 7/122 elapsed=2.4s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.500_seed0.json.gz profit=59257 status=feasible
+2026-06-07 21:54:34,755 INFO run_final_experiments | final progress 8/122 elapsed=2.7s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.500_seed2.json.gz profit=55306 status=feasible
+2026-06-07 21:54:35,036 INFO run_final_experiments | final progress 9/122 elapsed=2.9s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.500_seed3.json.gz profit=56955 status=feasible
+2026-06-07 21:54:35,244 INFO run_final_experiments | final progress 10/122 elapsed=3.1s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.750_seed0.json.gz profit=89009 status=feasible
+2026-06-07 21:54:35,499 INFO run_final_experiments | final progress 11/122 elapsed=3.4s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.750_seed1.json.gz profit=85955 status=feasible
+2026-06-07 21:54:35,708 INFO run_final_experiments | final progress 12/122 elapsed=3.6s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.750_seed4.json.gz profit=86097 status=feasible
+2026-06-07 21:54:36,063 INFO run_final_experiments | final progress 13/122 elapsed=4.0s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.900_seed0.json.gz profit=105898 status=feasible
+2026-06-07 21:54:36,267 INFO run_final_experiments | final progress 14/122 elapsed=4.2s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.900_seed1.json.gz profit=104800 status=feasible
+2026-06-07 21:54:36,464 INFO run_final_experiments | final progress 15/122 elapsed=4.4s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.100_seed0.json.gz profit=11951 status=feasible
+2026-06-07 21:54:36,569 INFO run_final_experiments | final progress 16/122 elapsed=4.5s solver=hld instance=inversely_strongly/N200_M10/mckp_N200_M10_inversely_strongly_f0.900_seed4.json.gz profit=102203 status=feasible
+2026-06-07 21:54:36,616 INFO run_final_experiments | final progress 17/122 elapsed=4.5s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.100_seed3.json.gz profit=10916 status=feasible
+2026-06-07 21:54:36,722 INFO run_final_experiments | final progress 18/122 elapsed=4.6s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.100_seed4.json.gz profit=11960 status=feasible
+2026-06-07 21:54:36,861 INFO run_final_experiments | final progress 19/122 elapsed=4.8s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.250_seed0.json.gz profit=29653 status=feasible
+2026-06-07 21:54:37,100 INFO run_final_experiments | final progress 20/122 elapsed=5.0s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.250_seed1.json.gz profit=26784 status=feasible
+2026-06-07 21:54:37,169 INFO run_final_experiments | final progress 21/122 elapsed=5.1s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.250_seed3.json.gz profit=28402 status=feasible
+2026-06-07 21:54:37,578 INFO run_final_experiments | final progress 22/122 elapsed=5.5s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.500_seed0.json.gz profit=58370 status=feasible
+2026-06-07 21:54:37,623 INFO run_final_experiments | final progress 23/122 elapsed=5.5s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.500_seed1.json.gz profit=57375 status=feasible
+2026-06-07 21:54:38,182 INFO run_final_experiments | final progress 24/122 elapsed=6.1s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.500_seed4.json.gz profit=58418 status=feasible
+2026-06-07 21:54:38,326 INFO run_final_experiments | final progress 25/122 elapsed=6.2s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.750_seed2.json.gz profit=84917 status=feasible
+2026-06-07 21:54:38,905 INFO run_final_experiments | final progress 26/122 elapsed=6.8s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.750_seed3.json.gz profit=82504 status=feasible
+2026-06-07 21:54:39,019 INFO run_final_experiments | final progress 27/122 elapsed=6.9s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.750_seed4.json.gz profit=87249 status=feasible
+2026-06-07 21:54:39,637 INFO run_final_experiments | final progress 28/122 elapsed=7.5s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.900_seed0.json.gz profit=103495 status=feasible
+2026-06-07 21:54:40,307 INFO run_final_experiments | final progress 29/122 elapsed=8.2s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.900_seed2.json.gz profit=101541 status=feasible
+2026-06-07 21:54:41,139 INFO run_final_experiments | final progress 30/122 elapsed=9.0s solver=hld instance=inversely_strongly/N200_M5/mckp_N200_M5_inversely_strongly_f0.900_seed1.json.gz profit=97783 status=feasible
+2026-06-07 21:54:41,207 INFO run_final_experiments | final progress 31/122 elapsed=9.1s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.100_seed0.json.gz profit=26006 status=feasible
+2026-06-07 21:54:41,945 INFO run_final_experiments | final progress 32/122 elapsed=9.8s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.100_seed1.json.gz profit=26191 status=feasible
+2026-06-07 21:54:41,956 INFO run_final_experiments | final progress 33/122 elapsed=9.9s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.100_seed4.json.gz profit=26822 status=feasible
+2026-06-07 21:54:43,360 INFO run_final_experiments | final progress 34/122 elapsed=11.3s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.250_seed1.json.gz profit=44458 status=feasible
+2026-06-07 21:54:43,477 INFO run_final_experiments | final progress 35/122 elapsed=11.4s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.250_seed2.json.gz profit=44068 status=feasible
+2026-06-07 21:54:45,029 INFO run_final_experiments | final progress 36/122 elapsed=12.9s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.250_seed4.json.gz profit=44212 status=feasible
+2026-06-07 21:54:47,068 INFO run_final_experiments | final progress 37/122 elapsed=15.0s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.500_seed0.json.gz profit=70839 status=feasible
+2026-06-07 21:54:49,903 INFO run_final_experiments | final progress 38/122 elapsed=17.8s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.500_seed3.json.gz profit=68926 status=feasible
+2026-06-07 21:54:49,914 INFO run_final_experiments | final progress 39/122 elapsed=17.8s solver=hld instance=anomalies/weakly/N10000_M10_f0.500/mckp_N10000_M10_weakly_f0.500_seed42.json.gz profit=3224818 status=feasible
+2026-06-07 21:54:51,283 INFO run_final_experiments | final progress 40/122 elapsed=19.2s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.500_seed4.json.gz profit=70181 status=feasible
+2026-06-07 21:54:54,037 INFO run_final_experiments | final progress 41/122 elapsed=21.9s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.750_seed1.json.gz profit=96122 status=feasible
+2026-06-07 21:54:54,447 INFO run_final_experiments | final progress 42/122 elapsed=22.3s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.750_seed3.json.gz profit=93534 status=feasible
+2026-06-07 21:54:55,494 INFO run_final_experiments | final progress 43/122 elapsed=23.4s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.750_seed4.json.gz profit=94952 status=feasible
+2026-06-07 21:54:58,771 INFO run_final_experiments | final progress 44/122 elapsed=26.7s solver=hld instance=anomalies/weakly/N10000_M10_f0.500/mckp_N10000_M10_weakly_f0.500_seed0.json.gz profit=3220542 status=feasible
+2026-06-07 21:54:58,864 INFO run_final_experiments | final progress 45/122 elapsed=26.8s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.900_seed0.json.gz profit=110946 status=feasible
+2026-06-07 21:54:59,092 INFO run_final_experiments | final progress 46/122 elapsed=27.0s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.900_seed1.json.gz profit=110418 status=feasible
+2026-06-07 21:54:59,299 INFO run_final_experiments | final progress 47/122 elapsed=27.2s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.100_seed0.json.gz profit=22014 status=feasible
+2026-06-07 21:54:59,336 INFO run_final_experiments | final progress 48/122 elapsed=27.2s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.100_seed1.json.gz profit=22342 status=feasible
+2026-06-07 21:54:59,608 INFO run_final_experiments | final progress 49/122 elapsed=27.5s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.100_seed3.json.gz profit=22107 status=feasible
+2026-06-07 21:55:00,097 INFO run_final_experiments | final progress 50/122 elapsed=28.0s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.250_seed0.json.gz profit=42757 status=feasible
+2026-06-07 21:55:00,124 INFO run_final_experiments | final progress 51/122 elapsed=28.0s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.250_seed2.json.gz profit=43022 status=feasible
+2026-06-07 21:55:00,230 INFO run_final_experiments | final progress 52/122 elapsed=28.1s solver=hld instance=strongly/N200_M10/mckp_N200_M10_strongly_f0.900_seed3.json.gz profit=107989 status=feasible
+2026-06-07 21:55:00,427 INFO run_final_experiments | final progress 53/122 elapsed=28.3s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.250_seed3.json.gz profit=42394 status=feasible
+2026-06-07 21:55:01,743 INFO run_final_experiments | final progress 54/122 elapsed=29.6s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.500_seed2.json.gz profit=68682 status=feasible
+2026-06-07 21:55:01,776 INFO run_final_experiments | final progress 55/122 elapsed=29.7s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.500_seed4.json.gz profit=70281 status=feasible
+2026-06-07 21:55:01,823 INFO run_final_experiments | final progress 56/122 elapsed=29.7s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.500_seed0.json.gz profit=69719 status=feasible
+2026-06-07 21:55:02,890 INFO run_final_experiments | final progress 57/122 elapsed=30.8s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.750_seed1.json.gz profit=94357 status=feasible
+2026-06-07 21:55:04,291 INFO run_final_experiments | final progress 58/122 elapsed=32.2s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.750_seed4.json.gz profit=96176 status=feasible
+2026-06-07 21:55:04,407 INFO run_final_experiments | final progress 59/122 elapsed=32.3s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.750_seed3.json.gz profit=92312 status=feasible
+2026-06-07 21:55:04,418 INFO run_final_experiments | final progress 60/122 elapsed=32.3s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.900_seed0.json.gz profit=110766 status=feasible
+2026-06-07 21:55:05,191 INFO run_final_experiments | final progress 61/122 elapsed=33.1s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.100_seed0.json.gz profit=111308 status=feasible
+2026-06-07 21:55:05,203 INFO run_final_experiments | final progress 62/122 elapsed=33.1s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.100_seed2.json.gz profit=100226 status=feasible
+2026-06-07 21:55:05,754 INFO run_final_experiments | final progress 63/122 elapsed=33.7s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.900_seed1.json.gz profit=109267 status=feasible
+2026-06-07 21:55:05,912 INFO run_final_experiments | final progress 64/122 elapsed=33.8s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.250_seed0.json.gz profit=150519 status=feasible
+2026-06-07 21:55:05,924 INFO run_final_experiments | final progress 65/122 elapsed=33.8s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.100_seed3.json.gz profit=107049 status=feasible
+2026-06-07 21:55:06,427 INFO run_final_experiments | final progress 66/122 elapsed=34.3s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.250_seed1.json.gz profit=145356 status=feasible
+2026-06-07 21:55:06,506 INFO run_final_experiments | final progress 67/122 elapsed=34.4s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.500_seed0.json.gz profit=173327 status=feasible
+2026-06-07 21:55:06,582 INFO run_final_experiments | final progress 68/122 elapsed=34.5s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.250_seed2.json.gz profit=143623 status=feasible
+2026-06-07 21:55:06,673 INFO run_final_experiments | final progress 69/122 elapsed=34.6s solver=hld instance=strongly/N200_M5/mckp_N200_M5_strongly_f0.900_seed2.json.gz profit=108257 status=feasible
+2026-06-07 21:55:06,988 INFO run_final_experiments | final progress 70/122 elapsed=34.9s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.500_seed1.json.gz profit=172499 status=feasible
+2026-06-07 21:55:07,044 INFO run_final_experiments | final progress 71/122 elapsed=34.9s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.500_seed4.json.gz profit=172782 status=feasible
+2026-06-07 21:55:07,156 INFO run_final_experiments | final progress 72/122 elapsed=35.1s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.750_seed0.json.gz profit=180605 status=feasible
+2026-06-07 21:55:07,213 INFO run_final_experiments | final progress 73/122 elapsed=35.1s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.750_seed1.json.gz profit=180463 status=feasible
+2026-06-07 21:55:07,522 INFO run_final_experiments | final progress 74/122 elapsed=35.4s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.750_seed2.json.gz profit=181856 status=feasible
+2026-06-07 21:55:07,579 INFO run_final_experiments | final progress 75/122 elapsed=35.5s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.900_seed0.json.gz profit=183421 status=feasible
+2026-06-07 21:55:07,727 INFO run_final_experiments | final progress 76/122 elapsed=35.6s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.900_seed4.json.gz profit=183392 status=feasible
+2026-06-07 21:55:07,771 INFO run_final_experiments | final progress 77/122 elapsed=35.7s solver=hld instance=uncorrelated/N200_M10/mckp_N200_M10_uncorrelated_f0.900_seed1.json.gz profit=181208 status=feasible
+2026-06-07 21:55:08,086 INFO run_final_experiments | final progress 78/122 elapsed=36.0s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.100_seed0.json.gz profit=75015 status=feasible
+2026-06-07 21:55:08,097 INFO run_final_experiments | final progress 79/122 elapsed=36.0s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.100_seed1.json.gz profit=72776 status=feasible
+2026-06-07 21:55:08,271 INFO run_final_experiments | final progress 80/122 elapsed=36.2s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.100_seed4.json.gz profit=81128 status=feasible
+2026-06-07 21:55:08,465 INFO run_final_experiments | final progress 81/122 elapsed=36.4s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.250_seed2.json.gz profit=112260 status=feasible
+2026-06-07 21:55:08,727 INFO run_final_experiments | final progress 82/122 elapsed=36.6s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.250_seed4.json.gz profit=119060 status=feasible
+2026-06-07 21:55:08,762 INFO run_final_experiments | final progress 83/122 elapsed=36.7s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.250_seed3.json.gz profit=108587 status=feasible
+2026-06-07 21:55:09,080 INFO run_final_experiments | final progress 84/122 elapsed=37.0s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.500_seed1.json.gz profit=135374 status=feasible
+2026-06-07 21:55:09,093 INFO run_final_experiments | final progress 85/122 elapsed=37.0s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.500_seed3.json.gz profit=143187 status=feasible
+2026-06-07 21:55:09,364 INFO run_final_experiments | final progress 86/122 elapsed=37.3s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.750_seed0.json.gz profit=165783 status=feasible
+2026-06-07 21:55:09,408 INFO run_final_experiments | final progress 87/122 elapsed=37.3s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.500_seed4.json.gz profit=150708 status=feasible
+2026-06-07 21:55:09,699 INFO run_final_experiments | final progress 88/122 elapsed=37.6s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.750_seed2.json.gz profit=162278 status=feasible
+2026-06-07 21:55:09,699 INFO run_final_experiments | final progress 89/122 elapsed=37.6s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.750_seed1.json.gz profit=161585 status=feasible
+2026-06-07 21:55:09,988 INFO run_final_experiments | final progress 90/122 elapsed=37.9s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.900_seed0.json.gz profit=169140 status=feasible
+2026-06-07 21:55:10,022 INFO run_final_experiments | final progress 91/122 elapsed=37.9s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.900_seed2.json.gz profit=165813 status=feasible
+2026-06-07 21:55:10,288 INFO run_final_experiments | final progress 92/122 elapsed=38.2s solver=hld instance=uncorrelated/N200_M5/mckp_N200_M5_uncorrelated_f0.900_seed3.json.gz profit=162358 status=feasible
+2026-06-07 21:55:10,520 INFO run_final_experiments | final progress 93/122 elapsed=38.4s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.100_seed0.json.gz profit=17511 status=feasible
+2026-06-07 21:55:10,710 INFO run_final_experiments | final progress 94/122 elapsed=38.6s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.100_seed2.json.gz profit=17334 status=feasible
+2026-06-07 21:55:10,943 INFO run_final_experiments | final progress 95/122 elapsed=38.8s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.100_seed4.json.gz profit=16469 status=feasible
+2026-06-07 21:55:11,039 INFO run_final_experiments | final progress 96/122 elapsed=38.9s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.250_seed2.json.gz profit=36108 status=feasible
+2026-06-07 21:55:11,184 INFO run_final_experiments | final progress 97/122 elapsed=39.1s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.250_seed3.json.gz profit=35747 status=feasible
+2026-06-07 21:55:11,399 INFO run_final_experiments | final progress 98/122 elapsed=39.3s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.250_seed4.json.gz profit=36435 status=feasible
+2026-06-07 21:55:11,562 INFO run_final_experiments | final progress 99/122 elapsed=39.5s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.500_seed0.json.gz profit=65533 status=feasible
+2026-06-07 21:55:11,629 INFO run_final_experiments | final progress 100/122 elapsed=39.5s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.500_seed2.json.gz profit=64771 status=feasible
+2026-06-07 21:55:11,789 INFO run_final_experiments | final progress 101/122 elapsed=39.7s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.500_seed4.json.gz profit=64587 status=feasible
+2026-06-07 21:55:11,929 INFO run_final_experiments | final progress 102/122 elapsed=39.8s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.750_seed0.json.gz profit=93313 status=feasible
+2026-06-07 21:55:12,074 INFO run_final_experiments | final progress 103/122 elapsed=40.0s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.750_seed3.json.gz profit=89604 status=feasible
+2026-06-07 21:55:12,133 INFO run_final_experiments | final progress 104/122 elapsed=40.0s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.750_seed4.json.gz profit=91082 status=feasible
+2026-06-07 21:55:12,339 INFO run_final_experiments | final progress 105/122 elapsed=40.2s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.900_seed0.json.gz profit=108047 status=feasible
+2026-06-07 21:55:12,443 INFO run_final_experiments | final progress 106/122 elapsed=40.3s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.900_seed3.json.gz profit=104619 status=feasible
+2026-06-07 21:55:12,581 INFO run_final_experiments | final progress 107/122 elapsed=40.5s solver=hld instance=weakly/N200_M10/mckp_N200_M10_weakly_f0.900_seed4.json.gz profit=106283 status=feasible
+2026-06-07 21:55:12,627 INFO run_final_experiments | final progress 108/122 elapsed=40.5s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.100_seed1.json.gz profit=15639 status=feasible
+2026-06-07 21:55:12,890 INFO run_final_experiments | final progress 109/122 elapsed=40.8s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.100_seed4.json.gz profit=15694 status=feasible
+2026-06-07 21:55:12,891 INFO run_final_experiments | final progress 110/122 elapsed=40.8s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.100_seed3.json.gz profit=15002 status=feasible
+2026-06-07 21:55:13,229 INFO run_final_experiments | final progress 111/122 elapsed=41.1s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.250_seed0.json.gz profit=34386 status=feasible
+2026-06-07 21:55:13,268 INFO run_final_experiments | final progress 112/122 elapsed=41.2s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.250_seed1.json.gz profit=33751 status=feasible
+2026-06-07 21:55:13,544 INFO run_final_experiments | final progress 113/122 elapsed=41.4s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.500_seed0.json.gz profit=63331 status=feasible
+2026-06-07 21:55:13,626 INFO run_final_experiments | final progress 114/122 elapsed=41.5s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.250_seed4.json.gz profit=33900 status=feasible
+2026-06-07 21:55:13,860 INFO run_final_experiments | final progress 115/122 elapsed=41.8s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.500_seed3.json.gz profit=59903 status=feasible
+2026-06-07 21:55:13,914 INFO run_final_experiments | final progress 116/122 elapsed=41.8s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.500_seed4.json.gz profit=62608 status=feasible
+2026-06-07 21:55:14,205 INFO run_final_experiments | final progress 117/122 elapsed=42.1s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.750_seed0.json.gz profit=90310 status=feasible
+2026-06-07 21:55:14,303 INFO run_final_experiments | final progress 118/122 elapsed=42.2s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.750_seed2.json.gz profit=88381 status=feasible
+2026-06-07 21:55:14,698 INFO run_final_experiments | final progress 119/122 elapsed=42.6s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.750_seed4.json.gz profit=89849 status=feasible
+2026-06-07 21:55:14,744 INFO run_final_experiments | final progress 120/122 elapsed=42.6s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.900_seed0.json.gz profit=105546 status=feasible
+2026-06-07 21:55:15,009 INFO run_final_experiments | final progress 121/122 elapsed=42.9s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.900_seed2.json.gz profit=103308 status=feasible
+2026-06-07 21:55:15,078 INFO run_final_experiments | final progress 122/122 elapsed=43.0s solver=hld instance=weakly/N200_M5/mckp_N200_M5_weakly_f0.900_seed3.json.gz profit=100911 status=feasible
+2026-06-07 21:55:15,078 INFO run_final_experiments | Wrote final experiment rows to results/native_recheck/hld_old_incumbent_test_n_le_10000.csv
