@@ -1,0 +1,14 @@
+{
+  "source_run": "tuning/pisinger_smac/ (Pisinger-inclusive re-tune, 2026-06-07)",
+  "smac_seed": 7,
+  "n_trials_total": 3000,
+  "training_pool_size": 286,
+  "training_seeds": [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012],
+  "training_gap_mean": 0.006041670076371623,
+  "training_gap_ci_low": 0.004695542455497284,
+  "training_gap_ci_high": 0.007472006037544145,
+  "n_iter": 45,
+  "alpha": 0.8016792441865,
+  "k": 4,
+  "lambda_max": 4.9984397606918
+}

@@ -1,0 +1,19 @@
+2026-06-07 11:22:20,417 INFO HLD SMAC settings: HldSettings(n_iter=45, alpha=0.8016792441865, k=4, lambda_max=4.9984397606918)
+2026-06-07 11:22:20,418 INFO Grid: 1600 cells × 1 solvers = 1600 runs
+2026-06-07 11:22:21,422 INFO [100/1600] cells done | elapsed 1.0s | runs 100 | ETA 15.1s
+2026-06-07 11:22:22,424 INFO [200/1600] cells done | elapsed 2.0s | runs 200 | ETA 14.0s
+2026-06-07 11:22:25,512 INFO [300/1600] cells done | elapsed 5.1s | runs 300 | ETA 22.1s
+2026-06-07 11:22:28,648 INFO [400/1600] cells done | elapsed 8.2s | runs 400 | ETA 24.7s
+2026-06-07 11:22:34,599 INFO [500/1600] cells done | elapsed 14.2s | runs 500 | ETA 31.2s
+2026-06-07 11:22:40,134 INFO [600/1600] cells done | elapsed 19.7s | runs 600 | ETA 32.9s
+2026-06-07 11:23:13,657 INFO [700/1600] cells done | elapsed 53.2s | runs 700 | ETA 68.4s
+2026-06-07 11:23:44,994 INFO [800/1600] cells done | elapsed 84.6s | runs 800 | ETA 84.6s
+2026-06-07 11:23:50,589 INFO [900/1600] cells done | elapsed 90.2s | runs 900 | ETA 70.1s
+2026-06-07 11:23:57,700 INFO [1000/1600] cells done | elapsed 97.3s | runs 1000 | ETA 58.4s
+2026-06-07 11:24:20,522 INFO [1100/1600] cells done | elapsed 120.1s | runs 1100 | ETA 54.6s
+2026-06-07 11:25:19,889 INFO [1200/1600] cells done | elapsed 179.5s | runs 1200 | ETA 59.8s
+2026-06-07 11:26:03,023 INFO [1300/1600] cells done | elapsed 222.6s | runs 1300 | ETA 51.4s
+2026-06-07 11:27:04,397 INFO [1400/1600] cells done | elapsed 284.0s | runs 1400 | ETA 40.6s
+2026-06-07 11:28:09,003 INFO [1500/1600] cells done | elapsed 348.6s | runs 1500 | ETA 23.2s
+2026-06-07 11:29:37,914 INFO [1600/1600] cells done | elapsed 437.5s | runs 1600 | ETA 0.0s
+2026-06-07 11:29:37,914 INFO Completed: 1600 cells, 1600 new runs in 437.5s -> results/pisinger_validation/holdout_new_incumbent_t12.csv

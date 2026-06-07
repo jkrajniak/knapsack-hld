@@ -1,0 +1,97 @@
+2026-06-07 07:59:43,850 INFO run_pisinger_smac | Building Pisinger training pool: 24 cells × 12 seeds = 288 instances
+2026-06-07 07:59:44,162 INFO run_pisinger_smac | ref 20/288 valid=20 elapsed=0.3s last=pisinger_smac_t1_k10_n100_r10000_s1008 profit=98578 in 0.01s
+2026-06-07 07:59:46,054 INFO run_pisinger_smac | ref 40/288 valid=40 elapsed=2.2s last=pisinger_smac_t1_k100_n100_r10000_s1004 profit=985749 in 0.36s
+2026-06-07 07:59:53,631 INFO run_pisinger_smac | ref 60/288 valid=60 elapsed=9.8s last=pisinger_smac_t2_k10_n10_r10000_s1012 profit=51212 in 1.10s
+2026-06-07 07:59:56,709 INFO run_pisinger_smac | ref 80/288 valid=80 elapsed=12.9s last=pisinger_smac_t2_k100_n10_r10000_s1008 profit=501765 in 0.28s
+2026-06-07 08:00:06,929 INFO run_pisinger_smac | ref 100/288 valid=100 elapsed=23.1s last=pisinger_smac_t3_k10_n10_r10000_s1004 profit=52482 in 0.74s
+2026-06-07 08:00:39,927 WARNING run_pisinger_smac | skipping pisinger_smac_t3_k10_n100_r10000_s1002 (HiGHS status=timeout profit=58711)
+2026-06-07 08:01:10,266 WARNING run_pisinger_smac | skipping pisinger_smac_t3_k10_n100_r10000_s1006 (HiGHS status=timeout profit=57218)
+2026-06-07 08:01:11,358 INFO run_pisinger_smac | ref 120/288 valid=118 elapsed=87.5s last=pisinger_smac_t3_k10_n100_r10000_s1012 profit=56470 in 0.09s
+2026-06-07 08:01:20,111 INFO run_pisinger_smac | ref 140/288 valid=138 elapsed=96.3s last=pisinger_smac_t3_k100_n100_r10000_s1008 profit=574251 in 0.17s
+2026-06-07 08:01:22,051 INFO run_pisinger_smac | ref 160/288 valid=158 elapsed=98.2s last=pisinger_smac_t4_k10_n100_r10000_s1004 profit=49756 in 0.06s
+2026-06-07 08:01:23,469 INFO run_pisinger_smac | ref 180/288 valid=178 elapsed=99.6s last=pisinger_smac_t4_k100_n10_r10000_s1012 profit=500116 in 0.05s
+2026-06-07 08:01:33,327 INFO run_pisinger_smac | ref 200/288 valid=198 elapsed=109.5s last=pisinger_smac_t5_k10_n10_r10000_s1008 profit=64413 in 0.02s
+2026-06-07 08:01:36,406 INFO run_pisinger_smac | ref 220/288 valid=218 elapsed=112.6s last=pisinger_smac_t5_k100_n10_r10000_s1004 profit=683600 in 0.10s
+2026-06-07 08:01:44,836 INFO run_pisinger_smac | ref 240/288 valid=238 elapsed=121.0s last=pisinger_smac_t5_k100_n100_r10000_s1012 profit=588235 in 0.17s
+2026-06-07 08:01:45,123 INFO run_pisinger_smac | ref 260/288 valid=258 elapsed=121.3s last=pisinger_smac_t6_k10_n100_r10000_s1008 profit=98348 in 0.03s
+2026-06-07 08:01:47,058 INFO run_pisinger_smac | ref 280/288 valid=278 elapsed=123.2s last=pisinger_smac_t6_k100_n100_r10000_s1004 profit=985470 in 0.20s
+2026-06-07 08:01:49,927 INFO run_pisinger_smac | ref 288/288 valid=286 elapsed=126.1s last=pisinger_smac_t6_k100_n100_r10000_s1012 profit=985298 in 0.24s
+2026-06-07 08:01:49,927 INFO run_pisinger_smac | Training pool ready: 286 valid instances
+2026-06-07 08:01:49,927 INFO run_pisinger_smac | Param space: {'n_iter': {'low': 5, 'high': 50, 'default': 20}, 'alpha': {'low': 0.0, 'high': 1.0, 'default': 0.9}, 'k': {'low': 4, 'high': 64, 'default': 8}, 'lambda_max': {'low': 0.1, 'high': 100.0, 'default': 5.0}}
+2026-06-07 08:01:49,927 INFO run_pisinger_smac | Launching SMAC: budget=3000 trials, eval_time=5.0s, seed=7
+[WARNING][abstract_encoder.py:74] We strongly encourage to use instance features when using instances.If no instance features are passed, the runhistory encoder can not distinguish between different instances and therefore returns the same data points with different values, all of which are used to train the surrogate model.
+Consider using instance indices as features.
+[INFO][abstract_initial_design.py:143] Using 1 initial design configurations and 0 additional configurations.
+[INFO][abstract_intensifier.py:313] Using only one seed for deterministic scenario.
+[INFO][abstract_intensifier.py:523] Added config 13abc1 as new incumbent because there are no incumbents yet.
+[INFO][smbo.py:334] Finished 50 trials.
+[INFO][smbo.py:334] Finished 100 trials.
+[INFO][smbo.py:334] Finished 150 trials.
+[INFO][abstract_intensifier.py:630] Added config c15e07 and rejected config 13abc1 as incumbent because it is not better than the incumbents on 66 instances: 
+[INFO][smbo.py:334] Finished 200 trials.
+[INFO][smbo.py:334] Finished 250 trials.
+[INFO][smbo.py:334] Finished 300 trials.
+[INFO][smbo.py:334] Finished 350 trials.
+[INFO][smbo.py:334] Finished 400 trials.
+[INFO][smbo.py:334] Finished 450 trials.
+[INFO][smbo.py:334] Finished 500 trials.
+[INFO][smbo.py:334] Finished 550 trials.
+[INFO][smbo.py:334] Finished 600 trials.
+[INFO][smbo.py:334] Finished 650 trials.
+[INFO][smbo.py:334] Finished 700 trials.
+[INFO][smbo.py:334] Finished 750 trials.
+[INFO][smbo.py:334] Finished 800 trials.
+[INFO][smbo.py:334] Finished 850 trials.
+[INFO][smbo.py:334] Finished 900 trials.
+[INFO][smbo.py:334] Finished 950 trials.
+[INFO][smbo.py:334] Finished 1000 trials.
+[INFO][smbo.py:334] Finished 1050 trials.
+[INFO][abstract_intensifier.py:630] Added config bd8168 and rejected config c15e07 as incumbent because it is not better than the incumbents on 286 instances: 
+[INFO][smbo.py:334] Finished 1100 trials.
+[INFO][smbo.py:334] Finished 1150 trials.
+[INFO][smbo.py:334] Finished 1200 trials.
+[INFO][smbo.py:334] Finished 1250 trials.
+[INFO][smbo.py:334] Finished 1300 trials.
+[INFO][smbo.py:334] Finished 1350 trials.
+[INFO][smbo.py:334] Finished 1400 trials.
+[INFO][smbo.py:334] Finished 1450 trials.
+[INFO][smbo.py:334] Finished 1500 trials.
+[INFO][smbo.py:334] Finished 1550 trials.
+[INFO][smbo.py:334] Finished 1600 trials.
+[INFO][smbo.py:334] Finished 1650 trials.
+[INFO][smbo.py:334] Finished 1700 trials.
+[INFO][smbo.py:334] Finished 1750 trials.
+[INFO][smbo.py:334] Finished 1800 trials.
+[INFO][smbo.py:334] Finished 1850 trials.
+[INFO][smbo.py:334] Finished 1900 trials.
+[INFO][smbo.py:334] Finished 1950 trials.
+[INFO][smbo.py:334] Finished 2000 trials.
+[INFO][smbo.py:334] Finished 2050 trials.
+[INFO][smbo.py:334] Finished 2100 trials.
+[INFO][smbo.py:334] Finished 2150 trials.
+[INFO][smbo.py:334] Finished 2200 trials.
+[INFO][smbo.py:334] Finished 2250 trials.
+[INFO][smbo.py:334] Finished 2300 trials.
+[INFO][smbo.py:334] Finished 2350 trials.
+[INFO][smbo.py:334] Finished 2400 trials.
+[INFO][smbo.py:334] Finished 2450 trials.
+[INFO][smbo.py:334] Finished 2500 trials.
+[INFO][smbo.py:334] Finished 2550 trials.
+[INFO][smbo.py:334] Finished 2600 trials.
+[INFO][smbo.py:334] Finished 2650 trials.
+[INFO][smbo.py:334] Finished 2700 trials.
+[INFO][smbo.py:334] Finished 2750 trials.
+[INFO][smbo.py:334] Finished 2800 trials.
+[INFO][abstract_intensifier.py:630] Added config 329744 and rejected config bd8168 as incumbent because it is not better than the incumbents on 286 instances: 
+[INFO][smbo.py:334] Finished 2850 trials.
+[INFO][smbo.py:334] Finished 2900 trials.
+[INFO][smbo.py:334] Finished 2950 trials.
+[INFO][smbo.py:334] Finished 3000 trials.
+[INFO][smbo.py:342] Configuration budget is exhausted:
+[INFO][smbo.py:343] --- Remaining wallclock time: inf
+[INFO][smbo.py:344] --- Remaining cpu time: inf
+[INFO][smbo.py:345] --- Remaining trials: 0
+[INFO][run_pisinger_smac.py:268] Incumbent: n_iter=45 alpha=0.8017 k=4 lambda_max=4.9984
+[INFO][run_pisinger_smac.py:277] wrote 3000 trial rows to tuning/pisinger_smac/evaluations.csv
+[INFO][run_pisinger_smac.py:279] Re-evaluating incumbent across full pool for unbiased CI...
+[INFO][run_pisinger_smac.py:295] wrote incumbent to tuning/pisinger_smac/incumbent.json
