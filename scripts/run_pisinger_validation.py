@@ -7,18 +7,27 @@ the requested solvers on each, and writes one CSV row per
 (instance, solver) pair. The exact `mcknap` solver acts as the
 reference for optimality-gap calculations downstream.
 
-Default grid matches Pisinger 1995 §6 verbatim:
-  types: 1 (uncorrelated), 2 (weakly correlated)
+Default grid covers all six Pisinger 1995 §6 instance types:
+  types: 1 (uncorrelated), 2 (weakly), 3 (strongly cumulative),
+         4 (subset-sum), 5 (similar-weights), 6 (uncorrelated-with-skip)
   k    : {10, 100}     (number of classes)
   n    : {10, 100}     (items per class)
   r    : {1000, 10000} (coefficient range)
   seeds: 1..100        (TESTS=100 in the upstream C source)
-  -> 2 * 2 * 2 * 2 * 100 = 3,200 instances per solver.
+  -> 6 * 2 * 2 * 2 * 100 = 4,800 instances per solver.
+
+The original §3.13 prose validation (types 1-2 only) used the narrower
+default `--types 1 2`; that subset remains reproducible by passing
+`--types 1 2` explicitly. Types 3-6 were added in 2026-06-07 (Task B6)
+to cover the full Pisinger §6 grid for the §3.13 evidence base and to
+give the Pisinger-inclusive SMAC re-tune a held-out evaluation set.
 
 The runner is single-threaded by design: every paper experiment in this
 repository uses the single-thread budget convention documented in §3.1.2
 of `main.tex`. Resume is supported: rows already present in `--out-csv`
-are skipped (matched on the `(instance_id, solver)` pair).
+are skipped (matched on the `(instance_id, solver)` pair), so launching
+the extended grid against an existing types-1-2 CSV will only run the
+missing types-3-6 rows fresh.
 """
 
 from __future__ import annotations
@@ -204,7 +213,14 @@ def main() -> int:
     ap.add_argument("--out-csv", type=Path, default=DEFAULT_OUT_CSV)
     ap.add_argument("--smac-config", type=Path, default=DEFAULT_SMAC_CONFIG)
     ap.add_argument("--solvers", nargs="+", default=["hld", "mcknap", "highs"])
-    ap.add_argument("--types", type=int, nargs="+", default=[1, 2])
+    ap.add_argument(
+        "--types",
+        type=int,
+        nargs="+",
+        default=[1, 2, 3, 4, 5, 6],
+        choices=[1, 2, 3, 4, 5, 6],
+        help="Pisinger 1995 §6 instance types to include. Default: all six.",
+    )
     ap.add_argument("--ks", type=int, nargs="+", default=[10, 100])
     ap.add_argument("--ns", type=int, nargs="+", default=[10, 100])
     ap.add_argument("--rs", type=int, nargs="+", default=[1000, 10000])
