@@ -33,9 +33,7 @@ FIELDS = [
 ]
 
 
-def _make_row(
-    baseline: str, N: int, gain: float, seed: int = 0
-) -> dict[str, object]:
+def _make_row(baseline: str, N: int, gain: float, seed: int = 0) -> dict[str, object]:
     return {
         "baseline_solver": baseline,
         "instance_id": f"foo/N{N}/inst_seed{seed}.json.gz",

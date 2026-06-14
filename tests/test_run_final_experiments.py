@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import csv
 import json
 import subprocess
 import sys
@@ -171,7 +170,9 @@ def test_row_records_fallback_for_hld_and_blank_for_other_solvers() -> None:
         cell: dict[str, object] | None = None
 
         def __post_init__(self) -> None:
-            object.__setattr__(self, "cell", {"N": 1, "M": 1, "correlation": "uncorrelated", "f": 0.5})
+            object.__setattr__(
+                self, "cell", {"N": 1, "M": 1, "correlation": "uncorrelated", "f": 0.5}
+            )
 
     @dataclass
     class _FakeResult:

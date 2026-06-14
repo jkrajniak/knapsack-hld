@@ -83,7 +83,9 @@ def index_optima(rows: list[dict[str, str]]) -> tuple[dict[str, int], dict[str, 
     return opt, src
 
 
-def aggregate_by_cell(rows: list[dict[str, str]], opt: dict[str, int], src: dict[str, str]) -> list[dict[str, object]]:
+def aggregate_by_cell(
+    rows: list[dict[str, str]], opt: dict[str, int], src: dict[str, str]
+) -> list[dict[str, object]]:
     by_cell: dict[CellKey, list[float]] = defaultdict(list)
     by_cell_walls: dict[CellKey, list[float]] = defaultdict(list)
     by_cell_src: dict[CellKey, Counter] = defaultdict(Counter)
@@ -104,24 +106,26 @@ def aggregate_by_cell(rows: list[dict[str, str]], opt: dict[str, int], src: dict
         gaps = sorted(by_cell[key])
         n = len(gaps)
         ref_counts = by_cell_src[key]
-        ref_label = (
-            f"mcknap={ref_counts.get('mcknap', 0)},highs={ref_counts.get('highs', 0)}"
+        ref_label = f"mcknap={ref_counts.get('mcknap', 0)},highs={ref_counts.get('highs', 0)}"
+        out.append(
+            {
+                "type_id": key.type_id,
+                "k": key.k,
+                "n": key.n,
+                "r": key.r,
+                "n_seeds": n,
+                "reference_mix": ref_label,
+                "gap_pct_min": f"{gaps[0]:.4f}",
+                "gap_pct_p25": f"{gaps[max(0, n // 4)]:.4f}",
+                "gap_pct_median": f"{gaps[n // 2]:.4f}",
+                "gap_pct_p75": f"{gaps[min(n - 1, (3 * n) // 4)]:.4f}",
+                "gap_pct_p95": f"{gaps[min(n - 1, int(n * 0.95))]:.4f}",
+                "gap_pct_max": f"{gaps[-1]:.4f}",
+                "gap_pct_mean": f"{sum(gaps) / n:.4f}",
+                "optimality_rate_pct": f"{sum(1 for g in gaps if g < 1e-9) / n * 100:.1f}",
+                "hld_wall_median_s": f"{median(by_cell_walls[key]):.4f}",
+            }
         )
-        out.append({
-            "type_id": key.type_id,
-            "k": key.k, "n": key.n, "r": key.r,
-            "n_seeds": n,
-            "reference_mix": ref_label,
-            "gap_pct_min": f"{gaps[0]:.4f}",
-            "gap_pct_p25": f"{gaps[max(0, n // 4)]:.4f}",
-            "gap_pct_median": f"{gaps[n // 2]:.4f}",
-            "gap_pct_p75": f"{gaps[min(n - 1, (3 * n) // 4)]:.4f}",
-            "gap_pct_p95": f"{gaps[min(n - 1, int(n * 0.95))]:.4f}",
-            "gap_pct_max": f"{gaps[-1]:.4f}",
-            "gap_pct_mean": f"{sum(gaps) / n:.4f}",
-            "optimality_rate_pct": f"{sum(1 for g in gaps if g < 1e-9) / n * 100:.1f}",
-            "hld_wall_median_s": f"{median(by_cell_walls[key]):.4f}",
-        })
     return out
 
 
@@ -141,19 +145,21 @@ def aggregate_by_type(rows: list[dict[str, str]], opt: dict[str, int]) -> list[d
         gaps = sorted(by_type[tid])
         n = len(gaps)
         correlation = {1: "uncorrelated", 2: "weakly", 3: "strongly"}.get(tid, f"type{tid}")
-        out.append({
-            "type_id": tid,
-            "correlation": correlation,
-            "n_instances": n,
-            "gap_pct_min": f"{gaps[0]:.4f}",
-            "gap_pct_p25": f"{gaps[n // 4]:.4f}",
-            "gap_pct_median": f"{gaps[n // 2]:.4f}",
-            "gap_pct_p75": f"{gaps[(3 * n) // 4]:.4f}",
-            "gap_pct_p95": f"{gaps[int(n * 0.95)]:.4f}",
-            "gap_pct_max": f"{gaps[-1]:.4f}",
-            "gap_pct_mean": f"{sum(gaps) / n:.4f}",
-            "optimality_rate_pct": f"{sum(1 for g in gaps if g < 1e-9) / n * 100:.1f}",
-        })
+        out.append(
+            {
+                "type_id": tid,
+                "correlation": correlation,
+                "n_instances": n,
+                "gap_pct_min": f"{gaps[0]:.4f}",
+                "gap_pct_p25": f"{gaps[n // 4]:.4f}",
+                "gap_pct_median": f"{gaps[n // 2]:.4f}",
+                "gap_pct_p75": f"{gaps[(3 * n) // 4]:.4f}",
+                "gap_pct_p95": f"{gaps[int(n * 0.95)]:.4f}",
+                "gap_pct_max": f"{gaps[-1]:.4f}",
+                "gap_pct_mean": f"{sum(gaps) / n:.4f}",
+                "optimality_rate_pct": f"{sum(1 for g in gaps if g < 1e-9) / n * 100:.1f}",
+            }
+        )
     return out
 
 
@@ -196,17 +202,22 @@ def solver_agreement(rows: list[dict[str, str]]) -> list[dict[str, object]]:
             n_mcknap_higher += 1
         rel = abs(mp - hp) / max(mp, 1) * 100
         max_rel_diff = max(max_rel_diff, rel)
-        rows_out.append({
-            "instance_id": iid,
-            "mcknap_profit": mp,
-            "highs_profit": hp,
-            "delta": hp - mp,
-            "rel_diff_pct": f"{rel:.6f}",
-        })
+        rows_out.append(
+            {
+                "instance_id": iid,
+                "mcknap_profit": mp,
+                "highs_profit": hp,
+                "delta": hp - mp,
+                "rel_diff_pct": f"{rel:.6f}",
+            }
+        )
     LOGGER.info(
         "mcknap-vs-HiGHS: %d/%d pairs differ (mcknap_higher=%d, max_rel_diff=%.4f%%) — "
         "all within HiGHS default mip_rel_gap=0.01%%",
-        n_diff, n_pairs, n_mcknap_higher, max_rel_diff,
+        n_diff,
+        n_pairs,
+        n_mcknap_higher,
+        max_rel_diff,
     )
     return rows_out
 
@@ -224,18 +235,20 @@ def aggregate_lambda_sweep(path: Path) -> list[dict[str, object]] | None:
                 continue
             by_kt[(int(r["type_id"]), float(r["lambda_max"]))].append(gap)
     out: list[dict[str, object]] = []
-    for (tid, lm) in sorted(by_kt):
+    for tid, lm in sorted(by_kt):
         gaps = sorted(by_kt[(tid, lm)])
         n = len(gaps)
-        out.append({
-            "type_id": tid,
-            "lambda_max": lm,
-            "n": n,
-            "gap_pct_median": f"{gaps[n // 2]:.4f}",
-            "gap_pct_p25": f"{gaps[n // 4]:.4f}",
-            "gap_pct_p75": f"{gaps[(3 * n) // 4]:.4f}",
-            "gap_pct_max": f"{gaps[-1]:.4f}",
-        })
+        out.append(
+            {
+                "type_id": tid,
+                "lambda_max": lm,
+                "n": n,
+                "gap_pct_median": f"{gaps[n // 2]:.4f}",
+                "gap_pct_p25": f"{gaps[n // 4]:.4f}",
+                "gap_pct_p75": f"{gaps[(3 * n) // 4]:.4f}",
+                "gap_pct_max": f"{gaps[-1]:.4f}",
+            }
+        )
     return out
 
 
@@ -266,15 +279,24 @@ def make_gap_cdf_figure(rows: list[dict[str, str]], opt: dict[str, int], out_pat
             continue
         by_type[int(r["type_id"])].append((o - int(r["profit"])) / o * 100.0)
 
-    correlation_label = {1: "Uncorrelated (type 1)", 2: "Weakly correlated (type 2)", 3: "Strongly correlated (type 3)"}
+    correlation_label = {
+        1: "Uncorrelated (type 1)",
+        2: "Weakly correlated (type 2)",
+        3: "Strongly correlated (type 3)",
+    }
     correlation_color = {1: "#1b4f72", 2: "#922b21", 3: "#196f3d"}
 
     fig, ax = plt.subplots(figsize=(6.0, 4.0))
     for tid in sorted(by_type):
         gaps = sorted(max(g, 1e-4) for g in by_type[tid])
         ys = [(i + 1) / len(gaps) for i in range(len(gaps))]
-        ax.plot(gaps, ys, label=f"{correlation_label.get(tid, tid)} (n={len(gaps)})",
-                color=correlation_color.get(tid, "k"), linewidth=2)
+        ax.plot(
+            gaps,
+            ys,
+            label=f"{correlation_label.get(tid, tid)} (n={len(gaps)})",
+            color=correlation_color.get(tid, "k"),
+            linewidth=2,
+        )
     ax.set_xscale("log")
     ax.set_xlabel("HLD optimality gap (%)")
     ax.set_ylabel("Empirical CDF")
@@ -311,9 +333,14 @@ def make_lambda_sweep_figure(path: Path, out_path: Path) -> None:
     for tid in type_keys:
         lambdas = sorted({lm for t, lm in by_tid_lm if t == tid})
         medians = [median(by_tid_lm[(tid, lm)]) for lm in lambdas]
-        ax.plot(lambdas, medians, marker="o",
-                label=f"{correlation_label.get(tid, tid)} (median gap)",
-                color=correlation_color.get(tid, "k"), linewidth=2)
+        ax.plot(
+            lambdas,
+            medians,
+            marker="o",
+            label=f"{correlation_label.get(tid, tid)} (median gap)",
+            color=correlation_color.get(tid, "k"),
+            linewidth=2,
+        )
     ax.axvline(80.745, linestyle="--", color="gray", alpha=0.7, label=r"SMAC $\lambda_{max}$")
     ax.set_xscale("log")
     ax.set_xlabel(r"$\lambda_{\max}$")
@@ -345,7 +372,10 @@ def main() -> int:
     src_counts = Counter(src.values())
     LOGGER.info(
         "Loaded %d rows; %d instances with reference (mcknap=%d, highs=%d)",
-        len(rows), len(opt), src_counts.get("mcknap", 0), src_counts.get("highs", 0),
+        len(rows),
+        len(opt),
+        src_counts.get("mcknap", 0),
+        src_counts.get("highs", 0),
     )
 
     write_csv(aggregate_by_cell(rows, opt, src), rdir / "summary_by_cell.csv")

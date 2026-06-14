@@ -76,15 +76,13 @@ def test_default_grid_covers_all_six_pisinger_types(tmp_path: Path) -> None:
 
     seen_types: dict[int, dict[str, str]] = {int(r["type_id"]): r for r in rows}
     assert set(seen_types) == set(EXPECTED_CORRELATIONS), (
-        "default --types should cover the six Pisinger 1995 types; got "
-        f"{sorted(seen_types)}"
+        f"default --types should cover the six Pisinger 1995 types; got {sorted(seen_types)}"
     )
 
     for type_id, expected in EXPECTED_CORRELATIONS.items():
         row = seen_types[type_id]
         assert row["correlation"] == expected, (
-            f"type {type_id}: expected correlation={expected!r}, got "
-            f"{row['correlation']!r}"
+            f"type {type_id}: expected correlation={expected!r}, got {row['correlation']!r}"
         )
         assert row["solver"] == "mcknap"
         assert row["status"] in {"optimal", "feasible"}, (
@@ -108,6 +106,5 @@ def test_resume_skips_existing_rows(tmp_path: Path) -> None:
     rows_after_second = _read_rows(out_csv)
     assert {int(r["type_id"]) for r in rows_after_second} == {1, 2, 3, 4, 5, 6}
     assert len(rows_after_second) == 6, (
-        f"resume should add only types 4-6, total should be 6 not "
-        f"{len(rows_after_second)}"
+        f"resume should add only types 4-6, total should be 6 not {len(rows_after_second)}"
     )

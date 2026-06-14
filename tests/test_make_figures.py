@@ -85,9 +85,7 @@ def _write_results_csv(path: Path) -> Path:
         # No HiGHS rows at N=100k by design.
         ("bissa", [0.1, 0.15], [900, 950]),  # other solver — should NOT appear in plot
     ]:
-        n = {("hld", 0.4): 1000, ("hld", 6.0): 10000, ("hld", 60.0): 100000}.get(
-            (solver, walls[0])
-        )
+        n = {("hld", 0.4): 1000, ("hld", 6.0): 10000, ("hld", 60.0): 100000}.get((solver, walls[0]))
         if n is None:
             # second-batch derivations
             n_lookup = {
@@ -153,7 +151,9 @@ def test_make_figures_emits_pivot_figure_with_meta_sidecar(tmp_path: Path) -> No
     assert completed.returncode == 0, completed.stderr
     pdf_path = out_dir / "hld_vs_partition_paired_gains.pdf"
     meta_path = out_dir / "hld_vs_partition_paired_gains.meta.json"
-    assert pdf_path.exists(), f"missing {pdf_path}\nstdout:\n{completed.stdout}\nstderr:\n{completed.stderr}"
+    assert pdf_path.exists(), (
+        f"missing {pdf_path}\nstdout:\n{completed.stdout}\nstderr:\n{completed.stderr}"
+    )
     assert pdf_path.stat().st_size > 1024, "PDF too small to be a real figure"
     assert meta_path.exists(), f"missing {meta_path}"
 

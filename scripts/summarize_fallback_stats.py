@@ -103,7 +103,10 @@ def per_cell_stats(rows: list[tuple[Cell, int]]) -> list[dict[str, object]]:
             "n_fallbacks": sum(flags),
             "fallback_rate": (sum(flags) / len(flags)) if flags else 0.0,
         }
-        for cell, flags in sorted(buckets.items(), key=lambda kv: (kv[0].n_items, kv[0].n_classes, kv[0].correlation, kv[0].f_value))
+        for cell, flags in sorted(
+            buckets.items(),
+            key=lambda kv: (kv[0].n_items, kv[0].n_classes, kv[0].correlation, kv[0].f_value),
+        )
     ]
 
 

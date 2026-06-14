@@ -170,7 +170,9 @@ def test_class_order_random_is_permutation_and_deterministic_with_seed() -> None
     c = _class_order(inst, ordering="random", random_seed=8)
     assert sorted(a) == list(range(20))  # is a permutation
     assert a == b  # seed-deterministic
-    assert a != list(range(20))  # actually shuffled (probabilistic, but with N=20 essentially certain)
+    assert a != list(
+        range(20)
+    )  # actually shuffled (probabilistic, but with N=20 essentially certain)
     assert a != c  # different seed -> different order
 
 
@@ -193,9 +195,7 @@ def test_class_order_adversarial_sorts_by_descending_max_pc_ratio() -> None:
 
 def test_class_ordering_random_does_not_change_solution_feasibility() -> None:
     inst = generate_instance(N=14, M=3, correlation=CorrelationKind.WEAKLY, f=0.5, seed=64)
-    res = HldAdapter(k=4, class_ordering="random").solve(
-        inst, time_limit_s=20.0, random_seed=123
-    )
+    res = HldAdapter(k=4, class_ordering="random").solve(inst, time_limit_s=20.0, random_seed=123)
     validate_solution(inst, res)
     assert res.total_cost <= inst.B
     assert res.solver_metadata["params"]["class_ordering"] == "random"

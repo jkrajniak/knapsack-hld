@@ -13,7 +13,6 @@ from instances.pisinger_generator import (
 from instances.pisinger_loader import parse_pisinger_text
 from instances.schema import CorrelationKind
 
-
 # ---------------------------------------------------------------------------
 # Drand48: POSIX bit-exactness + determinism
 # ---------------------------------------------------------------------------

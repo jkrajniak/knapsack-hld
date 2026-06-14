@@ -24,6 +24,7 @@ Outputs (under --out-dir):
 - ``evaluations.csv`` — every SMAC trial
 - ``reference_profits.json`` — HiGHS oracle cache (resumable)
 """
+
 from __future__ import annotations
 
 import argparse
@@ -85,7 +86,7 @@ class HldConfig:
     lambda_max: float
 
     @classmethod
-    def from_mapping(cls, m: dict[str, Any]) -> "HldConfig":
+    def from_mapping(cls, m: dict[str, Any]) -> HldConfig:
         return cls(
             n_iter=int(m["n_iter"]),
             alpha=float(m["alpha"]),
@@ -99,7 +100,11 @@ def _instance_id(type_id: int, k: int, n: int, r: int, seed: int) -> str:
 
 
 def _build_training_pool(
-    *, cells: list[tuple[int, int, int, int]], seeds: list[int], ref_time_limit_s: float, cache_path: Path
+    *,
+    cells: list[tuple[int, int, int, int]],
+    seeds: list[int],
+    ref_time_limit_s: float,
+    cache_path: Path,
 ) -> list[TrainingItem]:
     """Generate Pisinger instances and resolve HiGHS reference profits.
 
@@ -116,13 +121,19 @@ def _build_training_pool(
     for idx, ((t, k, n, r), seed) in enumerate(product(cells, seeds), start=1):
         iid = _instance_id(t, k, n, r, seed)
         inst = generate_pisinger_instance(n_classes=k, n_items=n, r=r, type_id=t, seed=seed)
-        if iid in cache and cache[iid].get("status") == "optimal" and cache[iid].get("profit", 0) > 0:
-            pool.append(TrainingItem(
-                instance_id=iid,
-                inst=inst,
-                ref_profit=int(cache[iid]["profit"]),
-                ref_time_s=float(cache[iid]["time_s"]),
-            ))
+        if (
+            iid in cache
+            and cache[iid].get("status") == "optimal"
+            and cache[iid].get("profit", 0) > 0
+        ):
+            pool.append(
+                TrainingItem(
+                    instance_id=iid,
+                    inst=inst,
+                    ref_profit=int(cache[iid]["profit"]),
+                    ref_time_s=float(cache[iid]["time_s"]),
+                )
+            )
             continue
         ts = time.perf_counter()
         ref = highs.solve(inst, time_limit_s=ref_time_limit_s)
@@ -133,18 +144,26 @@ def _build_training_pool(
             cache[iid] = {"status": str(ref.status), "profit": int(ref.profit), "time_s": ref_t}
             cache_path.write_text(json.dumps(cache, indent=2, sort_keys=True))
             continue
-        pool.append(TrainingItem(
-            instance_id=iid,
-            inst=inst,
-            ref_profit=int(ref.profit),
-            ref_time_s=ref_t,
-        ))
+        pool.append(
+            TrainingItem(
+                instance_id=iid,
+                inst=inst,
+                ref_profit=int(ref.profit),
+                ref_time_s=ref_t,
+            )
+        )
         cache[iid] = {"status": "optimal", "profit": int(ref.profit), "time_s": ref_t}
         cache_path.write_text(json.dumps(cache, indent=2, sort_keys=True))
         if idx % 20 == 0 or idx == total:
             LOGGER.info(
                 "ref %d/%d valid=%d elapsed=%.1fs last=%s profit=%d in %.2fs",
-                idx, total, len(pool), time.perf_counter() - t0, iid, ref.profit, ref_t,
+                idx,
+                total,
+                len(pool),
+                time.perf_counter() - t0,
+                iid,
+                ref.profit,
+                ref_t,
             )
     return pool
 
@@ -154,25 +173,39 @@ def _build_configspace(param_space: dict[str, dict[str, float]]) -> Any:
 
     cs = ConfigurationSpace()
     cs.add(
-        Integer("n_iter", (param_space["n_iter"]["low"], param_space["n_iter"]["high"]),
-                default=param_space["n_iter"]["default"])
+        Integer(
+            "n_iter",
+            (param_space["n_iter"]["low"], param_space["n_iter"]["high"]),
+            default=param_space["n_iter"]["default"],
+        )
     )
     cs.add(
-        Float("alpha", (param_space["alpha"]["low"], param_space["alpha"]["high"]),
-              default=param_space["alpha"]["default"])
+        Float(
+            "alpha",
+            (param_space["alpha"]["low"], param_space["alpha"]["high"]),
+            default=param_space["alpha"]["default"],
+        )
     )
     cs.add(
-        Integer("k", (param_space["k"]["low"], param_space["k"]["high"]),
-                default=param_space["k"]["default"])
+        Integer(
+            "k",
+            (param_space["k"]["low"], param_space["k"]["high"]),
+            default=param_space["k"]["default"],
+        )
     )
     cs.add(
-        Float("lambda_max", (param_space["lambda_max"]["low"], param_space["lambda_max"]["high"]),
-              default=param_space["lambda_max"]["default"])
+        Float(
+            "lambda_max",
+            (param_space["lambda_max"]["low"], param_space["lambda_max"]["high"]),
+            default=param_space["lambda_max"]["default"],
+        )
     )
     return cs
 
 
-def _evaluate_hld(item: TrainingItem, cfg: HldConfig, *, seed: int, time_limit_s: float) -> dict[str, Any]:
+def _evaluate_hld(
+    item: TrainingItem, cfg: HldConfig, *, seed: int, time_limit_s: float
+) -> dict[str, Any]:
     solver = HldAdapter(
         n_iter=cfg.n_iter, alpha=cfg.alpha, k=cfg.k, lambda_max_override=cfg.lambda_max
     )
@@ -182,15 +215,21 @@ def _evaluate_hld(item: TrainingItem, cfg: HldConfig, *, seed: int, time_limit_s
     gap = max(0.0, (item.ref_profit - int(res.profit)) / item.ref_profit)
     return {
         "instance_id": item.instance_id,
-        "n_iter": cfg.n_iter, "alpha": cfg.alpha, "k": cfg.k, "lambda_max": cfg.lambda_max,
+        "n_iter": cfg.n_iter,
+        "alpha": cfg.alpha,
+        "k": cfg.k,
+        "lambda_max": cfg.lambda_max,
         "seed": seed,
-        "profit": int(res.profit), "ref_profit": item.ref_profit,
-        "optimality_gap": float(gap), "wall_time_s": float(wall),
+        "profit": int(res.profit),
+        "ref_profit": item.ref_profit,
+        "optimality_gap": float(gap),
+        "wall_time_s": float(wall),
     }
 
 
 def _bootstrap_mean(values: list[float], *, resamples: int, seed: int) -> dict[str, float]:
     import numpy as np
+
     if not values:
         return {"mean": 0.0, "ci_low": 0.0, "ci_high": 0.0}
     rng = np.random.default_rng(seed)
@@ -211,24 +250,39 @@ def main() -> int:
     ap.add_argument("--eval-time-limit-s", type=float, default=DEFAULT_TIME_LIMIT_S)
     ap.add_argument("--ref-time-limit-s", type=float, default=DEFAULT_REF_TIME_LIMIT_S)
     ap.add_argument("--bootstrap-resamples", type=int, default=1000)
-    ap.add_argument("--preview", action="store_true",
-                    help="Use 30-trial preview budget; suffix out-dir with /preview/")
-    ap.add_argument("--max-instances", type=int, default=None,
-                    help="Cap on training instances (debugging only).")
+    ap.add_argument(
+        "--preview",
+        action="store_true",
+        help="Use 30-trial preview budget; suffix out-dir with /preview/",
+    )
+    ap.add_argument(
+        "--max-instances",
+        type=int,
+        default=None,
+        help="Cap on training instances (debugging only).",
+    )
     args = ap.parse_args()
 
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s | %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s | %(message)s"
+    )
 
     out_dir = args.out_dir / "preview" if args.preview else args.out_dir
     budget = DEFAULT_PREVIEW_BUDGET if args.preview else args.budget
     out_dir.mkdir(parents=True, exist_ok=True)
     cache_path = out_dir / "reference_profits.json"
 
-    LOGGER.info("Building Pisinger training pool: %d cells × %d seeds = %d instances",
-                len(DEFAULT_CELLS), len(DEFAULT_SEEDS), len(DEFAULT_CELLS) * len(DEFAULT_SEEDS))
+    LOGGER.info(
+        "Building Pisinger training pool: %d cells × %d seeds = %d instances",
+        len(DEFAULT_CELLS),
+        len(DEFAULT_SEEDS),
+        len(DEFAULT_CELLS) * len(DEFAULT_SEEDS),
+    )
     pool = _build_training_pool(
-        cells=DEFAULT_CELLS, seeds=DEFAULT_SEEDS,
-        ref_time_limit_s=args.ref_time_limit_s, cache_path=cache_path,
+        cells=DEFAULT_CELLS,
+        seeds=DEFAULT_SEEDS,
+        ref_time_limit_s=args.ref_time_limit_s,
+        cache_path=cache_path,
     )
     if args.max_instances is not None:
         pool = pool[: args.max_instances]
@@ -236,14 +290,19 @@ def main() -> int:
     by_id = {item.instance_id: item for item in pool}
 
     LOGGER.info("Param space: %s", PARAM_SPACE)
-    LOGGER.info("Launching SMAC: budget=%d trials, eval_time=%.1fs, seed=%d",
-                budget, args.eval_time_limit_s, args.seed)
+    LOGGER.info(
+        "Launching SMAC: budget=%d trials, eval_time=%.1fs, seed=%d",
+        budget,
+        args.eval_time_limit_s,
+        args.seed,
+    )
 
     from smac import AlgorithmConfigurationFacade, Scenario  # heavy import deferred
 
     cs = _build_configspace(PARAM_SPACE)
     scenario = Scenario(
-        configspace=cs, name="pisinger_smac",
+        configspace=cs,
+        name="pisinger_smac",
         output_directory=out_dir,
         deterministic=True,
         n_trials=int(budget),
@@ -265,8 +324,13 @@ def main() -> int:
     incumbent = smac.optimize()
 
     cfg = HldConfig.from_mapping(dict(incumbent))
-    LOGGER.info("Incumbent: n_iter=%d alpha=%.4f k=%d lambda_max=%.4f",
-                cfg.n_iter, cfg.alpha, cfg.k, cfg.lambda_max)
+    LOGGER.info(
+        "Incumbent: n_iter=%d alpha=%.4f k=%d lambda_max=%.4f",
+        cfg.n_iter,
+        cfg.alpha,
+        cfg.k,
+        cfg.lambda_max,
+    )
 
     csv_path = out_dir / "evaluations.csv"
     with csv_path.open("w", newline="") as fh:
@@ -277,15 +341,25 @@ def main() -> int:
     LOGGER.info("wrote %d trial rows to %s", len(evaluations), csv_path)
 
     LOGGER.info("Re-evaluating incumbent across full pool for unbiased CI...")
-    full = [_evaluate_hld(item, cfg, seed=args.seed, time_limit_s=args.eval_time_limit_s) for item in pool]
+    full = [
+        _evaluate_hld(item, cfg, seed=args.seed, time_limit_s=args.eval_time_limit_s)
+        for item in pool
+    ]
     gaps = [e["optimality_gap"] for e in full]
     times = [e["wall_time_s"] for e in full]
     payload = {
-        "config": {"N_iter": cfg.n_iter, "alpha": cfg.alpha, "K": cfg.k, "lambda_max": cfg.lambda_max},
+        "config": {
+            "N_iter": cfg.n_iter,
+            "alpha": cfg.alpha,
+            "K": cfg.k,
+            "lambda_max": cfg.lambda_max,
+        },
         "param_space": PARAM_SPACE,
         "smac": {"seed": args.seed, "n_trials_total": len(evaluations)},
         "training_pool_size": len(pool),
-        "training_cells": [{"type_id": t, "k": k, "n": n, "r": r} for (t, k, n, r) in DEFAULT_CELLS],
+        "training_cells": [
+            {"type_id": t, "k": k, "n": n, "r": r} for (t, k, n, r) in DEFAULT_CELLS
+        ],
         "training_seeds": DEFAULT_SEEDS,
         "optimality_gap": _bootstrap_mean(gaps, resamples=args.bootstrap_resamples, seed=args.seed),
         "runtime_s": _bootstrap_mean(times, resamples=args.bootstrap_resamples, seed=args.seed),

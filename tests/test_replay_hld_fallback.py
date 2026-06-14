@@ -77,7 +77,9 @@ def _write_config(tmp_path: Path) -> Path:
     return cfg
 
 
-def _run_replay(*, archive: Path, manifest: Path, config: Path, out_csv: Path) -> subprocess.CompletedProcess:
+def _run_replay(
+    *, archive: Path, manifest: Path, config: Path, out_csv: Path
+) -> subprocess.CompletedProcess:
     return subprocess.run(
         [
             sys.executable,

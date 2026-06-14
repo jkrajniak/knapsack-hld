@@ -180,11 +180,7 @@ def row_from(
     n_iter = settings.n_iter if (solver_name == "hld" and settings) else ""
     alpha = settings.alpha if (solver_name == "hld" and settings) else ""
     hld_k = settings.k if (solver_name == "hld" and settings) else ""
-    lambda_max = (
-        result.solver_metadata.get("lambda_max", "")
-        if solver_name == "hld"
-        else ""
-    )
+    lambda_max = result.solver_metadata.get("lambda_max", "") if solver_name == "hld" else ""
     return {
         "instance_id": instance_id_for(cell),
         "type_id": cell.type_id,
@@ -274,10 +270,10 @@ def main() -> int:
                 if (iid, solver_name) in seen:
                     continue
                 solver_settings = settings if solver_name == "hld" else None
-                result, error = run_one(
-                    solver_name, instance, solver_settings, args.time_limit_s
+                result, error = run_one(solver_name, instance, solver_settings, args.time_limit_s)
+                writer.writerow(
+                    row_from(cell, instance, solver_name, result, solver_settings, error)
                 )
-                writer.writerow(row_from(cell, instance, solver_name, result, solver_settings, error))
                 fh.flush()
                 runs_done += 1
 

@@ -104,7 +104,11 @@ def test_appendix_uses_highs_for_low_n_and_partition_optimal_for_n100k(tmp_path:
     completed = _run(paired, out)
     assert completed.returncode == 0, completed.stderr
 
-    for n, expected_baseline in (("1000", "highs"), ("10000", "highs"), ("100000", "partition_optimal")):
+    for n, expected_baseline in (
+        ("1000", "highs"),
+        ("10000", "highs"),
+        ("100000", "partition_optimal"),
+    ):
         csv_path = out / f"appendix_N{n}.csv"
         assert csv_path.exists()
         with csv_path.open() as fh:
@@ -127,7 +131,9 @@ def test_appendix_aggregates_by_cell(tmp_path: Path) -> None:
                     f=f,
                     seed=str(seed),
                     # gain in {-0.5, 0.0, +0.5} for cell 0; {+1, +2, +3} for cell 1.
-                    hld_vs_baseline_gain_pct=str([-0.5, 0.0, 0.5, 1.0, 2.0, 3.0][cell_idx * 3 + seed]),
+                    hld_vs_baseline_gain_pct=str(
+                        [-0.5, 0.0, 0.5, 1.0, 2.0, 3.0][cell_idx * 3 + seed]
+                    ),
                     hld_wall_time_s=str(0.1 * (seed + 1)),
                     baseline_wall_time_s=str(0.5 * (seed + 1)),
                 )

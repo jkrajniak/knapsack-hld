@@ -12,7 +12,6 @@ from instances import (
     save_instance,
 )
 
-
 _NATIVE_CORRELATIONS = [
     CorrelationKind.UNCORRELATED,
     CorrelationKind.WEAKLY,

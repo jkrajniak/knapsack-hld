@@ -54,6 +54,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from instances.io import load_instance
+from run_final_experiments import HldSettings, load_entries, load_hld_settings
 from solvers.hld import (
     CLASS_ORDERINGS,
     DEFAULT_CLASS_ORDERING,
@@ -64,8 +65,6 @@ from solvers.hld import (
     _phase2_estimate,
     _split_classes,
 )
-
-from run_final_experiments import HldSettings, load_entries, load_hld_settings
 
 LOGGER = logging.getLogger("replay_hld_fallback")
 
@@ -172,15 +171,11 @@ def _probe_one(
     phase1_wall_s = time.perf_counter() - t0
 
     k = min(settings.k, instance.N)
-    order = _class_order(
-        instance, ordering=class_ordering, random_seed=None
-    )
+    order = _class_order(instance, ordering=class_ordering, random_seed=None)
     batches = _split_classes(instance.N, k, order=order)
 
     t1 = time.perf_counter()
-    _per_batch, fallback = _phase2_estimate(
-        instance, batches=batches, lambda_est=lambda_est
-    )
+    _per_batch, fallback = _phase2_estimate(instance, batches=batches, lambda_est=lambda_est)
     phase2_wall_s = time.perf_counter() - t1
 
     return {

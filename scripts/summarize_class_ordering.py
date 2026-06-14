@@ -22,9 +22,9 @@ import math
 import statistics
 import sys
 from collections import defaultdict
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 ORDERINGS: tuple[str, ...] = ("sequential", "random", "adversarial")
 
@@ -68,8 +68,7 @@ def load_ordering_rows(path: Path, expected_ordering: str) -> list[Row]:
             ordering = raw.get("class_ordering") or expected_ordering
             if ordering != expected_ordering:
                 raise SystemExit(
-                    f"{path} contains class_ordering={ordering!r}; "
-                    f"expected {expected_ordering!r}"
+                    f"{path} contains class_ordering={ordering!r}; expected {expected_ordering!r}"
                 )
             out.append(
                 Row(
@@ -80,9 +79,7 @@ def load_ordering_rows(path: Path, expected_ordering: str) -> list[Row]:
                         raw["correlation"],
                         float(raw["f"]),
                     ),
-                    profit=(
-                        float(raw["profit"]) if raw.get("profit") not in (None, "") else None
-                    ),
+                    profit=(float(raw["profit"]) if raw.get("profit") not in (None, "") else None),
                     status=raw["status"],
                     wall_time_s=float(raw["wall_time_s"]),
                     ordering=ordering,
@@ -96,8 +93,7 @@ def joined_table(
 ) -> dict[str, dict[str, Row]]:
     """Return `{ordering: {instance_id: Row}}`, asserting matching sets."""
     by_ordering: dict[str, dict[str, Row]] = {
-        ordering: {row.instance_id: row for row in rows}
-        for ordering, rows in per_ordering.items()
+        ordering: {row.instance_id: row for row in rows} for ordering, rows in per_ordering.items()
     }
     reference = set(by_ordering[ORDERINGS[0]])
     for ordering in ORDERINGS[1:]:
@@ -125,11 +121,7 @@ def per_instance_gaps(
             continue
         best = max(valid)
         out[inst] = {
-            ord: (
-                None
-                if profits[ord] is None
-                else (best - profits[ord]) / best * 100.0
-            )
+            ord: (None if profits[ord] is None else (best - profits[ord]) / best * 100.0)
             for ord in ORDERINGS
         }
     return out
@@ -163,15 +155,9 @@ def overall_stats(
     out: dict[str, dict[str, float | int]] = {}
     for ordering in ORDERINGS:
         ord_gaps = [g[ordering] for g in gaps.values() if g[ordering] is not None]
-        ord_walls = [
-            row.wall_time_s for row in joined[ordering].values()
-        ]
-        ord_timeouts = sum(
-            1 for row in joined[ordering].values() if row.status == "timeout"
-        )
-        ord_errors = sum(
-            1 for row in joined[ordering].values() if row.status == "error"
-        )
+        ord_walls = [row.wall_time_s for row in joined[ordering].values()]
+        ord_timeouts = sum(1 for row in joined[ordering].values() if row.status == "timeout")
+        ord_errors = sum(1 for row in joined[ordering].values() if row.status == "error")
         ord_wins = sum(1 for w in wins.values() if w[ordering])
         n = len(joined[ordering])
         out[ordering] = {
@@ -202,12 +188,8 @@ def per_cell_stats(
         n, m, correlation, f = cell
         for ordering in ORDERINGS:
             insts = cells[cell]
-            ord_gaps = [
-                gaps[i][ordering] for i in insts if gaps[i][ordering] is not None
-            ]
-            ord_timeouts = sum(
-                1 for i in insts if joined[ordering][i].status == "timeout"
-            )
+            ord_gaps = [gaps[i][ordering] for i in insts if gaps[i][ordering] is not None]
+            ord_timeouts = sum(1 for i in insts if joined[ordering][i].status == "timeout")
             ord_wins = sum(1 for i in insts if wins[i][ordering])
             out.append(
                 {
@@ -217,12 +199,8 @@ def per_cell_stats(
                     "f": f,
                     "class_ordering": ordering,
                     "n_instances": len(insts),
-                    "mean_gap_pct": (
-                        statistics.fmean(ord_gaps) if ord_gaps else 0.0
-                    ),
-                    "median_gap_pct": (
-                        statistics.median(ord_gaps) if ord_gaps else 0.0
-                    ),
+                    "mean_gap_pct": (statistics.fmean(ord_gaps) if ord_gaps else 0.0),
+                    "median_gap_pct": (statistics.median(ord_gaps) if ord_gaps else 0.0),
                     "max_gap_pct": max(ord_gaps) if ord_gaps else 0.0,
                     "win_count": ord_wins,
                     "timeout_count": ord_timeouts,
@@ -249,9 +227,7 @@ def per_instance_long(
                 "status": row.status,
                 "profit": "" if row.profit is None else int(row.profit),
                 "wall_time_s": row.wall_time_s,
-                "gap_pct_vs_best": (
-                    "" if gaps[inst][ordering] is None else gaps[inst][ordering]
-                ),
+                "gap_pct_vs_best": ("" if gaps[inst][ordering] is None else gaps[inst][ordering]),
             }
 
 
@@ -266,8 +242,7 @@ def write_latex_table(path: Path, overall: dict[str, dict[str, float | int]]) ->
     lines = [
         "\\begin{tabular}{lrrrrrr}",
         "\\hline",
-        "ordering & N & wins & mean gap (\\%) & median gap (\\%) & "
-        "std gap (\\%) & timeouts \\\\",
+        "ordering & N & wins & mean gap (\\%) & median gap (\\%) & std gap (\\%) & timeouts \\\\",
         "\\hline",
     ]
     for ordering in ORDERINGS:
@@ -305,9 +280,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     args.out_dir.mkdir(parents=True, exist_ok=True)
     per_ordering = {
-        ordering: load_ordering_rows(
-            args.results_dir / f"{ordering}.csv", ordering
-        )
+        ordering: load_ordering_rows(args.results_dir / f"{ordering}.csv", ordering)
         for ordering in ORDERINGS
     }
     joined = joined_table(per_ordering)

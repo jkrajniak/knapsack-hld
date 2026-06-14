@@ -123,9 +123,7 @@ class HldAdapter:
         )
 
         k = min(self.k, instance.N)
-        class_order = _class_order(
-            instance, ordering=self.class_ordering, random_seed=random_seed
-        )
+        class_order = _class_order(instance, ordering=self.class_ordering, random_seed=random_seed)
         batches = _split_classes(instance.N, k, order=class_order)
         per_batch_estimated, fallback = _phase2_estimate(
             instance, batches=batches, lambda_est=lambda_est
@@ -334,9 +332,7 @@ def _split_classes(n: int, k: int, *, order: list[int] | None = None) -> list[li
     """
     indices = list(range(n)) if order is None else list(order)
     if len(indices) != n or sorted(indices) != list(range(n)):
-        raise ValueError(
-            f"order must be a permutation of range({n}); got len={len(indices)}"
-        )
+        raise ValueError(f"order must be a permutation of range({n}); got len={len(indices)}")
     base, extra = divmod(n, k)
     out: list[list[int]] = []
     start = 0
@@ -377,6 +373,7 @@ def _class_order(
         rng.shuffle(order)
         return order
     if ordering == "adversarial":
+
         def max_pc_ratio(i: int) -> float:
             return max(
                 (float(p) / float(c) for (p, c) in instance.items[i] if c > 0),

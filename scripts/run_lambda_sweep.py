@@ -28,7 +28,6 @@ import logging
 import sys
 import time
 from dataclasses import dataclass
-from itertools import product
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
@@ -164,6 +163,7 @@ def main() -> int:
         cells = DEFAULT_CELLS
     else:
         import re
+
         cells = []
         for s in args.cells:
             m = re.fullmatch(r"t(\d+)_k(\d+)_n(\d+)_r(\d+)", s)
@@ -173,7 +173,9 @@ def main() -> int:
 
     LOGGER.info(
         "Sweep grid: %d cells × %d seeds × %d lambdas = %d HLD runs",
-        len(cells), len(args.seeds), len(args.lambdas),
+        len(cells),
+        len(args.seeds),
+        len(args.lambdas),
         len(cells) * len(args.seeds) * len(args.lambdas),
     )
 
@@ -194,7 +196,11 @@ def main() -> int:
         for type_id, k, n, r in cells:
             for seed in args.seeds:
                 instance = generate_pisinger_instance(
-                    n_classes=k, n_items=n, r=r, type_id=type_id, seed=seed,
+                    n_classes=k,
+                    n_items=n,
+                    r=r,
+                    type_id=type_id,
+                    seed=seed,
                 )
                 iid = f"pisinger_t{type_id}_k{k}_n{n}_r{r}_s{seed}"
                 opt_needed = any((iid, f"{lm}") not in seen for lm in args.lambdas)
@@ -204,26 +210,40 @@ def main() -> int:
                     if (iid, str(lm)) in seen:
                         continue
                     result, err = solve_hld(instance, base, lm, args.time_limit_s)
-                    gap_pct = ((opt_profit - result.profit) / opt_profit * 100) if opt_profit > 0 else float("nan")
-                    writer.writerow({
-                        "instance_id": iid,
-                        "type_id": type_id, "k": k, "n": n, "r": r, "seed": seed,
-                        "lambda_max": lm,
-                        "n_iter": base.n_iter, "alpha": base.alpha, "hld_k": base.k,
-                        "hld_profit": result.profit,
-                        "opt_profit": opt_profit,
-                        "gap_pct": f"{gap_pct:.4f}",
-                        "wall_time_s": f"{result.wall_time_s:.6f}",
-                        "status": str(result.status),
-                        "error_message": err,
-                    })
+                    gap_pct = (
+                        ((opt_profit - result.profit) / opt_profit * 100)
+                        if opt_profit > 0
+                        else float("nan")
+                    )
+                    writer.writerow(
+                        {
+                            "instance_id": iid,
+                            "type_id": type_id,
+                            "k": k,
+                            "n": n,
+                            "r": r,
+                            "seed": seed,
+                            "lambda_max": lm,
+                            "n_iter": base.n_iter,
+                            "alpha": base.alpha,
+                            "hld_k": base.k,
+                            "hld_profit": result.profit,
+                            "opt_profit": opt_profit,
+                            "gap_pct": f"{gap_pct:.4f}",
+                            "wall_time_s": f"{result.wall_time_s:.6f}",
+                            "status": str(result.status),
+                            "error_message": err,
+                        }
+                    )
                     fh.flush()
                     n_done += 1
                     if n_done % args.log_every == 0:
                         elapsed = time.perf_counter() - t_start
                         LOGGER.info("[%d runs] elapsed %.1fs", n_done, elapsed)
 
-    LOGGER.info("Done: %d new HLD runs in %.1fs -> %s", n_done, time.perf_counter() - t_start, args.out_csv)
+    LOGGER.info(
+        "Done: %d new HLD runs in %.1fs -> %s", n_done, time.perf_counter() - t_start, args.out_csv
+    )
     return 0
 
 

@@ -77,9 +77,7 @@ class CellSpec:
 def parse_cell_spec(value: str) -> CellSpec:
     parts = value.split(",")
     if len(parts) != 4:
-        raise argparse.ArgumentTypeError(
-            f"Cell must have form N,M,CORRELATION,F; got {value!r}"
-        )
+        raise argparse.ArgumentTypeError(f"Cell must have form N,M,CORRELATION,F; got {value!r}")
     n_raw, m_raw, correlation, f_raw = parts
     return CellSpec(
         n_items=int(n_raw),

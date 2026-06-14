@@ -13,9 +13,7 @@ DEFAULT_FINAL_SUMMARY_DIR = Path("results") / "final_experiments" / "summary"
 DEFAULT_SENSITIVITY_SUMMARY_DIR = (
     Path("results") / "final_experiments" / "time_limit_sensitivity_summary"
 )
-DEFAULT_COMPARISON_SUMMARY_DIR = (
-    Path("results") / "final_experiments" / "comparison_summary"
-)
+DEFAULT_COMPARISON_SUMMARY_DIR = Path("results") / "final_experiments" / "comparison_summary"
 DEFAULT_OUT_DIR = Path("results") / "final_experiments" / "paper_tables"
 
 PAIRED_SUMMARY_FIELDNAMES = [

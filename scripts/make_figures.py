@@ -38,13 +38,10 @@ from pathlib import Path
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 DEFAULT_PAIRED_CSV = (
-    Path("results")
-    / "final_experiments"
-    / "comparison_summary"
-    / "paired_profit_gaps.csv"
+    Path("results") / "final_experiments" / "comparison_summary" / "paired_profit_gaps.csv"
 )
 DEFAULT_RESULTS_CSV = Path("results") / "final_experiments" / "results.csv"
 DEFAULT_LAMBDA_SWEEP = Path("results") / "anomalies" / "full" / "sweep.jsonl"
@@ -136,7 +133,7 @@ def _seed_from_inst_id(inst_id: str) -> int:
     idx = inst_id.rfind(marker)
     if idx < 0:
         raise ValueError(f"inst_id missing '_seed' marker: {inst_id!r}")
-    return int(inst_id[idx + len(marker):])
+    return int(inst_id[idx + len(marker) :])
 
 
 def _group_by_x_seed(
@@ -188,9 +185,7 @@ def _make_sensitivity_figure(
     dashed line on both panels (e.g. the chosen $N_{\text{iter}} = 20$).
     """
     rows = _read_jsonl(source_jsonl)
-    x_values, by_seed = _group_by_x_seed(
-        rows, x_key=x_key, y_keys=["optimality_gap", "hld_wall_s"]
-    )
+    x_values, by_seed = _group_by_x_seed(rows, x_key=x_key, y_keys=["optimality_gap", "hld_wall_s"])
     seeds = sorted(by_seed)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -202,13 +197,12 @@ def _make_sensitivity_figure(
         seed_xs = sorted(by_seed[seed])
         gaps_pct = [by_seed[seed][x]["optimality_gap"] * 100.0 for x in seed_xs]
         walls = [by_seed[seed][x]["hld_wall_s"] for x in seed_xs]
-        ax_q.plot(seed_xs, gaps_pct, marker=".", alpha=0.4, linewidth=0.8,
-                  label=f"seed {seed}")
-        ax_t.plot(seed_xs, walls, marker=".", alpha=0.4, linewidth=0.8,
-                  label=f"seed {seed}")
+        ax_q.plot(seed_xs, gaps_pct, marker=".", alpha=0.4, linewidth=0.8, label=f"seed {seed}")
+        ax_t.plot(seed_xs, walls, marker=".", alpha=0.4, linewidth=0.8, label=f"seed {seed}")
 
-    mean_gap_pct = [v * 100.0 for v in
-                    _mean_sd_by_x(by_seed, x_values=x_values, y_key="optimality_gap")[0]]
+    mean_gap_pct = [
+        v * 100.0 for v in _mean_sd_by_x(by_seed, x_values=x_values, y_key="optimality_gap")[0]
+    ]
     mean_wall, _ = _mean_sd_by_x(by_seed, x_values=x_values, y_key="hld_wall_s")
     ax_q.plot(x_values, mean_gap_pct, color="black", linewidth=1.8, label="mean")
     ax_t.plot(x_values, mean_wall, color="black", linewidth=1.8, label="mean")
@@ -216,8 +210,9 @@ def _make_sensitivity_figure(
     if selected_marker is not None:
         x_sel, label_sel = selected_marker
         for ax in (ax_q, ax_t):
-            ax.axvline(x_sel, color="tab:red", linestyle="--", linewidth=1.0,
-                       alpha=0.7, label=label_sel)
+            ax.axvline(
+                x_sel, color="tab:red", linestyle="--", linewidth=1.0, alpha=0.7, label=label_sel
+            )
 
     ax_q.set_xlabel(x_label)
     ax_q.set_ylabel("Optimality gap (\\%)")
@@ -386,10 +381,7 @@ def make_hld_vs_partition_paired_gains(args: argparse.Namespace) -> None:
     ax.set_xscale("symlog", linthresh=1.0)
     ax.set_xlabel("HLD vs Partition-Optimal profit gain (%)")
     ax.set_ylabel("Cumulative fraction of paired instances")
-    ax.set_title(
-        f"HLD vs Partition-Optimal at $N=100{{,}}000$ "
-        f"(n={n}, HLD wins={wins}/{n})"
-    )
+    ax.set_title(f"HLD vs Partition-Optimal at $N=100{{,}}000$ (n={n}, HLD wins={wins}/{n})")
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
     fig.savefig(pdf_path)
@@ -499,10 +491,7 @@ def make_large_scale_scaling_ab(args: argparse.Namespace) -> None:
     fig.savefig(pdf_path)
     plt.close(fig)
 
-    stats = {
-        solver: {str(n): per_n for n, per_n in by_n.items()}
-        for solver, by_n in agg.items()
-    }
+    stats = {solver: {str(n): per_n for n, per_n in by_n.items()} for solver, by_n in agg.items()}
     meta = {
         "figure": figure_name,
         "script": "scripts/make_figures.py",
@@ -539,9 +528,7 @@ def make_average_computation_time(args: argparse.Namespace) -> None:
             rows.extend(csv.DictReader(fh))
 
     plotted_rows = [
-        row
-        for row in rows
-        if row["solver"] in SCALING_SOLVERS and row["status"] != "error"
+        row for row in rows if row["solver"] in SCALING_SOLVERS and row["status"] != "error"
     ]
     agg = _aggregate_by_solver_n(plotted_rows, SCALING_SOLVERS)
     if not agg:

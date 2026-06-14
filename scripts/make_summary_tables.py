@@ -133,10 +133,7 @@ def main() -> None:
         agg = _aggregate(subset)
         seen_Ns = tuple(row["N"] for row in agg)
         if seen_Ns != spec["expected_Ns"]:
-            print(
-                f"warning: baseline={baseline} Ns {seen_Ns} != "
-                f"expected {spec['expected_Ns']}"
-            )
+            print(f"warning: baseline={baseline} Ns {seen_Ns} != expected {spec['expected_Ns']}")
         out_path = args.out_dir / spec["fname"]
         out_path.write_text(_emit_table(agg, spec["label_long"]))
         n_total = sum(int(r["n"]) for r in agg)
