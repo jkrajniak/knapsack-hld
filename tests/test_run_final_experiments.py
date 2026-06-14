@@ -13,7 +13,25 @@ SCRIPT = ROOT / "scripts" / "run_final_experiments.py"
 sys.path.insert(0, str(ROOT / "scripts"))
 
 
-def test_final_experiments_dry_run_reports_plan() -> None:
+def _write_fixture_manifest(tmp_path: Path) -> Path:
+    """Minimal manifest so dry-run plan tests don't depend on a generated archive."""
+    manifest = {
+        "files": [
+            {
+                "path": "weakly/N1000_M5/a.json.gz",
+                "seed": 1,
+                "subset": "test",
+                "cell": {"N": 1000, "M": 5, "correlation": "weakly", "f": 0.1},
+            }
+        ]
+    }
+    manifest_path = tmp_path / "MANIFEST.json"
+    manifest_path.write_text(json.dumps(manifest))
+    return manifest_path
+
+
+def test_final_experiments_dry_run_reports_plan(tmp_path: Path) -> None:
+    manifest_path = _write_fixture_manifest(tmp_path)
     completed = subprocess.run(
         [
             "uv",
@@ -23,6 +41,8 @@ def test_final_experiments_dry_run_reports_plan() -> None:
             "--dry-run",
             "--archive",
             "instances",
+            "--manifest",
+            str(manifest_path),
             "--config",
             "configs/hld_smac_best.json",
             "--solvers",
@@ -49,7 +69,8 @@ def test_final_experiments_dry_run_reports_plan() -> None:
     assert "class_ordering: sequential" in completed.stdout
 
 
-def test_final_experiments_class_ordering_flag_accepts_random() -> None:
+def test_final_experiments_class_ordering_flag_accepts_random(tmp_path: Path) -> None:
+    manifest_path = _write_fixture_manifest(tmp_path)
     completed = subprocess.run(
         [
             "uv",
@@ -59,6 +80,8 @@ def test_final_experiments_class_ordering_flag_accepts_random() -> None:
             "--dry-run",
             "--archive",
             "instances",
+            "--manifest",
+            str(manifest_path),
             "--config",
             "configs/hld_smac_best.json",
             "--solvers",
