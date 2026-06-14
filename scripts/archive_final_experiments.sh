@@ -12,7 +12,7 @@ outside the git repository, then writes a SHA-256 checksum.
 Options:
   --run-id ID          Archive identifier, e.g. 20260510T104515Z
   --result-dir PATH    Final experiment directory (default: results/final_experiments)
-  --artifact-dir PATH  Destination directory (default: ../knapsack-artifacts/final_experiments)
+  --artifact-dir PATH  Destination directory (default: ${KNAPSACK_ARTIFACTS_DIR:-../artifacts}/final_experiments)
   --dry-run            Print commands without executing them
   -h, --help           Show this help
 
@@ -26,7 +26,7 @@ repo_root="$(cd "${script_dir}/.." && pwd)"
 
 run_id=""
 result_dir="results/final_experiments"
-artifact_dir="../knapsack-artifacts/final_experiments"
+artifact_dir="${KNAPSACK_ARTIFACTS_DIR:-../artifacts}/final_experiments"
 dry_run=0
 
 while [[ $# -gt 0 ]]; do

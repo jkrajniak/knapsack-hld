@@ -1,6 +1,6 @@
 # HLD anomaly investigation (Phase D §4.3.2)
 
-Mechanistic check of two hypotheses for the figure-anomaly behaviour (R2-M7, R2-A5):
+Mechanistic check of two hypotheses for the figure-anomaly behaviour:
 
 - **H1 — degenerate dual basis.** Phase-1 fails to converge: `lambda_rel_spread > 1%` over the final iterations *or* ≥ 3 sign flips of `total_cost - B`.
 - **H2 — sub-MILP straggler.** Slowest Phase-3 batch consumes ≥ 50% of total Phase-3 wall time.

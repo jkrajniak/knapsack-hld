@@ -19,8 +19,8 @@ Provenance sidecar (per Task 3.2.2 of revision-finalization-2026):
 
 Status:
     - hld_vs_partition_paired_gains: implemented (§3.9 pivot-aligned)
-    - others: TODO; see paper/FIGURE_NOTES.md in knapsack-research for the
-      open scope decisions.
+    - others: TODO; open scope decisions tracked in the project's
+      figure notes.
 """
 
 from __future__ import annotations

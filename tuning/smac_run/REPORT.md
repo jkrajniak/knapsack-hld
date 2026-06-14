@@ -36,8 +36,8 @@ estimates that drive the proportional component of the budget
 allocation are noisy enough that an almost-equal split outperforms
 proportional allocation.
 
-This is **directly relevant to R1-O14 / Q5** (the α=0.9 vs α=1.0
-debate). The full-archive campaign should resolve whether this
+This is **directly relevant to the α=0.9 vs α=1.0 question**.
+The full-archive campaign should resolve whether this
 preview-scale finding generalises to the N=10 000 / 100 000 regimes —
 or whether it is an artefact of the tiny preview subset (16 instances,
 all `inversely_strongly`).

@@ -25,13 +25,13 @@ def test_archive_smac_run_dry_run_uses_private_artifact_dir() -> None:
     )
 
     assert completed.returncode == 0
-    assert "artifact_dir: ../knapsack-artifacts/smac" in completed.stdout
+    assert "artifact_dir: ../artifacts/smac" in completed.stdout
     assert "log_file: logs/smac_full_20260508T192425Z.log" in completed.stdout
     assert (
-        "tar -czf ../knapsack-artifacts/smac/smac_full_20260508T192425Z.tar.gz" in completed.stdout
+        "tar -czf ../artifacts/smac/smac_full_20260508T192425Z.tar.gz" in completed.stdout
     )
     assert (
-        "shasum -a 256 ../knapsack-artifacts/smac/smac_full_20260508T192425Z.tar.gz"
+        "shasum -a 256 ../artifacts/smac/smac_full_20260508T192425Z.tar.gz"
         in completed.stdout
     )
 

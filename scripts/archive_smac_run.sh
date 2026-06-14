@@ -12,7 +12,7 @@ directory outside the git repository, then writes a SHA-256 checksum.
 Options:
   --run-dir PATH        Completed SMAC output directory, e.g. results/smac_run/full_YYYYMMDDTHHMMSSZ
   --log-file PATH       Matching log file (default: logs/smac_full_<run-id>.log)
-  --artifact-dir PATH   Destination directory (default: ../knapsack-artifacts/smac)
+  --artifact-dir PATH   Destination directory (default: ${KNAPSACK_ARTIFACTS_DIR:-../artifacts}/smac)
   --dry-run             Print commands without executing them
   -h, --help            Show this help
 
@@ -26,7 +26,7 @@ repo_root="$(cd "${script_dir}/.." && pwd)"
 
 run_dir=""
 log_file=""
-artifact_dir="../knapsack-artifacts/smac"
+artifact_dir="${KNAPSACK_ARTIFACTS_DIR:-../artifacts}/smac"
 dry_run=0
 
 while [[ $# -gt 0 ]]; do

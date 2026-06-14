@@ -25,8 +25,8 @@ admits a closed-form per-class solution: pick the item that maximises
 to find the smallest value at which BS(lambda)'s solution is feasible
 for the original budget. That solution is the BISSA approximation.
 
-Selective-MCKP transformation (R1-M1)
--------------------------------------
+Selective-MCKP transformation
+-----------------------------
 The original BISSA paper formulates classic MCKP, which forces *exactly
 one* item per class. To use BISSA on Selective-MCKP we apply the
 standard transformation: each class is augmented with a dummy item

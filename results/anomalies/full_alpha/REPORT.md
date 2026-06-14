@@ -1,6 +1,6 @@
 # HLD alpha-sweep (Phase D §4.3.4)
 
-Mechanistic check of the Fig 5 wobble at $\alpha \approx 0.5$ (reviewer R2-M7 part 2). Anomaly cell `(N=10 000, M=10, weakly, f=0.5)`, fixed `N_iter = 20`, 11 alpha values across 3 seeds (33 HLD records).
+Mechanistic check of the Fig 5 wobble at $\alpha \approx 0.5$. Anomaly cell `(N=10 000, M=10, weakly, f=0.5)`, fixed `N_iter = 20`, 11 alpha values across 3 seeds (33 HLD records).
 
 ## Mean across seeds, vs alpha
 

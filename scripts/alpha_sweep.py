@@ -6,7 +6,7 @@ this script does the dual experiment — fix ``N_iter = 20`` and vary
 ``alpha ∈ {0.0, 0.1, …, 1.0}`` on the same deterministic anomaly subset
 (``N=10 000, M=10, weakly correlated, f=0.5``, seeds ``{0, 7, 42}``).
 
-Reviewer R2-M7 part 2 asks whether the Fig 5 wobble at ``alpha ~= 0.5``
+An open question is whether the Fig 5 wobble at ``alpha ~= 0.5``
 reflects a mechanistic effect or random noise. To answer it we instrument
 two Phase-2 quantities on every record:
 
@@ -249,7 +249,7 @@ def _render_report(records: list[dict[str, Any]]) -> str:
     lines.append("# HLD alpha-sweep (Phase D §4.3.4)\n")
     lines.append(
         "Mechanistic check of the Fig 5 wobble at "
-        r"$\alpha \approx 0.5$ (reviewer R2-M7 part 2). "
+        r"$\alpha \approx 0.5$. "
         f"Anomaly cell `(N=10 000, M=10, weakly, f=0.5)`, fixed "
         f"`N_iter = {records[0]['n_iter']}`, "
         f"{n_alpha} alpha values across {n_inst} seeds "

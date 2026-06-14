@@ -4,12 +4,12 @@
 # Orchestrates the five steps that close Optional G2:
 #   1. Summarise the three per-ordering CSVs into headline tables.
 #   2. Sync the raw + summarised results down from the remote VM to
-#      the local artifacts repository.
-#   3. Tar + sha256 the bundle into knapsack-artifacts/class_ordering/.
-#   4. Print the EVIDENCE_BASE.md pin block to paste into
-#      knapsack-research/experiments/EVIDENCE_BASE.md.
+#      the local artifacts directory.
+#   3. Tar + sha256 the bundle into the artifacts directory.
+#   4. Print an evidence-index pin block to paste into your
+#      experiment-tracking notebook.
 #   5. Print the 60s-vs-300s comparison-writeup template to drop
-#      into knapsack-research/experiments/.
+#      into your experiment-tracking notebook.
 #
 # Designed to run AFTER the remote tmux session `class_ord_g2:run`
 # finishes (all three of sequential.csv / random.csv /
@@ -20,13 +20,13 @@
 #
 # Usage:
 #   scripts/run_post_g2_pipeline.sh \
-#       [--remote polpc16626.local] \
+#       [--remote remote.example] \
 #       [--remote-port 2222] \
-#       [--remote-user jakub.krajniak] \
-#       [--remote-root '~/Work/sc/knapsack-hld'] \
+#       [--remote-user "$USER"] \
+#       [--remote-root '~/knapsack-hld'] \
 #       [--results-subdir results/class_ordering_300s] \
 #       [--run-id 20260528T1620Z_g2_300s] \
-#       [--artifacts-dir ../knapsack-artifacts/class_ordering] \
+#       [--artifacts-dir ../artifacts/class_ordering] \
 #       [--summary-subdir results/class_ordering_300s_summary] \
 #       [--force] [--skip-step N[,N...]] [--dry-run]
 #
@@ -35,13 +35,13 @@
 
 set -euo pipefail
 
-remote_host="polpc16626.local"
+remote_host="${KNAPSACK_REMOTE_HOST:-remote.example}"
 remote_port="2222"
-remote_user="jakub.krajniak"
-remote_root='~/Work/sc/knapsack-hld'
+remote_user="${KNAPSACK_REMOTE_USER:-$USER}"
+remote_root='~/knapsack-hld'
 results_subdir="results/class_ordering_300s"
 summary_subdir="results/class_ordering_300s_summary"
-artifacts_dir="../knapsack-artifacts/class_ordering"
+artifacts_dir="${KNAPSACK_ARTIFACTS_DIR:-../artifacts}/class_ordering"
 run_id=""
 force=0
 dry_run=0
@@ -146,9 +146,8 @@ fi
 short_sha="${sha256:0:8}…${sha256: -6}"
 cat <<EOF
 
-[4/5] EVIDENCE_BASE.md pin block — paste into
-      knapsack-research/experiments/EVIDENCE_BASE.md under
-      "Class-ordering ablation archives":
+[4/5] Evidence-index pin block — paste into your experiment-tracking
+      notebook under "Class-ordering ablation archives":
 
 ------------------------------------------------------------------------
 - **Class-ordering ablation — Optional G2 (300s sub-run)** — \`${archive_path##*/}\`
@@ -156,7 +155,7 @@ cat <<EOF
   primary 60s class-ordering ablation, sequential / random / adversarial
   orderings, 35 seeds per (cell × ordering), 210 instances per ordering.
   Generated 2026-05-28 by \`scripts/run_class_ordering_ablation.sh\` with
-  \`--time-limit 300\` on \`polpc16626.local\` (Apple M4 Pro, 12 cores).
+  \`--time-limit 300\` on an Apple M4 Pro (12 cores).
   Summariser: \`scripts/summarize_class_ordering.py\`. Paper sections
   affected: §3.6 (class-ordering ablation; 60s primary is the headline,
   this run is the sensitivity).
@@ -167,19 +166,18 @@ EOF
 cat <<EOF
 
 [5/5] Comparison writeup template — save as
-      knapsack-research/experiments/20260528_class_ordering_g2_results.md:
+      20260528_class_ordering_g2_results.md in your experiment notebook:
 
 ------------------------------------------------------------------------
 # Class-ordering ablation — G2 (300s sub-run) results vs primary (60s)
 
 **Status:** results landed $(date -u +%Y-%m-%d) (\`${run_id}\`). Companion of
-\`knapsack-research/experiments/20260527_class_ordering_results.md\`
-(60s primary, signed off as PI Option C).
+the 60s primary class-ordering writeup (default ordering selected).
 
 ## Sources
 
 - 300s sub-run archive: \`${archive_path##*/}\` (SHA-256 \`${short_sha:-PENDING_SHA256}\`).
-- 60s primary archive: see EVIDENCE_BASE.md "Class-ordering ablation".
+- 60s primary archive: see your evidence index, "Class-ordering ablation".
 
 ## Comparison method
 
@@ -202,25 +200,24 @@ For each ordering, report:
 
 ## Manuscript implications
 
-- §3.6: confirm Option C framing (sequential as the default) holds
-  at 300s, OR flag if random / adversarial overtake on the hardest cells.
+- §3.6: confirm the default-ordering framing (sequential as the default)
+  holds at 300s, OR flag if random / adversarial overtake on the hardest cells.
 - §3.9 / §3.11 sensitivity sentence: cross-check that the +141.85%
   median gain at 300s reported in §3.9 (which is HLD vs PO, not
   class-ordering vs class-ordering) is unaffected by this run.
 
 ## Decisions
 
-- [ ] Sign off the headline numbers (PI).
-- [ ] If §3.6 framing changes, propose a sentence delta in
-      \`paper/drafts/section_3_6_class_ordering.diff.md\`.
-- [ ] Pin archive in \`EVIDENCE_BASE.md\` (already templated in
+- [ ] Sign off the headline numbers.
+- [ ] If §3.6 framing changes, propose a sentence delta to §3.6.
+- [ ] Pin the archive in your evidence index (already templated in
       this script's step 4 output).
 ------------------------------------------------------------------------
 
 ==> Pipeline complete. Remaining manual steps:
     1. Verify the headline numbers in the template against the
        summariser output (results/class_ordering_300s_summary/).
-    2. Commit the writeup + EVIDENCE_BASE pin in knapsack-research.
-    3. If §3.6 needs amending, draft the diff in knapsack-research
-       and apply to knapsack-optimization-paper/main.tex.
+    2. Commit the writeup + evidence-index pin in your notebook.
+    3. If §3.6 needs amending, draft the diff and apply it to the
+       manuscript.
 EOF

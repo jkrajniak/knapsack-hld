@@ -202,8 +202,7 @@ def _render_report(analyses: list[dict]) -> str:
     lines: list[str] = []
     lines.append("# HLD anomaly investigation (Phase D §4.3.2)\n")
     lines.append(
-        "Mechanistic check of two hypotheses for the figure-anomaly behaviour "
-        "(R2-M7, R2-A5):\n\n"
+        "Mechanistic check of two hypotheses for the figure-anomaly behaviour:\n\n"
         "- **H1 — degenerate dual basis.** Phase-1 fails to converge: "
         f"`lambda_rel_spread > {H1_LAMBDA_REL_SPREAD_THRESHOLD:.0%}` over the "
         f"final iterations *or* ≥ {H1_SIGN_FLIP_THRESHOLD} sign flips of "

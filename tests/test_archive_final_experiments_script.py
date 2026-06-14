@@ -26,9 +26,9 @@ def test_archive_final_experiments_dry_run_uses_private_artifact_dir() -> None:
 
     assert completed.returncode == 0
     assert "result_dir: results/final_experiments" in completed.stdout
-    assert "artifact_dir: ../knapsack-artifacts/final_experiments" in completed.stdout
+    assert "artifact_dir: ../artifacts/final_experiments" in completed.stdout
     assert (
-        "tar -czf ../knapsack-artifacts/final_experiments/final_experiments_20260510T104515Z.tar.gz"
+        "tar -czf ../artifacts/final_experiments/final_experiments_20260510T104515Z.tar.gz"
         in completed.stdout
     )
     assert "results/final_experiments/comparison_summary" in completed.stdout

@@ -26,7 +26,7 @@ benchmarked alongside the exact MILP baselines and HLD.
 
 The Bednarczuk et al. (2018) paper formulates *classic* MCKP, which
 forces exactly one item per class. We apply the standard transformation
-(R1-M1) before invoking BISSA: every class gets a `(0, 0)` dummy item;
+before invoking BISSA: every class gets a `(0, 0)` dummy item;
 selecting the dummy is BISSA's encoding of "skip this class". The
 transformation is recorded in `solver_metadata["transformation"]`
 ("`mckp_to_selective_mckp_dummy_item`") so any downstream consumer can

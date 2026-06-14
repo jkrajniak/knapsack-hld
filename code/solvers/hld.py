@@ -29,8 +29,8 @@ Per-batch wall time, batch size, and budget are logged.
 
 Instance-dependent lambda_max
 -----------------------------
-Reviewer R1-O7 flagged the constant `lambda_max = 10` as opaque. We
-follow the design's recommendation and set
+A fixed constant `lambda_max = 10` is opaque and instance-insensitive.
+Instead we set
 
     lambda_max = ceil(max_{i, j} p_ij / c_ij)
 
