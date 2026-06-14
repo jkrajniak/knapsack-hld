@@ -138,7 +138,7 @@ else
     fi
 fi
 
-# ---------- Step 4: EVIDENCE_BASE.md pin block ----------
+# ---------- Step 4: evidence-index pin block ----------
 sha256=""
 if [[ -f "${checksum_path}" ]]; then
     sha256="$(awk '{print $1}' "${checksum_path}")"

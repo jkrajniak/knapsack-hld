@@ -31,13 +31,25 @@ uv sync
 uv run pytest
 ```
 
-End-to-end reproduction of every figure and table in the manuscript will be
-available via:
+## Reproducing the benchmark archive
+
+A quick smoke build — the same flow run in CI (< 10 min) — generates a small
+instance archive and verifies its manifest:
 
 ```bash
-make reproduce            # full archive (long; runs in parallel)
-make reproduce-quick      # smoke subset (< 10 min)
+uv run python scripts/generate_instances.py \
+    --config scripts/configs/archive_smoke.yaml --out instances --jobs 2
+uv run python scripts/verify_instances.py --archive instances
 ```
+
+The full benchmark archive (long; runs in parallel) is driven by:
+
+```bash
+scripts/run_full_archive.sh --out instances_full_candidate --jobs 16
+```
+
+The manuscript tables and figures are regenerated from the produced `results/`
+CSVs with the `scripts/make_*_tables.py` and `scripts/make_figures.py` helpers.
 
 ## Repository layout
 
@@ -46,16 +58,20 @@ knapsack-hld/
 ├── code/
 │   ├── instances/   # Pure-Python MCKP instance generator (4 correlation classes)
 │   ├── solvers/     # Unified wrapper for HiGHS, SCIP, CBC, mcknap, etc.
+│   ├── baselines/   # Exact-baseline and reference solver drivers
 │   ├── heuristics/  # Greedy-MaxRatio, BISSA, TRS-2008, Partition-Optimal
 │   ├── hld/         # Hybrid Lagrangian-Decomposition algorithm
 │   ├── tuning/      # SMAC3 tuning campaign
+│   ├── anomalies/   # Anomaly-detection analysis helpers
 │   └── utils/       # Shared metrics, IO, logging, parallel primitives
 ├── instances/       # Generated benchmark archive + MANIFEST.json
-├── scripts/         # End-user CLI (make reproduce, generate, run, plot, …)
+├── scripts/         # End-user CLI (generate, run, plot, archive, …)
 ├── results/         # Raw experimental output (gzipped CSV)
 ├── tuning/          # SMAC3 run history and chosen incumbent
 ├── figures/         # PDF figures used by the paper
-├── paper/           # LaTeX source mirror (optional)
+├── configs/         # Chosen SMAC incumbents (JSON)
+├── docs/            # Supplementary notes
+├── paper/           # Manuscript source mirror (see paper/README.md)
 └── tests/           # Unit and integration tests
 ```
 

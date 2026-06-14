@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software and the accompanying paper."
+title: "knapsack-hld: Hybrid Lagrangian-Decomposition algorithm for the Selective Multiple-Choice Knapsack Problem"
+type: software
+authors:
+  - given-names: Jakub
+    family-names: Krajniak
+    email: jkrajniak@gmail.com
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/jkrajniak/knapsack-hld"
+keywords:
+  - knapsack
+  - multiple-choice-knapsack
+  - combinatorial-optimization
+  - lagrangian-relaxation
+  - operations-research
+preferred-citation:
+  type: article
+  title: "A Hybrid Lagrangian-Decomposition Algorithm for the Large-Scale Multiple-Choice Knapsack Problem"
+  authors:
+    - given-names: Jakub
+      family-names: Krajniak
+      email: jkrajniak@gmail.com
+  journal: "International Transactions in Operational Research"
+  year: 2026
+  notes: "Revision under review."

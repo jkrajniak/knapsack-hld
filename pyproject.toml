@@ -1,6 +1,25 @@
 [project]
 name = "knapsack-hld"
 version = "0.1.0"
+description = "Hybrid Lagrangian-Decomposition (HLD) algorithm and reproducibility package for the Selective Multiple-Choice Knapsack Problem."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Jakub Krajniak", email = "jkrajniak@gmail.com" }]
+keywords = [
+    "knapsack",
+    "multiple-choice-knapsack",
+    "combinatorial-optimization",
+    "lagrangian-relaxation",
+    "operations-research",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
 requires-python = ">=3.12"
 dependencies = [
     "highspy>=1.14.0",
@@ -14,6 +33,10 @@ dependencies = [
     "pyyaml>=6.0.3",
     "smac>=2.4.0",
 ]
+
+[project.urls]
+Repository = "https://github.com/jkrajniak/knapsack-hld"
+Issues = "https://github.com/jkrajniak/knapsack-hld/issues"
 
 [dependency-groups]
 dev = [
@@ -47,7 +70,10 @@ select = [
     "RUF",  # ruff-specific
 ]
 ignore = [
-    "E501",  # line length handled by formatter
+    "E501",   # line length handled by formatter
+    "RUF001", # ambiguous unicode in strings: × and α are intentional math notation
+    "RUF002", # ambiguous unicode in docstrings: same rationale
+    "RUF003", # ambiguous unicode in comments: same rationale
 ]
 
 [tool.ruff.lint.per-file-ignores]

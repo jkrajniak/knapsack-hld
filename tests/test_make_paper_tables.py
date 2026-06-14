@@ -147,7 +147,7 @@ def test_make_paper_tables_exports_compact_csv_and_latex(tmp_path: Path) -> None
 
     po_tex = (out_dir / "hld_vs_partition_summary.tex").read_text()
     assert "+21.34" in po_tex
-    assert "Paired rows" in po_tex
+    assert "paired $n$" in po_tex
     highs_tex = (out_dir / "hld_vs_highs_summary.tex").read_text()
     assert "-0.0030" in highs_tex
 

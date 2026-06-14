@@ -26,7 +26,7 @@ def load_run(root: Path) -> pd.DataFrame:
 
 
 def compare(primary: pd.DataFrame, sub: pd.DataFrame) -> pd.DataFrame:
-    cols = list(JOIN_KEYS) + ["status", "profit", "wall_time_s"]
+    cols = [*JOIN_KEYS, "status", "profit", "wall_time_s"]
     merged = primary[cols].merge(
         sub[cols],
         on=list(JOIN_KEYS),
@@ -50,10 +50,7 @@ def compare(primary: pd.DataFrame, sub: pd.DataFrame) -> pd.DataFrame:
 
         timeout_60 = sub_df["status_60s"].eq("timeout").sum()
         escaped = int(
-            (
-                (sub_df["status_60s"] == "timeout")
-                & (sub_df["status_300s"] != "timeout")
-            ).sum()
+            ((sub_df["status_60s"] == "timeout") & (sub_df["status_300s"] != "timeout")).sum()
         )
         escape_rate = (escaped / timeout_60 * 100) if timeout_60 else float("nan")
 
@@ -102,9 +99,7 @@ def main(argv: list[str]) -> int:
             else "—"
         )
         median = (
-            f"{row['median_dprofit_pct']:+.3f}%"
-            if pd.notna(row["median_dprofit_pct"])
-            else "—"
+            f"{row['median_dprofit_pct']:+.3f}%" if pd.notna(row["median_dprofit_pct"]) else "—"
         )
         print(
             f"| {ordering:<11} | {int(row['seeds']):>5} | "

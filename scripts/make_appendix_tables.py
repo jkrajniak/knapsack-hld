@@ -14,7 +14,7 @@ Outputs (in `--out-dir`):
 - `appendix_N{n}.csv`  -- machine-readable per-cell table
 - `appendix_N{n}.tex`  -- LaTeX tabular environment
 
-Number cadence follows the project-wide rule (PI ruling 2026-05-26):
+Number cadence follows the project-wide rule:
 percentages with |x| >= 1 use 2 decimals; sub-1 % use 4 decimals.
 """
 
