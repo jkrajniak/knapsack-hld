@@ -33,6 +33,9 @@ uv run pytest
 
 ## Reproducing the benchmark archive
 
+The steps below are also wrapped as `make` targets — run `make help` to list
+them (`make reproduce-quick`, `make reproduce`, `make test`, `make lint`).
+
 A quick smoke build — the same flow run in CI (< 10 min) — generates a small
 instance archive and verifies its manifest:
 
