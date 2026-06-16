@@ -48,3 +48,8 @@ figures/*.png
 # But keep the directory layout
 !**/.gitkeep
 !**/README.md
+
+# Lab notes and findings live in knapsack-research; generated reports regenerate from scripts
+**/REPORT.md
+**/FINDINGS.md
+instances/**/FINDING_*.md

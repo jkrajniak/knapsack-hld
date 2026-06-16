@@ -10,9 +10,8 @@ Why a port and not a download
 -----------------------------
 There is no `test_mcknap.tgz` archive on Pisinger's upstream site; the
 "Pisinger benchmarks" cited in the literature are *regenerated from
-`mcknap.c`* at the parameters published in §6 of the 1995 paper. See
-`instances/pisinger_1995/FINDING_2026_06_05.md` for the acquisition
-finding that motivated this port.
+`mcknap.c`* at the parameters published in §6 of the 1995 paper, which is
+why this module ports the generator rather than downloading instances.
 
 PRNG faithfulness
 -----------------
