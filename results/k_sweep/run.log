@@ -1,0 +1,944 @@
+=== K-sweep START 2026-06-17T15:20:13Z commit=2754931 ===
+=== CELL N=100000 M=10 inversely_strongly f=0.1 15:20:13Z ===
+2026-06-17 17:20:13,398 INFO k_sweep | K-sweep: 274 planned runs (6 already complete)
+archive: instances
+config: configs/hld_smac_best.json (n_iter=35, alpha=0.998, lambda_max=80.745)
+out_jsonl: results/k_sweep/sweep.jsonl
+subset: all  min_N: 10000
+k_grid: [2, 4, 8, 16, 32, 64, 100]
+solvers: hld partition_optimal
+eligible_instances: 20
+time_limit_s: 60.0
+runs_planned: 280
+2026-06-17 17:21:18,176 INFO k_sweep | k-sweep 1/274 elapsed=64.8s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=116577 wall=64.47s status=timeout
+2026-06-17 17:21:18,339 INFO k_sweep | k-sweep 2/274 elapsed=64.9s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=86978 wall=64.63s status=timeout
+2026-06-17 17:21:18,667 INFO k_sweep | k-sweep 3/274 elapsed=65.3s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=704892 wall=64.95s status=timeout
+2026-06-17 17:22:22,022 INFO k_sweep | k-sweep 4/274 elapsed=128.6s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=541177 wall=63.78s status=timeout
+/path/to/knapsack-hld/.venv/lib/python3.14/site-packages/joblib/externals/loky/process_executor.py:782: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+2026-06-17 17:22:22,695 INFO k_sweep | k-sweep 5/274 elapsed=129.3s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=102814 wall=64.29s status=timeout
+2026-06-17 17:22:22,937 INFO k_sweep | k-sweep 6/274 elapsed=129.5s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=72960 wall=64.22s status=timeout
+2026-06-17 17:28:03,715 INFO k_sweep | k-sweep 7/274 elapsed=470.3s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=0 wall=470.00s status=timeout
+2026-06-17 17:28:06,509 INFO k_sweep | k-sweep 8/274 elapsed=473.1s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=0 wall=472.79s status=timeout
+2026-06-17 17:28:08,057 INFO k_sweep | k-sweep 9/274 elapsed=474.7s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=0 wall=474.32s status=timeout
+2026-06-17 17:29:07,709 INFO k_sweep | k-sweep 10/274 elapsed=534.3s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=411065 wall=63.95s status=timeout
+2026-06-17 17:29:10,477 INFO k_sweep | k-sweep 11/274 elapsed=537.1s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=411032 wall=63.91s status=timeout
+2026-06-17 17:29:11,667 INFO k_sweep | k-sweep 12/274 elapsed=538.3s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=410878 wall=63.55s status=timeout
+2026-06-17 17:30:12,393 INFO k_sweep | k-sweep 13/274 elapsed=599.0s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=253598 wall=64.07s status=timeout
+2026-06-17 17:30:17,249 INFO k_sweep | k-sweep 14/274 elapsed=603.8s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=0 wall=474.26s status=timeout
+2026-06-17 17:31:21,619 INFO k_sweep | k-sweep 15/274 elapsed=668.2s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=380228 wall=64.35s status=timeout
+2026-06-17 17:32:26,273 INFO k_sweep | k-sweep 16/274 elapsed=732.9s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=380157 wall=64.05s status=timeout
+2026-06-17 17:33:30,660 INFO k_sweep | k-sweep 17/274 elapsed=797.3s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=103055 wall=64.33s status=timeout
+2026-06-17 17:34:33,480 INFO k_sweep | k-sweep 18/274 elapsed=860.1s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=2036085 wall=62.79s status=timeout
+2026-06-17 17:36:09,268 INFO k_sweep | k-sweep 19/274 elapsed=955.9s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=0 wall=955.55s status=timeout
+2026-06-17 17:36:11,434 INFO k_sweep | k-sweep 20/274 elapsed=958.0s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=0 wall=957.71s status=timeout
+2026-06-17 17:36:13,135 INFO k_sweep | k-sweep 21/274 elapsed=959.7s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=0 wall=959.42s status=timeout
+2026-06-17 17:37:19,178 INFO k_sweep | k-sweep 22/274 elapsed=1025.8s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=363352 wall=66.00s status=timeout
+2026-06-17 17:37:51,567 INFO k_sweep | k-sweep 23/274 elapsed=1058.2s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=0 wall=459.14s status=timeout
+2026-06-17 17:38:19,049 INFO k_sweep | k-sweep 24/274 elapsed=1085.6s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=0 wall=956.32s status=timeout
+2026-06-17 17:38:23,512 INFO k_sweep | k-sweep 25/274 elapsed=1090.1s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=170858 wall=63.73s status=timeout
+2026-06-17 17:38:55,929 INFO k_sweep | k-sweep 26/274 elapsed=1122.5s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=363134 wall=64.33s status=timeout
+2026-06-17 17:39:23,385 INFO k_sweep | k-sweep 27/274 elapsed=1150.0s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=229253 wall=64.31s status=timeout
+2026-06-17 17:43:52,050 INFO k_sweep | k-sweep 28/274 elapsed=1418.7s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=0 wall=460.64s status=timeout
+2026-06-17 17:44:53,479 INFO k_sweep | k-sweep 29/274 elapsed=1480.2s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=0 wall=941.85s status=timeout
+2026-06-17 17:44:56,216 INFO k_sweep | k-sweep 30/274 elapsed=1482.9s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=371419 wall=64.14s status=timeout
+2026-06-17 17:45:56,632 INFO k_sweep | k-sweep 31/274 elapsed=1543.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=1092887 wall=63.13s status=timeout
+2026-06-17 17:46:01,051 INFO k_sweep | k-sweep 32/274 elapsed=1547.7s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=79034 wall=64.22s status=timeout
+2026-06-17 17:46:57,740 INFO k_sweep | k-sweep 33/274 elapsed=1604.4s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=0 wall=454.36s status=timeout
+2026-06-17 17:47:01,127 INFO k_sweep | k-sweep 34/274 elapsed=1607.8s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=49995 wall=63.87s status=timeout
+2026-06-17 17:51:42,552 INFO k_sweep | k-sweep 35/274 elapsed=1889.2s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=0 wall=933.32s status=timeout
+2026-06-17 17:52:21,016 INFO k_sweep | k-sweep 36/274 elapsed=1927.7s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=0 wall=1927.38s status=timeout
+2026-06-17 17:52:28,689 INFO k_sweep | k-sweep 37/274 elapsed=1935.4s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=0 wall=1935.07s status=timeout
+2026-06-17 17:52:31,847 INFO k_sweep | k-sweep 38/274 elapsed=1938.5s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=0 wall=1938.22s status=timeout
+2026-06-17 17:52:47,355 INFO k_sweep | k-sweep 39/274 elapsed=1954.0s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=407094 wall=64.21s status=timeout
+2026-06-17 17:53:24,531 INFO k_sweep | k-sweep 40/274 elapsed=1991.2s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=406994 wall=63.46s status=timeout
+2026-06-17 17:53:32,788 INFO k_sweep | k-sweep 41/274 elapsed=1999.5s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=519811 wall=64.06s status=timeout
+2026-06-17 17:53:35,243 INFO k_sweep | k-sweep 42/274 elapsed=2001.9s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=269931 wall=63.37s status=timeout
+2026-06-17 17:54:23,283 INFO k_sweep | k-sweep 43/274 elapsed=2050.0s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=0 wall=927.42s status=timeout
+2026-06-17 17:54:24,123 INFO k_sweep | k-sweep 44/274 elapsed=2050.8s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=0 wall=442.97s status=timeout
+2026-06-17 17:54:27,980 INFO k_sweep | k-sweep 45/274 elapsed=2054.7s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=0 wall=1925.39s status=timeout
+2026-06-17 17:54:39,241 INFO k_sweep | k-sweep 46/274 elapsed=2065.9s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=1095449 wall=63.37s status=timeout
+2026-06-17 17:55:25,109 INFO k_sweep | k-sweep 47/274 elapsed=2111.8s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=3442121 wall=61.79s status=timeout
+2026-06-17 17:55:28,014 INFO k_sweep | k-sweep 48/274 elapsed=2114.7s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=1482470 wall=63.20s status=timeout
+2026-06-17 17:55:31,862 INFO k_sweep | k-sweep 49/274 elapsed=2118.6s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=108713 wall=63.85s status=timeout
+2026-06-17 17:56:37,326 INFO k_sweep | k-sweep 50/274 elapsed=2184.0s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=370247 wall=64.83s status=timeout
+2026-06-17 17:57:41,319 INFO k_sweep | k-sweep 51/274 elapsed=2248.0s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=370236 wall=63.96s status=timeout
+2026-06-17 17:58:46,088 INFO k_sweep | k-sweep 52/274 elapsed=2312.8s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=90231 wall=64.71s status=timeout
+2026-06-17 17:59:50,399 INFO k_sweep | k-sweep 53/274 elapsed=2377.1s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=358859 wall=63.70s status=timeout
+2026-06-17 18:00:52,634 INFO k_sweep | k-sweep 54/274 elapsed=2439.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=0 wall=1901.57s status=timeout
+2026-06-17 18:01:02,560 INFO k_sweep | k-sweep 55/274 elapsed=2449.3s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=0 wall=449.16s status=timeout
+2026-06-17 18:02:13,685 INFO k_sweep | k-sweep 56/274 elapsed=2520.4s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=0 wall=915.31s status=timeout
+2026-06-17 18:03:00,369 INFO k_sweep | k-sweep 57/274 elapsed=2567.1s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=0 wall=452.34s status=timeout
+2026-06-17 18:03:18,213 INFO k_sweep | k-sweep 58/274 elapsed=2584.9s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=1079831 wall=64.48s status=timeout
+2026-06-17 18:04:04,229 INFO k_sweep | k-sweep 59/274 elapsed=2630.9s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=560397 wall=63.81s status=timeout
+2026-06-17 18:04:22,918 INFO k_sweep | k-sweep 60/274 elapsed=2649.6s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=91991 wall=64.05s status=timeout
+2026-06-17 18:05:09,142 INFO k_sweep | k-sweep 61/274 elapsed=2695.8s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=64047 wall=64.32s status=timeout
+2026-06-17 18:06:11,716 INFO k_sweep | k-sweep 62/274 elapsed=2758.4s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=0 wall=1898.29s status=timeout
+2026-06-17 18:08:35,962 INFO k_sweep | k-sweep 63/274 elapsed=2902.7s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=0 wall=453.38s status=timeout
+2026-06-17 18:08:47,729 INFO k_sweep | k-sweep 64/274 elapsed=2914.4s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=0 wall=922.61s status=timeout
+2026-06-17 18:09:40,126 INFO k_sweep | k-sweep 65/274 elapsed=2966.8s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=735427 wall=64.13s status=timeout
+2026-06-17 18:09:50,891 INFO k_sweep | k-sweep 66/274 elapsed=2977.6s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=0 wall=1887.45s status=timeout
+2026-06-17 18:09:51,300 INFO k_sweep | k-sweep 67/274 elapsed=2978.0s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=171968 wall=63.54s status=timeout
+2026-06-17 18:10:44,585 INFO k_sweep | k-sweep 68/274 elapsed=3031.3s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=442524 wall=63.83s status=timeout
+2026-06-17 18:10:52,429 INFO k_sweep | k-sweep 69/274 elapsed=3039.1s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=0 wall=926.67s status=timeout
+2026-06-17 18:10:54,593 INFO k_sweep | k-sweep 70/274 elapsed=3041.3s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=573978 wall=63.67s status=timeout
+2026-06-17 18:11:59,516 INFO k_sweep | k-sweep 71/274 elapsed=3106.2s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=1112100 wall=64.29s status=timeout
+2026-06-17 18:13:04,129 INFO k_sweep | k-sweep 72/274 elapsed=3170.8s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=193669 wall=64.58s status=timeout
+2026-06-17 18:13:36,729 INFO k_sweep | k-sweep 73/274 elapsed=3203.4s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=0 wall=444.99s status=timeout
+2026-06-17 18:14:08,004 INFO k_sweep | k-sweep 74/274 elapsed=3234.7s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=275544 wall=63.84s status=timeout
+2026-06-17 18:14:41,870 INFO k_sweep | k-sweep 75/274 elapsed=3268.6s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=122848 wall=64.56s status=timeout
+2026-06-17 18:16:19,603 INFO k_sweep | k-sweep 76/274 elapsed=3366.3s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=0 wall=926.89s status=timeout
+2026-06-17 18:17:18,971 INFO k_sweep | k-sweep 77/274 elapsed=3425.7s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=0 wall=1877.88s status=timeout
+2026-06-17 18:18:22,957 INFO k_sweep | k-sweep 78/274 elapsed=3489.7s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=781642 wall=63.95s status=timeout
+2026-06-17 18:18:23,802 INFO k_sweep | k-sweep 79/274 elapsed=3490.5s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=0 wall=451.33s status=timeout
+2026-06-17 18:19:27,570 INFO k_sweep | k-sweep 80/274 elapsed=3554.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=198666 wall=63.99s status=timeout
+2026-06-17 18:19:28,059 INFO k_sweep | k-sweep 81/274 elapsed=3554.8s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=409257 wall=63.59s status=timeout
+2026-06-17 18:20:31,640 INFO k_sweep | k-sweep 82/274 elapsed=3618.4s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=134699 wall=64.04s status=timeout
+2026-06-17 18:20:33,466 INFO k_sweep | k-sweep 83/274 elapsed=3620.2s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=0 wall=924.30s status=timeout
+2026-06-17 18:23:38,923 INFO k_sweep | k-sweep 84/274 elapsed=3805.6s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=0 wall=439.24s status=timeout
+2026-06-17 18:23:55,599 INFO k_sweep | k-sweep 85/274 elapsed=3822.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=0 wall=1868.21s status=timeout
+2026-06-17 18:24:44,014 INFO k_sweep | k-sweep 86/274 elapsed=3870.7s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=331409 wall=64.49s status=timeout
+2026-06-17 18:24:59,854 INFO k_sweep | k-sweep 87/274 elapsed=3886.5s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=167667 wall=64.23s status=timeout
+2026-06-17 18:25:47,739 INFO k_sweep | k-sweep 88/274 elapsed=3934.4s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=85809 wall=63.69s status=timeout
+2026-06-17 18:25:51,358 INFO k_sweep | k-sweep 89/274 elapsed=3938.0s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=0 wall=906.71s status=timeout
+2026-06-17 18:25:54,161 INFO k_sweep | k-sweep 90/274 elapsed=3940.9s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=0 wall=1874.86s status=timeout
+2026-06-17 18:26:03,600 INFO k_sweep | k-sweep 91/274 elapsed=3950.3s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=1320750 wall=63.71s status=timeout
+2026-06-17 18:27:08,313 INFO k_sweep | k-sweep 92/274 elapsed=4015.0s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=756101 wall=64.01s status=timeout
+2026-06-17 18:27:39,696 INFO k_sweep | k-sweep 93/274 elapsed=4046.4s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=0 wall=426.17s status=timeout
+2026-06-17 18:28:12,586 INFO k_sweep | k-sweep 94/274 elapsed=4079.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=205736 wall=64.22s status=timeout
+2026-06-17 18:28:43,808 INFO k_sweep | k-sweep 95/274 elapsed=4110.5s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=90935 wall=64.06s status=timeout
+2026-06-17 18:29:17,443 INFO k_sweep | k-sweep 96/274 elapsed=4144.1s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=59903 wall=64.22s status=timeout
+2026-06-17 18:29:37,862 INFO k_sweep | k-sweep 97/274 elapsed=4164.6s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=0 wall=895.93s status=timeout
+2026-06-17 18:30:40,416 INFO k_sweep | k-sweep 98/274 elapsed=4227.1s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=0 wall=1849.98s status=timeout
+2026-06-17 18:31:44,496 INFO k_sweep | k-sweep 99/274 elapsed=4291.2s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=751578 wall=64.04s status=timeout
+2026-06-17 18:32:49,219 INFO k_sweep | k-sweep 100/274 elapsed=4355.9s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=351933 wall=64.01s status=timeout
+2026-06-17 18:33:02,090 INFO k_sweep | k-sweep 101/274 elapsed=4368.8s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=0 wall=427.92s status=timeout
+2026-06-17 18:33:53,217 INFO k_sweep | k-sweep 102/274 elapsed=4419.9s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=92997 wall=63.95s status=timeout
+2026-06-17 18:34:04,242 INFO k_sweep | k-sweep 103/274 elapsed=4430.9s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=2713746 wall=62.11s status=timeout
+2026-06-17 18:35:07,640 INFO k_sweep | k-sweep 104/274 elapsed=4494.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=0 wall=1844.68s status=timeout
+2026-06-17 18:35:12,063 INFO k_sweep | k-sweep 105/274 elapsed=4498.8s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=0 wall=880.36s status=timeout
+2026-06-17 18:36:15,784 INFO k_sweep | k-sweep 106/274 elapsed=4562.5s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=1476196 wall=63.69s status=timeout
+2026-06-17 18:36:49,080 INFO k_sweep | k-sweep 107/274 elapsed=4595.8s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=0 wall=431.20s status=timeout
+2026-06-17 18:37:19,443 INFO k_sweep | k-sweep 108/274 elapsed=4626.1s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=560593 wall=63.62s status=timeout
+2026-06-17 18:37:52,759 INFO k_sweep | k-sweep 109/274 elapsed=4659.5s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=260519 wall=63.65s status=timeout
+2026-06-17 18:38:23,260 INFO k_sweep | k-sweep 110/274 elapsed=4690.0s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=1473157 wall=63.18s status=timeout
+2026-06-17 18:40:15,514 INFO k_sweep | k-sweep 111/274 elapsed=4802.2s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=0 wall=1823.55s status=timeout
+2026-06-17 18:40:37,272 INFO k_sweep | k-sweep 112/274 elapsed=4824.0s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=0 wall=885.89s status=timeout
+2026-06-17 18:41:41,631 INFO k_sweep | k-sweep 113/274 elapsed=4888.3s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=1138761 wall=64.34s status=timeout
+2026-06-17 18:42:29,314 INFO k_sweep | k-sweep 114/274 elapsed=4936.0s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=0 wall=441.64s status=timeout
+2026-06-17 18:42:46,376 INFO k_sweep | k-sweep 115/274 elapsed=4953.0s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=184590 wall=64.09s status=timeout
+2026-06-17 18:43:33,781 INFO k_sweep | k-sweep 116/274 elapsed=5000.4s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=87133 wall=64.41s status=timeout
+2026-06-17 18:43:50,227 INFO k_sweep | k-sweep 117/274 elapsed=5016.9s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=474347 wall=63.80s status=timeout
+2026-06-17 18:44:11,175 INFO k_sweep | k-sweep 118/274 elapsed=5037.8s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=0 wall=893.65s status=timeout
+2026-06-17 18:44:26,801 INFO k_sweep | k-sweep 119/274 elapsed=5053.5s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=0 wall=1818.72s status=timeout
+2026-06-17 18:45:31,373 INFO k_sweep | k-sweep 120/274 elapsed=5118.0s solver=hld k=16 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=391357 wall=64.54s status=timeout
+2026-06-17 18:46:35,912 INFO k_sweep | k-sweep 121/274 elapsed=5182.6s solver=hld k=32 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=219740 wall=64.51s status=timeout
+2026-06-17 18:47:37,675 INFO k_sweep | k-sweep 122/274 elapsed=5244.3s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=0 wall=442.08s status=timeout
+2026-06-17 18:47:39,910 INFO k_sweep | k-sweep 123/274 elapsed=5246.6s solver=hld k=64 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=120071 wall=63.36s status=timeout
+2026-06-17 18:48:42,287 INFO k_sweep | k-sweep 124/274 elapsed=5308.9s solver=hld k=100 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=73850 wall=64.00s status=timeout
+2026-06-17 18:49:15,021 INFO k_sweep | k-sweep 125/274 elapsed=5341.7s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=0 wall=910.13s status=timeout
+2026-06-17 18:49:51,075 INFO k_sweep | k-sweep 126/274 elapsed=5377.7s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=0 wall=1822.92s status=timeout
+2026-06-17 18:50:55,912 INFO k_sweep | k-sweep 127/274 elapsed=5442.6s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=371391 wall=64.80s status=timeout
+2026-06-17 18:51:41,461 INFO k_sweep | k-sweep 128/274 elapsed=5488.1s solver=hld k=8 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=0 wall=450.24s status=timeout
+2026-06-17 18:52:00,557 INFO k_sweep | k-sweep 129/274 elapsed=5507.2s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=185737 wall=64.05s status=timeout
+2026-06-17 18:52:43,610 INFO k_sweep | k-sweep 130/274 elapsed=5550.3s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=3524760 wall=61.53s status=timeout
+2026-06-17 18:53:04,436 INFO k_sweep | k-sweep 131/274 elapsed=5571.1s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=474649 wall=63.84s status=timeout
+2026-06-17 18:53:44,591 INFO k_sweep | k-sweep 132/274 elapsed=5611.2s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=0 wall=921.21s status=timeout
+2026-06-17 18:56:21,875 INFO k_sweep | k-sweep 133/274 elapsed=5768.5s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=0 wall=1834.08s status=timeout
+2026-06-17 18:56:41,591 INFO k_sweep | k-sweep 134/274 elapsed=5788.2s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=0 wall=446.53s status=timeout
+2026-06-17 18:57:26,140 INFO k_sweep | k-sweep 135/274 elapsed=5832.8s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=371075 wall=64.24s status=timeout
+2026-06-17 18:57:42,784 INFO k_sweep | k-sweep 136/274 elapsed=5849.4s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=5566787 wall=60.60s status=timeout
+2026-06-17 18:58:03,291 INFO k_sweep | k-sweep 137/274 elapsed=5869.9s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=5936342 wall=36.54s status=feasible
+2026-06-17 18:58:46,815 INFO k_sweep | k-sweep 138/274 elapsed=5913.5s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=118550 wall=63.99s status=timeout
+2026-06-17 18:59:10,542 INFO k_sweep | k-sweep 139/274 elapsed=5937.2s solver=hld k=4 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=0 wall=920.28s status=timeout
+2026-06-17 18:59:31,648 INFO k_sweep | k-sweep 140/274 elapsed=5958.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=0 wall=1847.07s status=timeout
+2026-06-17 19:00:36,600 INFO k_sweep | k-sweep 141/274 elapsed=6023.3s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=371350 wall=64.92s status=timeout
+2026-06-17 19:01:08,603 INFO k_sweep | k-sweep 142/274 elapsed=6055.3s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=0 wall=443.99s status=timeout
+2026-06-17 19:01:40,993 INFO k_sweep | k-sweep 143/274 elapsed=6087.6s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=185634 wall=63.77s status=timeout
+2026-06-17 19:02:13,053 INFO k_sweep | k-sweep 144/274 elapsed=6119.7s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=92793 wall=63.73s status=timeout
+2026-06-17 19:02:45,156 INFO k_sweep | k-sweep 145/274 elapsed=6151.8s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=415272 wall=64.08s status=timeout
+2026-06-17 19:04:01,832 INFO k_sweep | k-sweep 146/274 elapsed=6228.5s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=0 wall=919.50s status=timeout
+2026-06-17 19:04:54,948 INFO k_sweep | k-sweep 147/274 elapsed=6281.6s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=0 wall=1861.64s status=timeout
+2026-06-17 19:05:59,389 INFO k_sweep | k-sweep 148/274 elapsed=6346.0s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=371330 wall=64.42s status=timeout
+2026-06-17 19:06:36,671 INFO k_sweep | k-sweep 149/274 elapsed=6383.3s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=0 wall=446.10s status=timeout
+2026-06-17 19:07:03,295 INFO k_sweep | k-sweep 150/274 elapsed=6409.9s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=185590 wall=63.81s status=timeout
+2026-06-17 19:07:16,585 INFO k_sweep | k-sweep 151/274 elapsed=6423.2s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=5936793 wall=39.80s status=feasible
+2026-06-17 19:08:07,314 INFO k_sweep | k-sweep 152/274 elapsed=6473.9s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=296633 wall=63.45s status=timeout
+2026-06-17 19:08:22,785 INFO k_sweep | k-sweep 153/274 elapsed=6489.4s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=0 wall=918.24s status=timeout
+2026-06-17 19:09:10,723 INFO k_sweep | k-sweep 154/274 elapsed=6537.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=0 wall=1877.77s status=timeout
+2026-06-17 19:10:15,227 INFO k_sweep | k-sweep 155/274 elapsed=6601.8s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=371241 wall=64.47s status=timeout
+2026-06-17 19:11:19,814 INFO k_sweep | k-sweep 156/274 elapsed=6666.4s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=185576 wall=63.95s status=timeout
+2026-06-17 19:11:22,748 INFO k_sweep | k-sweep 157/274 elapsed=6669.3s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=0 wall=440.80s status=timeout
+2026-06-17 19:11:58,489 INFO k_sweep | k-sweep 158/274 elapsed=6705.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=5936908 wall=38.65s status=feasible
+2026-06-17 19:12:26,753 INFO k_sweep | k-sweep 159/274 elapsed=6733.3s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=177939 wall=63.97s status=timeout
+2026-06-17 19:14:06,539 INFO k_sweep | k-sweep 160/274 elapsed=6833.1s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=0 wall=919.61s status=timeout
+2026-06-17 19:15:02,120 INFO k_sweep | k-sweep 161/274 elapsed=6888.7s solver=hld k=2 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=0 wall=1887.70s status=timeout
+2026-06-17 19:15:43,662 INFO k_sweep | k-sweep 162/274 elapsed=6930.2s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=0 wall=440.84s status=timeout
+2026-06-17 19:16:09,046 INFO k_sweep | k-sweep 163/274 elapsed=6955.6s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=2968273 wall=66.87s status=timeout
+2026-06-17 19:16:43,635 INFO k_sweep | k-sweep 164/274 elapsed=6990.2s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=5936762 wall=59.93s status=feasible
+2026-06-17 19:16:43,806 INFO k_sweep | k-sweep 165/274 elapsed=6990.4s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=5936668 wall=34.13s status=feasible
+2026-06-17 19:17:47,636 INFO k_sweep | k-sweep 166/274 elapsed=7054.2s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=118508 wall=63.97s status=timeout
+2026-06-17 19:18:03,441 INFO k_sweep | k-sweep 167/274 elapsed=7070.0s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=0 wall=918.16s status=timeout
+2026-06-17 19:18:53,080 INFO k_sweep | k-sweep 168/274 elapsed=7119.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=0 profit=0 wall=1873.04s status=timeout
+2026-06-17 19:19:57,458 INFO k_sweep | k-sweep 169/274 elapsed=7184.0s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=371348 wall=64.36s status=timeout
+2026-06-17 19:21:02,230 INFO k_sweep | k-sweep 170/274 elapsed=7248.8s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=185554 wall=64.13s status=timeout
+2026-06-17 19:21:29,051 INFO k_sweep | k-sweep 171/274 elapsed=7275.6s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=0 wall=442.48s status=timeout
+2026-06-17 19:21:42,775 INFO k_sweep | k-sweep 172/274 elapsed=7289.3s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=5936922 wall=40.51s status=feasible
+2026-06-17 19:22:33,291 INFO k_sweep | k-sweep 173/274 elapsed=7339.9s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=177933 wall=63.64s status=timeout
+2026-06-17 19:23:30,788 INFO k_sweep | k-sweep 174/274 elapsed=7397.3s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=0 wall=923.38s status=timeout
+2026-06-17 19:23:54,904 INFO k_sweep | k-sweep 175/274 elapsed=7421.5s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=1 profit=0 wall=1871.16s status=timeout
+2026-06-17 19:24:57,846 INFO k_sweep | k-sweep 176/274 elapsed=7484.4s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=2968647 wall=62.91s status=timeout
+2026-06-17 19:25:27,814 INFO k_sweep | k-sweep 177/274 elapsed=7514.4s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=0 wall=444.33s status=timeout
+2026-06-17 19:25:58,989 INFO k_sweep | k-sweep 178/274 elapsed=7545.5s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=5752889 wall=60.51s status=timeout
+2026-06-17 19:26:04,890 INFO k_sweep | k-sweep 179/274 elapsed=7551.4s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=5937021 wall=37.03s status=feasible
+2026-06-17 19:27:02,745 INFO k_sweep | k-sweep 180/274 elapsed=7609.3s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=118557 wall=63.72s status=timeout
+2026-06-17 19:27:47,756 INFO k_sweep | k-sweep 181/274 elapsed=7654.3s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=0 wall=920.89s status=timeout
+2026-06-17 19:29:24,162 INFO k_sweep | k-sweep 182/274 elapsed=7750.7s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=10 profit=0 wall=1880.72s status=timeout
+2026-06-17 19:30:30,914 INFO k_sweep | k-sweep 183/274 elapsed=7817.5s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=1486605 wall=66.73s status=timeout
+2026-06-17 19:30:55,192 INFO k_sweep | k-sweep 184/274 elapsed=7841.7s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=0 wall=444.36s status=timeout
+2026-06-17 19:31:35,552 INFO k_sweep | k-sweep 185/274 elapsed=7882.1s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=185750 wall=64.05s status=timeout
+2026-06-17 19:31:59,016 INFO k_sweep | k-sweep 186/274 elapsed=7905.6s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=92816 wall=63.79s status=timeout
+2026-06-17 19:32:39,559 INFO k_sweep | k-sweep 187/274 elapsed=7946.1s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=474996 wall=63.96s status=timeout
+2026-06-17 19:33:09,336 INFO k_sweep | k-sweep 188/274 elapsed=7975.9s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=0 wall=921.07s status=timeout
+2026-06-17 19:33:28,456 INFO k_sweep | k-sweep 189/274 elapsed=7995.0s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=11 profit=0 wall=1875.27s status=timeout
+2026-06-17 19:34:33,034 INFO k_sweep | k-sweep 190/274 elapsed=8059.6s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=371155 wall=64.54s status=timeout
+2026-06-17 19:35:12,547 INFO k_sweep | k-sweep 191/274 elapsed=8099.1s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=0 wall=444.78s status=timeout
+2026-06-17 19:35:35,363 INFO k_sweep | k-sweep 192/274 elapsed=8121.9s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=5380406 wall=61.66s status=timeout
+2026-06-17 19:35:51,879 INFO k_sweep | k-sweep 193/274 elapsed=8138.4s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=5936880 wall=39.29s status=feasible
+2026-06-17 19:36:39,450 INFO k_sweep | k-sweep 194/274 elapsed=8186.0s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=59292 wall=64.04s status=timeout
+2026-06-17 19:37:47,780 INFO k_sweep | k-sweep 195/274 elapsed=8254.3s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=0 wall=914.45s status=timeout
+2026-06-17 19:38:36,751 INFO k_sweep | k-sweep 196/274 elapsed=8303.3s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=12 profit=0 wall=1880.10s status=timeout
+2026-06-17 19:39:40,611 INFO k_sweep | k-sweep 197/274 elapsed=8367.2s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=2968308 wall=63.84s status=timeout
+2026-06-17 19:40:34,358 INFO k_sweep | k-sweep 198/274 elapsed=8420.9s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=0 wall=444.98s status=timeout
+2026-06-17 19:40:41,870 INFO k_sweep | k-sweep 199/274 elapsed=8428.4s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=5750875 wall=60.66s status=timeout
+2026-06-17 19:41:11,505 INFO k_sweep | k-sweep 200/274 elapsed=8458.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=5936399 wall=36.55s status=feasible
+2026-06-17 19:41:46,038 INFO k_sweep | k-sweep 201/274 elapsed=8492.6s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=237107 wall=64.09s status=timeout
+2026-06-17 19:42:22,107 INFO k_sweep | k-sweep 202/274 elapsed=8528.7s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=0 wall=919.33s status=timeout
+2026-06-17 19:43:07,548 INFO k_sweep | k-sweep 203/274 elapsed=8574.1s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=13 profit=0 wall=1869.02s status=timeout
+2026-06-17 19:44:11,155 INFO k_sweep | k-sweep 204/274 elapsed=8637.7s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=1854184 wall=63.56s status=timeout
+2026-06-17 19:45:08,807 INFO k_sweep | k-sweep 205/274 elapsed=8695.4s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=0 wall=440.99s status=timeout
+2026-06-17 19:45:13,004 INFO k_sweep | k-sweep 206/274 elapsed=8699.6s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=4819868 wall=61.21s status=timeout
+2026-06-17 19:45:54,964 INFO k_sweep | k-sweep 207/274 elapsed=8741.5s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=5929087 wall=45.51s status=feasible
+2026-06-17 19:46:17,045 INFO k_sweep | k-sweep 208/274 elapsed=8763.6s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=59198 wall=64.01s status=timeout
+2026-06-17 19:47:55,020 INFO k_sweep | k-sweep 209/274 elapsed=8861.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=14 profit=0 wall=1871.16s status=timeout
+2026-06-17 19:47:56,532 INFO k_sweep | k-sweep 210/274 elapsed=8863.1s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=0 wall=916.97s status=timeout
+2026-06-17 19:49:00,779 INFO k_sweep | k-sweep 211/274 elapsed=8927.3s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=371316 wall=64.22s status=timeout
+2026-06-17 19:49:48,450 INFO k_sweep | k-sweep 212/274 elapsed=8975.0s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=0 wall=446.30s status=timeout
+2026-06-17 19:50:05,257 INFO k_sweep | k-sweep 213/274 elapsed=8991.8s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=185641 wall=63.86s status=timeout
+2026-06-17 19:50:29,831 INFO k_sweep | k-sweep 214/274 elapsed=9016.4s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=5936457 wall=41.35s status=feasible
+2026-06-17 19:51:09,150 INFO k_sweep | k-sweep 215/274 elapsed=9055.7s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=474638 wall=63.86s status=timeout
+2026-06-17 19:52:01,255 INFO k_sweep | k-sweep 216/274 elapsed=9107.8s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=0 wall=921.72s status=timeout
+2026-06-17 19:53:04,741 INFO k_sweep | k-sweep 217/274 elapsed=9171.3s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=15 profit=0 wall=1881.94s status=timeout
+2026-06-17 19:54:09,184 INFO k_sweep | k-sweep 218/274 elapsed=9235.7s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=371372 wall=64.40s status=timeout
+2026-06-17 19:55:13,796 INFO k_sweep | k-sweep 219/274 elapsed=9300.3s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=185676 wall=64.03s status=timeout
+2026-06-17 19:55:16,703 INFO k_sweep | k-sweep 220/274 elapsed=9303.3s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=0 wall=441.63s status=timeout
+2026-06-17 19:56:08,497 INFO k_sweep | k-sweep 221/274 elapsed=9355.0s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=5936770 wall=54.66s status=feasible
+2026-06-17 19:56:21,196 INFO k_sweep | k-sweep 222/274 elapsed=9367.7s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=296763 wall=63.80s status=timeout
+2026-06-17 19:57:06,479 INFO k_sweep | k-sweep 223/274 elapsed=9413.0s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=0 wall=920.40s status=timeout
+2026-06-17 19:57:21,095 INFO k_sweep | k-sweep 224/274 elapsed=9427.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=16 profit=0 wall=1876.18s status=timeout
+2026-06-17 19:58:26,388 INFO k_sweep | k-sweep 225/274 elapsed=9492.9s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=371242 wall=65.26s status=timeout
+2026-06-17 19:59:26,315 INFO k_sweep | k-sweep 226/274 elapsed=9552.9s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=0 wall=445.03s status=timeout
+2026-06-17 19:59:30,852 INFO k_sweep | k-sweep 227/274 elapsed=9557.4s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=185579 wall=63.87s status=timeout
+2026-06-17 20:00:30,209 INFO k_sweep | k-sweep 228/274 elapsed=9616.8s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=92765 wall=63.87s status=timeout
+2026-06-17 20:00:35,323 INFO k_sweep | k-sweep 229/274 elapsed=9621.9s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=118617 wall=64.42s status=timeout
+2026-06-17 20:01:30,926 INFO k_sweep | k-sweep 230/274 elapsed=9677.5s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=0 wall=913.81s status=timeout
+2026-06-17 20:03:18,280 INFO k_sweep | k-sweep 231/274 elapsed=9784.8s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=17 profit=0 wall=1878.64s status=timeout
+2026-06-17 20:04:23,103 INFO k_sweep | k-sweep 232/274 elapsed=9849.7s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=371076 wall=64.79s status=timeout
+2026-06-17 20:04:30,109 INFO k_sweep | k-sweep 233/274 elapsed=9856.7s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=0 wall=443.59s status=timeout
+2026-06-17 20:05:06,725 INFO k_sweep | k-sweep 234/274 elapsed=9893.3s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=5936221 wall=36.00s status=feasible
+2026-06-17 20:05:24,348 INFO k_sweep | k-sweep 235/274 elapsed=9910.9s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=5936293 wall=60.60s status=timeout
+2026-06-17 20:06:10,761 INFO k_sweep | k-sweep 236/274 elapsed=9957.3s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=177885 wall=63.98s status=timeout
+2026-06-17 20:06:22,726 INFO k_sweep | k-sweep 237/274 elapsed=9969.3s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=0 wall=913.54s status=timeout
+2026-06-17 20:07:09,283 INFO k_sweep | k-sweep 238/274 elapsed=10015.8s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=18 profit=0 wall=1876.75s status=timeout
+2026-06-17 20:08:13,911 INFO k_sweep | k-sweep 239/274 elapsed=10080.5s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=371091 wall=64.56s status=timeout
+2026-06-17 20:08:54,290 INFO k_sweep | k-sweep 240/274 elapsed=10120.8s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=0 wall=443.33s status=timeout
+2026-06-17 20:09:18,194 INFO k_sweep | k-sweep 241/274 elapsed=10144.7s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=185558 wall=63.62s status=timeout
+2026-06-17 20:09:34,879 INFO k_sweep | k-sweep 242/274 elapsed=10161.4s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=5936749 wall=40.55s status=feasible
+2026-06-17 20:10:21,815 INFO k_sweep | k-sweep 243/274 elapsed=10208.4s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=118615 wall=63.57s status=timeout
+2026-06-17 20:11:41,402 INFO k_sweep | k-sweep 244/274 elapsed=10287.9s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=0 wall=920.14s status=timeout
+2026-06-17 20:12:33,411 INFO k_sweep | k-sweep 245/274 elapsed=10340.0s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=19 profit=0 wall=1881.86s status=timeout
+2026-06-17 20:13:38,217 INFO k_sweep | k-sweep 246/274 elapsed=10404.8s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=371116 wall=64.77s status=timeout
+2026-06-17 20:13:46,528 INFO k_sweep | k-sweep 247/274 elapsed=10413.1s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=0 wall=443.76s status=timeout
+2026-06-17 20:14:26,695 INFO k_sweep | k-sweep 248/274 elapsed=10453.2s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=5936772 wall=40.14s status=feasible
+2026-06-17 20:14:42,522 INFO k_sweep | k-sweep 249/274 elapsed=10469.1s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=185434 wall=63.64s status=timeout
+=== K-sweep START 2026-06-17T19:31:05Z commit=2754931 ===
+=== CELL N=100000 M=10 inversely_strongly f=0.1 19:31:05Z ===
+2026-06-17 21:31:05,449 INFO k_sweep | K-sweep: 25 planned runs (255 already complete)
+archive: instances
+config: configs/hld_smac_best.json (n_iter=35, alpha=0.998, lambda_max=80.745)
+out_jsonl: results/k_sweep/sweep.jsonl
+subset: all  min_N: 10000
+k_grid: [2, 4, 8, 16, 32, 64, 100]
+solvers: hld partition_optimal
+eligible_instances: 20
+time_limit_s: 60.0
+runs_planned: 280
+2026-06-17 21:42:39,155 INFO k_sweep | k-sweep 1/25 elapsed=693.7s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=0 wall=693.40s status=timeout
+2026-06-17 21:42:39,321 INFO k_sweep | k-sweep 2/25 elapsed=693.9s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=0 wall=693.58s status=timeout
+2026-06-17 21:47:17,178 INFO k_sweep | k-sweep 3/25 elapsed=971.7s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=0 wall=277.81s status=timeout
+/path/to/knapsack-hld/.venv/lib/python3.14/site-packages/joblib/externals/loky/process_executor.py:782: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+2026-06-17 21:48:20,228 INFO k_sweep | k-sweep 4/25 elapsed=1034.8s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=652294 wall=62.54s status=timeout
+2026-06-17 21:51:57,287 INFO k_sweep | k-sweep 5/25 elapsed=1251.8s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=0 wall=558.10s status=timeout
+2026-06-17 21:52:23,748 INFO k_sweep | k-sweep 6/25 elapsed=1278.3s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=20 profit=0 wall=1277.99s status=timeout
+2026-06-17 21:52:28,956 INFO k_sweep | k-sweep 7/25 elapsed=1283.5s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=22 profit=0 wall=1283.21s status=timeout
+2026-06-17 21:52:30,526 INFO k_sweep | k-sweep 8/25 elapsed=1285.1s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=23 profit=0 wall=1284.77s status=timeout
+2026-06-17 21:52:30,734 INFO k_sweep | k-sweep 9/25 elapsed=1285.3s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=21 profit=0 wall=1284.98s status=timeout
+2026-06-17 21:52:31,013 INFO k_sweep | k-sweep 10/25 elapsed=1285.5s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=24 profit=0 wall=1285.26s status=timeout
+2026-06-17 21:52:31,329 INFO k_sweep | k-sweep 11/25 elapsed=1285.9s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=2 profit=0 wall=1285.58s status=timeout
+2026-06-17 21:53:00,018 INFO k_sweep | k-sweep 12/25 elapsed=1314.6s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=5936605 wall=29.24s status=feasible
+2026-06-17 21:53:19,183 INFO k_sweep | k-sweep 13/25 elapsed=1333.7s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=5936678 wall=48.61s status=feasible
+2026-06-17 21:53:30,856 INFO k_sweep | k-sweep 14/25 elapsed=1345.4s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=3710484 wall=61.86s status=timeout
+2026-06-17 21:53:34,029 INFO k_sweep | k-sweep 15/25 elapsed=1348.6s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=177806 wall=62.98s status=timeout
+2026-06-17 21:54:25,978 INFO k_sweep | k-sweep 16/25 elapsed=1400.5s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=5936534 wall=51.93s status=feasible
+2026-06-17 21:54:34,588 INFO k_sweep | k-sweep 17/25 elapsed=1409.1s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=371156 wall=63.25s status=timeout
+2026-06-17 21:54:56,264 INFO k_sweep | k-sweep 18/25 elapsed=1430.8s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=5936455 wall=29.80s status=feasible
+2026-06-17 21:55:37,597 INFO k_sweep | k-sweep 19/25 elapsed=1472.1s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=237225 wall=62.98s status=timeout
+2026-06-17 21:56:13,997 INFO k_sweep | k-sweep 20/25 elapsed=1508.5s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=0 wall=230.23s status=timeout
+2026-06-17 21:56:52,646 INFO k_sweep | k-sweep 21/25 elapsed=1547.2s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=0 wall=213.01s status=timeout
+2026-06-17 21:57:57,600 INFO k_sweep | k-sweep 22/25 elapsed=1612.1s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=0 wall=359.89s status=timeout
+2026-06-17 21:58:07,176 INFO k_sweep | k-sweep 23/25 elapsed=1621.7s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=0 wall=306.62s status=timeout
+2026-06-17 21:58:34,443 INFO k_sweep | k-sweep 24/25 elapsed=1649.0s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=25 profit=0 wall=614.17s status=timeout
+2026-06-17 21:58:59,393 INFO k_sweep | k-sweep 25/25 elapsed=1673.9s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.1 seed=26 profit=0 wall=388.03s status=timeout
+2026-06-17 21:58:59,393 INFO k_sweep | Wrote K-sweep records to results/k_sweep/sweep.jsonl
+=== CELL N=100000 M=10 inversely_strongly f=0.5 19:58:59Z ===
+2026-06-17 21:58:59,826 INFO k_sweep | K-sweep: 280 planned runs (280 already complete)
+archive: instances
+config: configs/hld_smac_best.json (n_iter=35, alpha=0.998, lambda_max=80.745)
+out_jsonl: results/k_sweep/sweep.jsonl
+subset: all  min_N: 10000
+k_grid: [2, 4, 8, 16, 32, 64, 100]
+solvers: hld partition_optimal
+eligible_instances: 20
+time_limit_s: 60.0
+runs_planned: 280
+2026-06-17 22:00:02,525 INFO k_sweep | k-sweep 1/280 elapsed=62.7s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=11025402 wall=62.41s status=timeout
+2026-06-17 22:00:03,128 INFO k_sweep | k-sweep 2/280 elapsed=63.3s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=1365910 wall=63.02s status=timeout
+2026-06-17 22:00:03,129 INFO k_sweep | k-sweep 3/280 elapsed=63.3s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=628196 wall=63.02s status=timeout
+2026-06-17 22:00:03,379 INFO k_sweep | k-sweep 4/280 elapsed=63.6s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=1791487 wall=63.27s status=timeout
+2026-06-17 22:01:06,378 INFO k_sweep | k-sweep 5/280 elapsed=126.6s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=887808 wall=62.97s status=timeout
+2026-06-17 22:01:08,346 INFO k_sweep | k-sweep 6/280 elapsed=128.5s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=3609706 wall=65.18s status=timeout
+/path/to/knapsack-hld/.venv/lib/python3.14/site-packages/joblib/externals/loky/process_executor.py:782: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+2026-06-17 22:02:09,385 INFO k_sweep | k-sweep 7/280 elapsed=189.6s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=445824 wall=62.98s status=timeout
+2026-06-17 22:02:11,923 INFO k_sweep | k-sweep 8/280 elapsed=192.1s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=570801 wall=63.08s status=timeout
+2026-06-17 22:03:12,354 INFO k_sweep | k-sweep 9/280 elapsed=252.5s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=0 wall=252.25s status=timeout
+2026-06-17 22:04:59,500 INFO k_sweep | k-sweep 10/280 elapsed=359.7s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=0 wall=296.34s status=timeout
+2026-06-17 22:06:01,929 INFO k_sweep | k-sweep 11/280 elapsed=422.1s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=12709184 wall=62.40s status=timeout
+2026-06-17 22:07:05,084 INFO k_sweep | k-sweep 12/280 elapsed=485.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=3599825 wall=62.65s status=timeout
+2026-06-17 22:08:06,263 INFO k_sweep | k-sweep 13/280 elapsed=546.4s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=0 wall=293.86s status=timeout
+2026-06-17 22:08:07,865 INFO k_sweep | k-sweep 14/280 elapsed=548.0s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=3143051 wall=62.75s status=timeout
+2026-06-17 22:08:40,863 INFO k_sweep | k-sweep 15/280 elapsed=581.0s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=0 wall=580.75s status=timeout
+2026-06-17 22:09:09,250 INFO k_sweep | k-sweep 16/280 elapsed=609.4s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=292900 wall=62.96s status=timeout
+2026-06-17 22:10:08,364 INFO k_sweep | k-sweep 17/280 elapsed=668.5s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=0 wall=605.81s status=timeout
+2026-06-17 22:11:11,126 INFO k_sweep | k-sweep 18/280 elapsed=731.3s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=7327784 wall=62.73s status=timeout
+2026-06-17 22:12:13,986 INFO k_sweep | k-sweep 19/280 elapsed=794.2s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=6412631 wall=62.42s status=timeout
+2026-06-17 22:12:24,107 INFO k_sweep | k-sweep 20/280 elapsed=804.3s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=0 wall=612.14s status=timeout
+2026-06-17 22:13:16,835 INFO k_sweep | k-sweep 21/280 elapsed=857.0s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=950260 wall=62.82s status=timeout
+2026-06-17 22:13:27,049 INFO k_sweep | k-sweep 22/280 elapsed=867.2s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=599117 wall=62.92s status=timeout
+2026-06-17 22:13:56,698 INFO k_sweep | k-sweep 23/280 elapsed=896.9s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=0 wall=286.93s status=timeout
+2026-06-17 22:18:41,387 INFO k_sweep | k-sweep 24/280 elapsed=1181.6s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=0 wall=600.49s status=timeout
+2026-06-17 22:18:47,511 INFO k_sweep | k-sweep 25/280 elapsed=1187.7s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=0 wall=1187.38s status=timeout
+2026-06-17 22:18:49,407 INFO k_sweep | k-sweep 26/280 elapsed=1189.6s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=0 wall=292.67s status=timeout
+2026-06-17 22:19:11,356 INFO k_sweep | k-sweep 27/280 elapsed=1211.5s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=0 wall=1211.24s status=timeout
+2026-06-17 22:19:46,234 INFO k_sweep | k-sweep 28/280 elapsed=1246.4s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=10964224 wall=64.38s status=timeout
+2026-06-17 22:19:50,473 INFO k_sweep | k-sweep 29/280 elapsed=1250.6s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=1790253 wall=62.93s status=timeout
+2026-06-17 22:19:52,389 INFO k_sweep | k-sweep 30/280 elapsed=1252.6s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=895761 wall=62.95s status=timeout
+2026-06-17 22:20:14,380 INFO k_sweep | k-sweep 31/280 elapsed=1274.5s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=604871 wall=62.99s status=timeout
+2026-06-17 22:21:17,303 INFO k_sweep | k-sweep 32/280 elapsed=1337.5s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=14579803 wall=62.49s status=timeout
+2026-06-17 22:22:03,096 INFO k_sweep | k-sweep 33/280 elapsed=1383.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=0 wall=1193.66s status=timeout
+2026-06-17 22:22:19,713 INFO k_sweep | k-sweep 34/280 elapsed=1399.9s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=10080704 wall=62.37s status=timeout
+2026-06-17 22:23:00,910 INFO k_sweep | k-sweep 35/280 elapsed=1441.1s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=0 wall=573.82s status=timeout
+2026-06-17 22:23:06,083 INFO k_sweep | k-sweep 36/280 elapsed=1446.2s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=441890 wall=62.96s status=timeout
+2026-06-17 22:23:22,619 INFO k_sweep | k-sweep 37/280 elapsed=1462.8s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=271821 wall=62.88s status=timeout
+2026-06-17 22:24:32,864 INFO k_sweep | k-sweep 38/280 elapsed=1533.0s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=0 wall=279.96s status=timeout
+2026-06-17 22:25:36,291 INFO k_sweep | k-sweep 39/280 elapsed=1596.5s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=10984514 wall=63.39s status=timeout
+2026-06-17 22:26:39,463 INFO k_sweep | k-sweep 40/280 elapsed=1659.6s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=5489762 wall=62.68s status=timeout
+2026-06-17 22:27:42,118 INFO k_sweep | k-sweep 41/280 elapsed=1722.3s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=3687716 wall=62.63s status=timeout
+2026-06-17 22:27:47,252 INFO k_sweep | k-sweep 42/280 elapsed=1727.4s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=0 wall=1179.35s status=timeout
+2026-06-17 22:28:08,177 INFO k_sweep | k-sweep 43/280 elapsed=1748.3s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=0 wall=285.54s status=timeout
+2026-06-17 22:28:45,124 INFO k_sweep | k-sweep 44/280 elapsed=1785.3s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=288659 wall=62.98s status=timeout
+2026-06-17 22:29:41,129 INFO k_sweep | k-sweep 45/280 elapsed=1841.3s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=0 wall=590.62s status=timeout
+2026-06-17 22:30:44,034 INFO k_sweep | k-sweep 46/280 elapsed=1904.2s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=9240660 wall=62.47s status=timeout
+2026-06-17 22:31:47,094 INFO k_sweep | k-sweep 47/280 elapsed=1967.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=943061 wall=63.04s status=timeout
+2026-06-17 22:32:49,785 INFO k_sweep | k-sweep 48/280 elapsed=2029.9s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=3294235 wall=62.66s status=timeout
+2026-06-17 22:33:01,946 INFO k_sweep | k-sweep 49/280 elapsed=2042.1s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=0 wall=595.31s status=timeout
+2026-06-17 22:33:06,250 INFO k_sweep | k-sweep 50/280 elapsed=2046.4s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=0 wall=1189.38s status=timeout
+2026-06-17 22:33:26,946 INFO k_sweep | k-sweep 51/280 elapsed=2067.1s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=0 wall=281.38s status=timeout
+2026-06-17 22:33:52,654 INFO k_sweep | k-sweep 52/280 elapsed=2092.8s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=286804 wall=62.84s status=timeout
+2026-06-17 22:34:56,071 INFO k_sweep | k-sweep 53/280 elapsed=2156.2s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=11000206 wall=63.40s status=timeout
+2026-06-17 22:35:59,024 INFO k_sweep | k-sweep 54/280 elapsed=2219.2s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=898140 wall=62.92s status=timeout
+2026-06-17 22:37:02,222 INFO k_sweep | k-sweep 55/280 elapsed=2282.4s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=2270068 wall=62.71s status=timeout
+2026-06-17 22:38:00,990 INFO k_sweep | k-sweep 56/280 elapsed=2341.2s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=0 wall=592.32s status=timeout
+2026-06-17 22:38:05,309 INFO k_sweep | k-sweep 57/280 elapsed=2345.5s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=575338 wall=63.06s status=timeout
+2026-06-17 22:38:06,318 INFO k_sweep | k-sweep 58/280 elapsed=2346.5s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=0 wall=279.35s status=timeout
+2026-06-17 22:39:47,089 INFO k_sweep | k-sweep 59/280 elapsed=2447.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=0 wall=1200.82s status=timeout
+2026-06-17 22:40:48,683 INFO k_sweep | k-sweep 60/280 elapsed=2508.9s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=16524732 wall=61.58s status=timeout
+2026-06-17 22:41:52,079 INFO k_sweep | k-sweep 61/280 elapsed=2572.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=883941 wall=62.89s status=timeout
+2026-06-17 22:42:54,929 INFO k_sweep | k-sweep 62/280 elapsed=2635.1s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=4992836 wall=62.82s status=timeout
+2026-06-17 22:42:55,134 INFO k_sweep | k-sweep 63/280 elapsed=2635.3s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=0 wall=288.79s status=timeout
+2026-06-17 22:43:01,232 INFO k_sweep | k-sweep 64/280 elapsed=2641.4s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=0 wall=594.97s status=timeout
+2026-06-17 22:43:06,905 INFO k_sweep | k-sweep 65/280 elapsed=2647.1s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=0 wall=1205.99s status=timeout
+2026-06-17 22:44:04,053 INFO k_sweep | k-sweep 66/280 elapsed=2704.2s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=1739055 wall=68.90s status=timeout
+2026-06-17 22:45:09,703 INFO k_sweep | k-sweep 67/280 elapsed=2769.9s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=5465895 wall=65.16s status=timeout
+2026-06-17 22:46:12,645 INFO k_sweep | k-sweep 68/280 elapsed=2832.8s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=2759930 wall=62.90s status=timeout
+2026-06-17 22:47:15,505 INFO k_sweep | k-sweep 69/280 elapsed=2895.7s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=911859 wall=62.83s status=timeout
+2026-06-17 22:47:43,541 INFO k_sweep | k-sweep 70/280 elapsed=2923.7s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=0 wall=1196.27s status=timeout
+2026-06-17 22:47:51,595 INFO k_sweep | k-sweep 71/280 elapsed=2931.8s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=0 wall=284.67s status=timeout
+2026-06-17 22:47:58,609 INFO k_sweep | k-sweep 72/280 elapsed=2938.8s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=0 wall=592.78s status=timeout
+2026-06-17 22:48:18,579 INFO k_sweep | k-sweep 73/280 elapsed=2958.8s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=301617 wall=63.05s status=timeout
+2026-06-17 22:49:21,952 INFO k_sweep | k-sweep 74/280 elapsed=3022.1s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=11001478 wall=62.87s status=timeout
+2026-06-17 22:50:24,908 INFO k_sweep | k-sweep 75/280 elapsed=3085.1s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=3620655 wall=62.91s status=timeout
+2026-06-17 22:51:27,593 INFO k_sweep | k-sweep 76/280 elapsed=3147.8s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=4112701 wall=62.65s status=timeout
+2026-06-17 22:51:57,768 INFO k_sweep | k-sweep 77/280 elapsed=3177.9s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=0 wall=239.13s status=timeout
+2026-06-17 22:52:07,694 INFO k_sweep | k-sweep 78/280 elapsed=3187.9s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=0 wall=546.04s status=timeout
+2026-06-17 22:52:19,820 INFO k_sweep | k-sweep 79/280 elapsed=3200.0s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=0 wall=1157.85s status=timeout
+2026-06-17 22:52:31,083 INFO k_sweep | k-sweep 80/280 elapsed=3211.3s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=296156 wall=62.98s status=timeout
+2026-06-17 22:53:33,867 INFO k_sweep | k-sweep 81/280 elapsed=3274.0s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=14651743 wall=62.76s status=timeout
+2026-06-17 22:54:37,260 INFO k_sweep | k-sweep 82/280 elapsed=3337.4s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=1852277 wall=62.87s status=timeout
+2026-06-17 22:55:45,911 INFO k_sweep | k-sweep 83/280 elapsed=3406.1s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=963138 wall=68.62s status=timeout
+2026-06-17 22:56:48,730 INFO k_sweep | k-sweep 84/280 elapsed=3468.9s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=608761 wall=62.79s status=timeout
+2026-06-17 22:56:53,029 INFO k_sweep | k-sweep 85/280 elapsed=3473.2s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=0 wall=541.40s status=timeout
+2026-06-17 22:57:02,826 INFO k_sweep | k-sweep 86/280 elapsed=3483.0s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=0 wall=282.98s status=timeout
+2026-06-17 22:57:07,000 INFO k_sweep | k-sweep 87/280 elapsed=3487.2s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=0 wall=1145.98s status=timeout
+=== K-sweep START 2026-06-18T05:48:53Z commit=2754931 ===
+=== CELL N=100000 M=10 inversely_strongly f=0.1 05:48:54Z ===
+2026-06-18 07:48:54,493 INFO k_sweep | K-sweep: 0 planned runs (367 already complete)
+2026-06-18 07:48:54,498 INFO k_sweep | Wrote K-sweep records to results/k_sweep/sweep.jsonl
+archive: instances
+config: configs/hld_smac_best.json (n_iter=35, alpha=0.998, lambda_max=80.745)
+out_jsonl: results/k_sweep/sweep.jsonl
+subset: all  min_N: 10000
+k_grid: [2, 4, 8, 16, 32, 64, 100]
+solvers: hld partition_optimal
+eligible_instances: 20
+time_limit_s: 60.0
+runs_planned: 280
+=== CELL N=100000 M=10 inversely_strongly f=0.5 05:48:54Z ===
+2026-06-18 07:48:54,746 INFO k_sweep | K-sweep: 193 planned runs (367 already complete)
+archive: instances
+config: configs/hld_smac_best.json (n_iter=35, alpha=0.998, lambda_max=80.745)
+out_jsonl: results/k_sweep/sweep.jsonl
+subset: all  min_N: 10000
+k_grid: [2, 4, 8, 16, 32, 64, 100]
+solvers: hld partition_optimal
+eligible_instances: 20
+time_limit_s: 60.0
+runs_planned: 280
+2026-06-18 07:50:00,664 INFO k_sweep | k-sweep 1/193 elapsed=65.9s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=9250079 wall=65.62s status=timeout
+2026-06-18 07:51:03,386 INFO k_sweep | k-sweep 2/193 elapsed=128.6s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=3692852 wall=62.69s status=timeout
+/path/to/knapsack-hld/.venv/lib/python3.14/site-packages/joblib/externals/loky/process_executor.py:782: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+2026-06-18 07:52:06,898 INFO k_sweep | k-sweep 3/193 elapsed=192.2s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=960729 wall=62.99s status=timeout
+=== K-sweep START 2026-06-18T05:52:22Z commit=2754931 ===
+=== CELL N=100000 M=10 inversely_strongly f=0.1 05:52:22Z ===
+2026-06-18 07:52:23,278 INFO k_sweep | K-sweep: 0 planned runs (370 already complete)
+2026-06-18 07:52:23,282 INFO k_sweep | Wrote K-sweep records to results/k_sweep/sweep.jsonl
+archive: instances
+config: configs/hld_smac_best.json (n_iter=35, alpha=0.998, lambda_max=80.745)
+out_jsonl: results/k_sweep/sweep.jsonl
+subset: all  min_N: 10000
+k_grid: [2, 4, 8, 16, 32, 64, 100]
+solvers: hld partition_optimal
+eligible_instances: 20
+time_limit_s: 60.0
+runs_planned: 280
+=== CELL N=100000 M=10 inversely_strongly f=0.5 05:52:23Z ===
+2026-06-18 07:52:23,545 INFO k_sweep | K-sweep: 190 planned runs (370 already complete)
+archive: instances
+config: configs/hld_smac_best.json (n_iter=35, alpha=0.998, lambda_max=80.745)
+out_jsonl: results/k_sweep/sweep.jsonl
+subset: all  min_N: 10000
+k_grid: [2, 4, 8, 16, 32, 64, 100]
+solvers: hld partition_optimal
+eligible_instances: 20
+time_limit_s: 60.0
+runs_planned: 280
+2026-06-18 07:53:28,516 INFO k_sweep | k-sweep 1/190 elapsed=65.0s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=7317948 wall=64.63s status=timeout
+2026-06-18 07:53:28,877 INFO k_sweep | k-sweep 2/190 elapsed=65.3s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=311394 wall=65.01s status=timeout
+2026-06-18 07:54:32,539 INFO k_sweep | k-sweep 3/190 elapsed=129.0s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=4552456 wall=63.96s status=timeout
+2026-06-18 07:54:33,722 INFO k_sweep | k-sweep 4/190 elapsed=130.2s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=455635 wall=64.80s status=timeout
+2026-06-18 07:55:37,892 INFO k_sweep | k-sweep 5/190 elapsed=194.3s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=281546 wall=65.30s status=timeout
+2026-06-18 08:00:34,374 INFO k_sweep | k-sweep 6/190 elapsed=490.8s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=0 wall=490.49s status=timeout
+2026-06-18 08:00:35,421 INFO k_sweep | k-sweep 7/190 elapsed=491.9s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=0 wall=491.52s status=timeout
+2026-06-18 08:01:44,124 INFO k_sweep | k-sweep 8/190 elapsed=560.6s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=5483870 wall=68.60s status=timeout
+/path/to/knapsack-hld/.venv/lib/python3.14/site-packages/joblib/externals/loky/process_executor.py:782: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+2026-06-18 08:02:50,213 INFO k_sweep | k-sweep 9/190 elapsed=626.7s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=928090 wall=65.24s status=timeout
+2026-06-18 08:03:54,419 INFO k_sweep | k-sweep 10/190 elapsed=690.9s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=927998 wall=64.12s status=timeout
+2026-06-18 08:05:02,257 INFO k_sweep | k-sweep 11/190 elapsed=758.7s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=294213 wall=67.12s status=timeout
+2026-06-18 08:08:25,326 INFO k_sweep | k-sweep 12/190 elapsed=961.8s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=0 wall=470.91s status=timeout
+2026-06-18 08:08:49,285 INFO k_sweep | k-sweep 13/190 elapsed=985.7s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=0 wall=985.40s status=timeout
+2026-06-18 08:08:49,588 INFO k_sweep | k-sweep 14/190 elapsed=986.0s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=0 wall=985.71s status=timeout
+2026-06-18 08:08:50,274 INFO k_sweep | k-sweep 15/190 elapsed=986.7s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=0 wall=986.39s status=timeout
+2026-06-18 08:09:54,212 INFO k_sweep | k-sweep 16/190 elapsed=1050.7s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=1776396 wall=63.88s status=timeout
+2026-06-18 08:09:54,330 INFO k_sweep | k-sweep 17/190 elapsed=1050.8s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=5549595 wall=64.61s status=timeout
+2026-06-18 08:10:58,177 INFO k_sweep | k-sweep 18/190 elapsed=1114.6s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=6887908 wall=63.29s status=timeout
+2026-06-18 08:10:58,818 INFO k_sweep | k-sweep 19/190 elapsed=1115.3s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=285495 wall=63.92s status=timeout
+2026-06-18 08:12:05,587 INFO k_sweep | k-sweep 20/190 elapsed=1182.0s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=0 wall=987.64s status=timeout
+2026-06-18 08:16:29,103 INFO k_sweep | k-sweep 21/190 elapsed=1445.5s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=0 wall=459.77s status=timeout
+2026-06-18 08:17:35,422 INFO k_sweep | k-sweep 22/190 elapsed=1511.9s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=3640352 wall=65.69s status=timeout
+2026-06-18 08:18:39,220 INFO k_sweep | k-sweep 23/190 elapsed=1575.7s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=5479779 wall=63.77s status=timeout
+2026-06-18 08:19:32,515 INFO k_sweep | k-sweep 24/190 elapsed=1629.0s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=0 wall=446.89s status=timeout
+2026-06-18 08:19:42,374 INFO k_sweep | k-sweep 25/190 elapsed=1638.8s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=1407229 wall=63.12s status=timeout
+2026-06-18 08:20:36,306 INFO k_sweep | k-sweep 26/190 elapsed=1692.7s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=278714 wall=63.74s status=timeout
+2026-06-18 08:23:51,302 INFO k_sweep | k-sweep 27/190 elapsed=1887.7s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=0 wall=925.29s status=timeout
+2026-06-18 08:25:05,331 INFO k_sweep | k-sweep 28/190 elapsed=1961.8s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=0 wall=1961.44s status=timeout
+2026-06-18 08:25:08,358 INFO k_sweep | k-sweep 29/190 elapsed=1964.8s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=0 wall=1964.46s status=timeout
+2026-06-18 08:25:09,336 INFO k_sweep | k-sweep 30/190 elapsed=1965.8s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=0 wall=1965.45s status=timeout
+2026-06-18 08:25:16,407 INFO k_sweep | k-sweep 31/190 elapsed=1972.8s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=0 wall=1972.53s status=timeout
+2026-06-18 08:25:17,814 INFO k_sweep | k-sweep 32/190 elapsed=1974.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=0 wall=1973.92s status=timeout
+2026-06-18 08:26:09,538 INFO k_sweep | k-sweep 33/190 elapsed=2026.0s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=7317413 wall=64.16s status=timeout
+2026-06-18 08:26:12,225 INFO k_sweep | k-sweep 34/190 elapsed=2028.7s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=901738 wall=63.83s status=timeout
+2026-06-18 08:26:14,917 INFO k_sweep | k-sweep 35/190 elapsed=2031.4s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=901690 wall=65.55s status=timeout
+2026-06-18 08:26:25,110 INFO k_sweep | k-sweep 36/190 elapsed=2041.5s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=0 wall=926.25s status=timeout
+2026-06-18 08:26:28,466 INFO k_sweep | k-sweep 37/190 elapsed=2044.9s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=865487 wall=72.01s status=timeout
+2026-06-18 08:27:05,065 INFO k_sweep | k-sweep 38/190 elapsed=2081.5s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=0 wall=1951.30s status=timeout
+2026-06-18 08:27:18,661 INFO k_sweep | k-sweep 39/190 elapsed=2095.1s solver=hld k=16 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=9246867 wall=63.16s status=timeout
+2026-06-18 08:27:28,646 INFO k_sweep | k-sweep 40/190 elapsed=2105.1s solver=hld k=32 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=2802831 wall=63.49s status=timeout
+2026-06-18 08:27:32,610 INFO k_sweep | k-sweep 41/190 elapsed=2109.0s solver=hld k=64 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=1869629 wall=63.52s status=timeout
+2026-06-18 08:28:09,433 INFO k_sweep | k-sweep 42/190 elapsed=2145.9s solver=hld k=100 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=304346 wall=64.30s status=timeout
+2026-06-18 08:29:15,438 INFO k_sweep | k-sweep 43/190 elapsed=2211.9s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=7329996 wall=65.34s status=timeout
+2026-06-18 08:30:17,924 INFO k_sweep | k-sweep 44/190 elapsed=2274.4s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=14658013 wall=62.43s status=timeout
+2026-06-18 08:31:17,903 INFO k_sweep | k-sweep 45/190 elapsed=2334.3s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=0 wall=446.57s status=timeout
+2026-06-18 08:31:21,943 INFO k_sweep | k-sweep 46/190 elapsed=2338.4s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=458763 wall=63.99s status=timeout
+2026-06-18 08:32:19,805 INFO k_sweep | k-sweep 47/190 elapsed=2396.2s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=19634843 wall=61.88s status=timeout
+2026-06-18 08:33:46,275 INFO k_sweep | k-sweep 48/190 elapsed=2482.7s solver=hld k=8 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=0 wall=453.99s status=timeout
+2026-06-18 08:35:05,499 INFO k_sweep | k-sweep 49/190 elapsed=2561.9s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=0 wall=452.82s status=timeout
+2026-06-18 08:36:03,511 INFO k_sweep | k-sweep 50/190 elapsed=2619.9s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=0 wall=926.56s status=timeout
+2026-06-18 08:36:13,734 INFO k_sweep | k-sweep 51/190 elapsed=2630.2s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=7322711 wall=68.19s status=timeout
+2026-06-18 08:36:44,048 INFO k_sweep | k-sweep 52/190 elapsed=2660.5s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=0 wall=1901.71s status=timeout
+2026-06-18 08:37:07,669 INFO k_sweep | k-sweep 53/190 elapsed=2684.1s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=914914 wall=64.10s status=timeout
+2026-06-18 08:37:17,657 INFO k_sweep | k-sweep 54/190 elapsed=2694.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=457423 wall=63.32s status=timeout
+2026-06-18 08:37:47,057 INFO k_sweep | k-sweep 55/190 elapsed=2723.5s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=10249728 wall=62.96s status=timeout
+2026-06-18 08:41:16,394 INFO k_sweep | k-sweep 56/190 elapsed=2932.8s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=0 wall=450.07s status=timeout
+2026-06-18 08:41:40,292 INFO k_sweep | k-sweep 57/190 elapsed=2956.7s solver=hld k=4 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=0 wall=930.18s status=timeout
+2026-06-18 08:42:21,929 INFO k_sweep | k-sweep 58/190 elapsed=2998.3s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=16490915 wall=64.96s status=timeout
+2026-06-18 08:42:22,598 INFO k_sweep | k-sweep 59/190 elapsed=2999.0s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=0 wall=1884.36s status=timeout
+2026-06-18 08:42:36,728 INFO k_sweep | k-sweep 60/190 elapsed=3013.1s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=29317477 wall=56.41s status=feasible
+2026-06-18 08:43:02,274 INFO k_sweep | k-sweep 61/190 elapsed=3038.7s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=0 wall=933.58s status=timeout
+2026-06-18 08:43:17,936 INFO k_sweep | k-sweep 62/190 elapsed=3054.4s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=29310352 wall=55.30s status=feasible
+2026-06-18 08:43:26,460 INFO k_sweep | k-sweep 63/190 elapsed=3062.9s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=2747152 wall=64.44s status=timeout
+2026-06-18 08:44:30,319 INFO k_sweep | k-sweep 64/190 elapsed=3126.7s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=5494798 wall=63.84s status=timeout
+2026-06-18 08:45:13,115 INFO k_sweep | k-sweep 65/190 elapsed=3169.5s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=0 wall=445.38s status=timeout
+2026-06-18 08:45:33,945 INFO k_sweep | k-sweep 66/190 elapsed=3190.4s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=8242246 wall=63.00s status=timeout
+2026-06-18 08:46:17,067 INFO k_sweep | k-sweep 67/190 elapsed=3233.5s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=457996 wall=63.92s status=timeout
+2026-06-18 08:46:36,501 INFO k_sweep | k-sweep 68/190 elapsed=3252.9s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=12891818 wall=62.50s status=timeout
+2026-06-18 08:47:45,966 INFO k_sweep | k-sweep 69/190 elapsed=3322.4s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=0 wall=925.37s status=timeout
+2026-06-18 08:50:50,404 INFO k_sweep | k-sweep 70/190 elapsed=3506.8s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=0 wall=451.85s status=timeout
+2026-06-18 08:51:18,091 INFO k_sweep | k-sweep 71/190 elapsed=3534.5s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=0 wall=1895.65s status=timeout
+2026-06-18 08:51:54,608 INFO k_sweep | k-sweep 72/190 elapsed=3571.0s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=16485351 wall=64.17s status=timeout
+2026-06-18 08:52:20,830 INFO k_sweep | k-sweep 73/190 elapsed=3597.2s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=9155361 wall=62.71s status=timeout
+2026-06-18 08:52:47,594 INFO k_sweep | k-sweep 74/190 elapsed=3624.0s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=0 wall=929.87s status=timeout
+2026-06-18 08:52:58,384 INFO k_sweep | k-sweep 75/190 elapsed=3634.8s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=458367 wall=63.74s status=timeout
+2026-06-18 08:53:23,379 INFO k_sweep | k-sweep 76/190 elapsed=3659.8s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=15527584 wall=61.89s status=timeout
+2026-06-18 08:55:16,243 INFO k_sweep | k-sweep 77/190 elapsed=3772.7s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=0 wall=450.21s status=timeout
+2026-06-18 08:56:18,985 INFO k_sweep | k-sweep 78/190 elapsed=3835.4s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=16470180 wall=62.12s status=timeout
+2026-06-18 08:57:04,440 INFO k_sweep | k-sweep 79/190 elapsed=3880.8s solver=hld k=2 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=0 wall=1906.55s status=timeout
+2026-06-18 08:57:17,320 INFO k_sweep | k-sweep 80/190 elapsed=3893.7s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=29281352 wall=58.30s status=feasible
+2026-06-18 08:57:43,882 INFO k_sweep | k-sweep 81/190 elapsed=3920.3s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=29280815 wall=39.40s status=feasible
+2026-06-18 08:58:21,213 INFO k_sweep | k-sweep 82/190 elapsed=3957.6s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=1463682 wall=63.87s status=timeout
+2026-06-18 08:58:32,126 INFO k_sweep | k-sweep 83/190 elapsed=3968.6s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=0 wall=929.85s status=timeout
+2026-06-18 08:59:01,702 INFO k_sweep | k-sweep 84/190 elapsed=3998.2s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=0 profit=0 wall=1903.03s status=timeout
+2026-06-18 09:00:08,490 INFO k_sweep | k-sweep 85/190 elapsed=4064.9s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=7328182 wall=66.73s status=timeout
+2026-06-18 09:00:50,669 INFO k_sweep | k-sweep 86/190 elapsed=4107.1s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=0 wall=447.30s status=timeout
+2026-06-18 09:01:11,663 INFO k_sweep | k-sweep 87/190 elapsed=4128.1s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=10992488 wall=62.53s status=timeout
+2026-06-18 09:01:54,777 INFO k_sweep | k-sweep 88/190 elapsed=4171.2s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=457856 wall=64.06s status=timeout
+2026-06-18 09:02:03,869 INFO k_sweep | k-sweep 89/190 elapsed=4180.3s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=0 wall=927.38s status=timeout
+2026-06-18 09:02:13,291 INFO k_sweep | k-sweep 90/190 elapsed=4189.7s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=18168773 wall=61.59s status=timeout
+2026-06-18 09:02:59,788 INFO k_sweep | k-sweep 91/190 elapsed=4236.2s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=1 profit=0 wall=1897.28s status=timeout
+2026-06-18 09:04:07,370 INFO k_sweep | k-sweep 92/190 elapsed=4303.8s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=5492852 wall=67.54s status=timeout
+2026-06-18 09:05:11,772 INFO k_sweep | k-sweep 93/190 elapsed=4368.2s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=3662687 wall=63.78s status=timeout
+2026-06-18 09:05:55,119 INFO k_sweep | k-sweep 94/190 elapsed=4411.6s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=29288185 wall=43.30s status=feasible
+2026-06-18 09:05:57,052 INFO k_sweep | k-sweep 95/190 elapsed=4413.5s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=0 wall=444.90s status=timeout
+2026-06-18 09:06:58,933 INFO k_sweep | k-sweep 96/190 elapsed=4475.4s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=3222331 wall=63.75s status=timeout
+2026-06-18 09:08:13,508 INFO k_sweep | k-sweep 97/190 elapsed=4550.0s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=0 wall=914.59s status=timeout
+2026-06-18 09:08:50,755 INFO k_sweep | k-sweep 98/190 elapsed=4587.2s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=10 profit=0 wall=1902.57s status=timeout
+2026-06-18 09:09:43,819 INFO k_sweep | k-sweep 99/190 elapsed=4640.3s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=0 wall=450.50s status=timeout
+2026-06-18 09:09:58,052 INFO k_sweep | k-sweep 100/190 elapsed=4654.5s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=5500326 wall=67.24s status=timeout
+2026-06-18 09:10:46,726 INFO k_sweep | k-sweep 101/190 elapsed=4703.2s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=11917166 wall=62.88s status=timeout
+2026-06-18 09:11:00,658 INFO k_sweep | k-sweep 102/190 elapsed=4717.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=16499423 wall=61.92s status=timeout
+2026-06-18 09:11:51,408 INFO k_sweep | k-sweep 103/190 elapsed=4767.9s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=292934 wall=64.62s status=timeout
+2026-06-18 09:13:54,404 INFO k_sweep | k-sweep 104/190 elapsed=4890.9s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=0 wall=933.18s status=timeout
+2026-06-18 09:14:12,935 INFO k_sweep | k-sweep 105/190 elapsed=4909.4s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=11 profit=0 wall=1895.64s status=timeout
+2026-06-18 09:15:17,227 INFO k_sweep | k-sweep 106/190 elapsed=4973.7s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=5492083 wall=64.24s status=timeout
+2026-06-18 09:15:41,050 INFO k_sweep | k-sweep 107/190 elapsed=4997.5s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=0 wall=447.50s status=timeout
+2026-06-18 09:16:21,550 INFO k_sweep | k-sweep 108/190 elapsed=5038.0s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=1830777 wall=63.68s status=timeout
+2026-06-18 09:16:45,128 INFO k_sweep | k-sweep 109/190 elapsed=5061.6s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=457607 wall=63.36s status=timeout
+2026-06-18 09:17:24,331 INFO k_sweep | k-sweep 110/190 elapsed=5100.8s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=10252344 wall=62.76s status=timeout
+2026-06-18 09:17:32,245 INFO k_sweep | k-sweep 111/190 elapsed=5108.7s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=0 wall=928.36s status=timeout
+2026-06-18 09:17:53,009 INFO k_sweep | k-sweep 112/190 elapsed=5129.5s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=12 profit=0 wall=1895.36s status=timeout
+2026-06-18 09:19:00,183 INFO k_sweep | k-sweep 113/190 elapsed=5196.6s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=3660060 wall=67.13s status=timeout
+2026-06-18 09:20:04,351 INFO k_sweep | k-sweep 114/190 elapsed=5260.8s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=1829811 wall=63.56s status=timeout
+2026-06-18 09:20:57,689 INFO k_sweep | k-sweep 115/190 elapsed=5314.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=29284087 wall=53.30s status=feasible
+2026-06-18 09:21:11,307 INFO k_sweep | k-sweep 116/190 elapsed=5327.8s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=0 wall=436.88s status=timeout
+2026-06-18 09:22:01,167 INFO k_sweep | k-sweep 117/190 elapsed=5377.6s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=5269223 wall=63.43s status=timeout
+2026-06-18 09:22:13,523 INFO k_sweep | k-sweep 118/190 elapsed=5390.0s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=0 wall=914.52s status=timeout
+2026-06-18 09:24:04,844 INFO k_sweep | k-sweep 119/190 elapsed=5501.3s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=13 profit=0 wall=1877.27s status=timeout
+2026-06-18 09:24:50,111 INFO k_sweep | k-sweep 120/190 elapsed=5546.6s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=0 wall=437.83s status=timeout
+2026-06-18 09:25:08,752 INFO k_sweep | k-sweep 121/190 elapsed=5565.2s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=5489070 wall=63.88s status=timeout
+2026-06-18 09:25:52,475 INFO k_sweep | k-sweep 122/190 elapsed=5608.9s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=11893268 wall=62.34s status=timeout
+2026-06-18 09:26:11,278 INFO k_sweep | k-sweep 123/190 elapsed=5627.7s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=16924894 wall=61.83s status=timeout
+2026-06-18 09:26:56,882 INFO k_sweep | k-sweep 124/190 elapsed=5673.3s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=1463277 wall=63.80s status=timeout
+2026-06-18 09:27:02,906 INFO k_sweep | k-sweep 125/190 elapsed=5679.4s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=0 wall=910.82s status=timeout
+2026-06-18 09:28:59,062 INFO k_sweep | k-sweep 126/190 elapsed=5795.5s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=14 profit=0 wall=1874.69s status=timeout
+2026-06-18 09:29:40,261 INFO k_sweep | k-sweep 127/190 elapsed=5836.7s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=0 wall=446.71s status=timeout
+2026-06-18 09:30:02,897 INFO k_sweep | k-sweep 128/190 elapsed=5859.3s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=9157513 wall=63.75s status=timeout
+2026-06-18 09:30:43,010 INFO k_sweep | k-sweep 129/190 elapsed=5899.4s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=10990043 wall=62.69s status=timeout
+2026-06-18 09:31:06,849 INFO k_sweep | k-sweep 130/190 elapsed=5923.3s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=458167 wall=63.91s status=timeout
+2026-06-18 09:31:45,148 INFO k_sweep | k-sweep 131/190 elapsed=5961.6s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=17289275 wall=62.10s status=timeout
+2026-06-18 09:32:22,268 INFO k_sweep | k-sweep 132/190 elapsed=5998.7s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=0 wall=897.86s status=timeout
+2026-06-18 09:33:07,921 INFO k_sweep | k-sweep 133/190 elapsed=6044.3s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=15 profit=0 wall=1872.49s status=timeout
+2026-06-18 09:34:07,714 INFO k_sweep | k-sweep 134/190 elapsed=6104.1s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=0 wall=424.72s status=timeout
+2026-06-18 09:34:14,866 INFO k_sweep | k-sweep 135/190 elapsed=6111.3s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=5499567 wall=66.90s status=timeout
+2026-06-18 09:35:10,546 INFO k_sweep | k-sweep 136/190 elapsed=6167.0s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=15575308 wall=62.80s status=timeout
+2026-06-18 09:35:19,481 INFO k_sweep | k-sweep 137/190 elapsed=6175.9s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=917142 wall=63.92s status=timeout
+2026-06-18 09:36:12,814 INFO k_sweep | k-sweep 138/190 elapsed=6229.2s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=20517893 wall=61.58s status=timeout
+2026-06-18 09:36:46,778 INFO k_sweep | k-sweep 139/190 elapsed=6263.2s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=16 profit=0 wall=1849.07s status=timeout
+2026-06-18 09:36:49,800 INFO k_sweep | k-sweep 140/190 elapsed=6266.2s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=0 wall=888.59s status=timeout
+2026-06-18 09:37:54,493 INFO k_sweep | k-sweep 141/190 elapsed=6330.9s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=5497189 wall=64.67s status=timeout
+2026-06-18 09:38:58,764 INFO k_sweep | k-sweep 142/190 elapsed=6395.2s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=1831774 wall=63.62s status=timeout
+2026-06-18 09:39:23,687 INFO k_sweep | k-sweep 143/190 elapsed=6420.1s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=0 wall=421.39s status=timeout
+2026-06-18 09:40:02,746 INFO k_sweep | k-sweep 144/190 elapsed=6459.2s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=915339 wall=63.94s status=timeout
+2026-06-18 09:40:05,896 INFO k_sweep | k-sweep 145/190 elapsed=6462.3s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=29317274 wall=42.18s status=feasible
+2026-06-18 09:41:29,126 INFO k_sweep | k-sweep 146/190 elapsed=6545.5s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=17 profit=0 wall=1828.40s status=timeout
+2026-06-18 09:41:31,108 INFO k_sweep | k-sweep 147/190 elapsed=6547.5s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=0 wall=874.16s status=timeout
+2026-06-18 09:42:35,199 INFO k_sweep | k-sweep 148/190 elapsed=6611.6s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=5491512 wall=64.06s status=timeout
+2026-06-18 09:43:39,915 INFO k_sweep | k-sweep 149/190 elapsed=6676.3s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=915461 wall=64.02s status=timeout
+2026-06-18 09:43:50,244 INFO k_sweep | k-sweep 150/190 elapsed=6686.7s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=0 wall=423.40s status=timeout
+2026-06-18 09:44:43,715 INFO k_sweep | k-sweep 151/190 elapsed=6740.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=457130 wall=63.75s status=timeout
+2026-06-18 09:44:52,762 INFO k_sweep | k-sweep 152/190 elapsed=6749.2s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=10247768 wall=62.49s status=timeout
+2026-06-18 09:46:09,821 INFO k_sweep | k-sweep 153/190 elapsed=6826.2s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=0 wall=864.63s status=timeout
+2026-06-18 09:46:42,904 INFO k_sweep | k-sweep 154/190 elapsed=6859.3s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=18 profit=0 wall=1797.69s status=timeout
+2026-06-18 09:47:46,661 INFO k_sweep | k-sweep 155/190 elapsed=6923.1s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=14650001 wall=63.72s status=timeout
+2026-06-18 09:48:20,707 INFO k_sweep | k-sweep 156/190 elapsed=6957.1s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=0 wall=411.56s status=timeout
+2026-06-18 09:48:50,592 INFO k_sweep | k-sweep 157/190 elapsed=6987.0s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=8240876 wall=63.01s status=timeout
+2026-06-18 09:49:25,356 INFO k_sweep | k-sweep 158/190 elapsed=7021.8s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=457350 wall=64.62s status=timeout
+2026-06-18 09:49:53,205 INFO k_sweep | k-sweep 159/190 elapsed=7049.6s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=12305057 wall=62.56s status=timeout
+2026-06-18 09:50:35,922 INFO k_sweep | k-sweep 160/190 elapsed=7092.3s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=0 wall=863.05s status=timeout
+2026-06-18 09:51:08,174 INFO k_sweep | k-sweep 161/190 elapsed=7124.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=19 profit=0 wall=1796.79s status=timeout
+2026-06-18 09:52:13,557 INFO k_sweep | k-sweep 162/190 elapsed=7190.0s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=14648530 wall=65.35s status=timeout
+2026-06-18 09:53:07,740 INFO k_sweep | k-sweep 163/190 elapsed=7244.2s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=0 wall=417.88s status=timeout
+2026-06-18 09:53:18,067 INFO k_sweep | k-sweep 164/190 elapsed=7254.5s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=8240733 wall=63.88s status=timeout
+2026-06-18 09:54:11,656 INFO k_sweep | k-sweep 165/190 elapsed=7308.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=457406 wall=63.90s status=timeout
+2026-06-18 09:54:20,493 INFO k_sweep | k-sweep 166/190 elapsed=7316.9s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=11715971 wall=62.39s status=timeout
+2026-06-18 09:54:23,323 INFO k_sweep | k-sweep 167/190 elapsed=7319.7s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=0 wall=857.38s status=timeout
+2026-06-18 09:55:41,402 INFO k_sweep | k-sweep 168/190 elapsed=7397.8s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=2 profit=0 wall=1770.04s status=timeout
+2026-06-18 09:56:46,811 INFO k_sweep | k-sweep 169/190 elapsed=7463.2s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=1831223 wall=65.35s status=timeout
+2026-06-18 09:57:29,574 INFO k_sweep | k-sweep 170/190 elapsed=7506.0s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=0 wall=413.61s status=timeout
+2026-06-18 09:57:52,009 INFO k_sweep | k-sweep 171/190 elapsed=7528.4s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=915141 wall=64.57s status=timeout
+2026-06-18 09:58:34,567 INFO k_sweep | k-sweep 172/190 elapsed=7571.0s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=457276 wall=64.97s status=timeout
+2026-06-18 09:59:02,464 INFO k_sweep | k-sweep 173/190 elapsed=7598.9s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=3222247 wall=70.42s status=timeout
+2026-06-18 09:59:08,778 INFO k_sweep | k-sweep 174/190 elapsed=7605.2s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=0 wall=855.42s status=timeout
+2026-06-18 10:00:20,200 INFO k_sweep | k-sweep 175/190 elapsed=7676.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=20 profit=0 wall=1752.70s status=timeout
+2026-06-18 10:01:10,959 INFO k_sweep | k-sweep 176/190 elapsed=7727.4s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=0 wall=407.59s status=timeout
+2026-06-18 10:01:24,612 INFO k_sweep | k-sweep 177/190 elapsed=7741.0s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=7326879 wall=64.35s status=timeout
+2026-06-18 10:02:15,507 INFO k_sweep | k-sweep 178/190 elapsed=7791.9s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=916482 wall=64.52s status=timeout
+2026-06-18 10:02:29,410 INFO k_sweep | k-sweep 179/190 elapsed=7805.8s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=458398 wall=64.08s status=timeout
+2026-06-18 10:03:18,280 INFO k_sweep | k-sweep 180/190 elapsed=7854.7s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=10545944 wall=62.75s status=timeout
+2026-06-18 10:04:01,363 INFO k_sweep | k-sweep 181/190 elapsed=7897.8s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=0 wall=848.12s status=timeout
+2026-06-18 10:04:27,153 INFO k_sweep | k-sweep 182/190 elapsed=7923.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=21 profit=0 wall=1747.62s status=timeout
+2026-06-18 10:05:37,386 INFO k_sweep | k-sweep 183/190 elapsed=7993.8s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=0 wall=388.57s status=timeout
+2026-06-18 10:07:22,555 INFO k_sweep | k-sweep 184/190 elapsed=8099.0s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=0 wall=782.03s status=timeout
+2026-06-18 10:07:49,268 INFO k_sweep | k-sweep 185/190 elapsed=8125.7s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=22 profit=0 wall=1666.47s status=timeout
+2026-06-18 10:09:36,112 INFO k_sweep | k-sweep 186/190 elapsed=8232.5s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=0 wall=633.62s status=timeout
+2026-06-18 10:09:50,804 INFO k_sweep | k-sweep 187/190 elapsed=8247.2s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=23 profit=0 wall=1507.05s status=timeout
+2026-06-18 10:10:33,059 INFO k_sweep | k-sweep 188/190 elapsed=8289.5s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=24 profit=0 wall=1266.88s status=timeout
+2026-06-18 10:10:47,896 INFO k_sweep | k-sweep 189/190 elapsed=8304.3s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=25 profit=0 wall=996.20s status=timeout
+2026-06-18 10:10:57,541 INFO k_sweep | k-sweep 190/190 elapsed=8314.0s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.5 seed=26 profit=0 wall=742.36s status=timeout
+2026-06-18 10:10:57,541 INFO k_sweep | Wrote K-sweep records to results/k_sweep/sweep.jsonl
+=== CELL N=100000 M=10 inversely_strongly f=0.9 08:10:57Z ===
+2026-06-18 10:10:58,082 INFO k_sweep | K-sweep: 280 planned runs (560 already complete)
+archive: instances
+config: configs/hld_smac_best.json (n_iter=35, alpha=0.998, lambda_max=80.745)
+out_jsonl: results/k_sweep/sweep.jsonl
+subset: all  min_N: 10000
+k_grid: [2, 4, 8, 16, 32, 64, 100]
+solvers: hld partition_optimal
+eligible_instances: 20
+time_limit_s: 60.0
+runs_planned: 280
+2026-06-18 10:12:01,568 INFO k_sweep | k-sweep 1/280 elapsed=63.5s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=12942439 wall=63.15s status=timeout
+2026-06-18 10:12:01,623 INFO k_sweep | k-sweep 2/280 elapsed=63.5s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=19363708 wall=63.18s status=timeout
+2026-06-18 10:12:01,973 INFO k_sweep | k-sweep 3/280 elapsed=63.9s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=16169726 wall=63.56s status=timeout
+2026-06-18 10:12:03,760 INFO k_sweep | k-sweep 4/280 elapsed=65.7s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=22724068 wall=65.34s status=timeout
+2026-06-18 10:12:05,184 INFO k_sweep | k-sweep 5/280 elapsed=67.1s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=11368992 wall=66.78s status=timeout
+2026-06-18 10:12:08,810 INFO k_sweep | k-sweep 6/280 elapsed=70.7s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=9663040 wall=70.39s status=timeout
+2026-06-18 10:13:06,429 INFO k_sweep | k-sweep 7/280 elapsed=128.3s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=835541 wall=64.83s status=timeout
+2026-06-18 10:13:06,603 INFO k_sweep | k-sweep 8/280 elapsed=128.5s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=536497 wall=64.93s status=timeout
+2026-06-18 10:13:13,776 INFO k_sweep | k-sweep 9/280 elapsed=135.7s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=12946248 wall=64.89s status=timeout
+/path/to/knapsack-hld/.venv/lib/python3.14/site-packages/joblib/externals/loky/process_executor.py:782: UserWarning: A worker stopped while some jobs were given to the executor. This can be caused by a too short worker timeout or by a memory leak.
+  warnings.warn(
+2026-06-18 10:14:09,542 INFO k_sweep | k-sweep 10/280 elapsed=191.5s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=20170387 wall=62.88s status=timeout
+2026-06-18 10:14:10,466 INFO k_sweep | k-sweep 11/280 elapsed=192.4s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=16155171 wall=63.99s status=timeout
+2026-06-18 10:14:17,846 INFO k_sweep | k-sweep 12/280 elapsed=199.8s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=20661039 wall=62.89s status=timeout
+2026-06-18 10:19:27,656 INFO k_sweep | k-sweep 13/280 elapsed=509.6s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=0 wall=509.19s status=timeout
+2026-06-18 10:19:29,283 INFO k_sweep | k-sweep 14/280 elapsed=511.2s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=0 wall=510.86s status=timeout
+2026-06-18 10:20:33,426 INFO k_sweep | k-sweep 15/280 elapsed=575.3s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=9746520 wall=65.64s status=timeout
+2026-06-18 10:20:34,615 INFO k_sweep | k-sweep 16/280 elapsed=576.5s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=4876496 wall=65.27s status=timeout
+2026-06-18 10:20:41,757 INFO k_sweep | k-sweep 17/280 elapsed=583.7s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=0 wall=516.51s status=timeout
+2026-06-18 10:21:39,535 INFO k_sweep | k-sweep 18/280 elapsed=641.4s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=15578454 wall=63.77s status=timeout
+2026-06-18 10:21:40,320 INFO k_sweep | k-sweep 19/280 elapsed=642.2s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=836313 wall=65.34s status=timeout
+2026-06-18 10:23:08,314 INFO k_sweep | k-sweep 20/280 elapsed=730.2s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=0 wall=530.41s status=timeout
+2026-06-18 10:24:13,753 INFO k_sweep | k-sweep 21/280 elapsed=795.7s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=9696524 wall=65.42s status=timeout
+2026-06-18 10:25:19,667 INFO k_sweep | k-sweep 22/280 elapsed=861.6s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=9696399 wall=64.77s status=timeout
+2026-06-18 10:26:25,038 INFO k_sweep | k-sweep 23/280 elapsed=926.9s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=4004333 wall=65.31s status=timeout
+2026-06-18 10:27:29,225 INFO k_sweep | k-sweep 24/280 elapsed=991.1s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=2569931 wall=64.13s status=timeout
+2026-06-18 10:28:26,774 INFO k_sweep | k-sweep 25/280 elapsed=1048.6s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=0 wall=1048.31s status=timeout
+2026-06-18 10:28:28,502 INFO k_sweep | k-sweep 26/280 elapsed=1050.4s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=0 wall=1050.00s status=timeout
+2026-06-18 10:29:25,996 INFO k_sweep | k-sweep 27/280 elapsed=1107.9s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=0 wall=1042.16s status=timeout
+2026-06-18 10:29:50,231 INFO k_sweep | k-sweep 28/280 elapsed=1132.1s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=0 wall=489.82s status=timeout
+2026-06-18 10:30:32,641 INFO k_sweep | k-sweep 29/280 elapsed=1174.5s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=22767864 wall=66.60s status=timeout
+2026-06-18 10:30:53,445 INFO k_sweep | k-sweep 30/280 elapsed=1195.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=14671919 wall=63.16s status=timeout
+2026-06-18 10:31:12,854 INFO k_sweep | k-sweep 31/280 elapsed=1214.7s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=0 wall=1021.27s status=timeout
+2026-06-18 10:31:38,120 INFO k_sweep | k-sweep 32/280 elapsed=1240.0s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=812955 wall=64.81s status=timeout
+2026-06-18 10:31:57,742 INFO k_sweep | k-sweep 33/280 elapsed=1259.6s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=23884350 wall=63.54s status=timeout
+2026-06-18 10:34:46,029 INFO k_sweep | k-sweep 34/280 elapsed=1427.9s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=0 wall=377.47s status=timeout
+2026-06-18 10:35:53,499 INFO k_sweep | k-sweep 35/280 elapsed=1495.4s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=12893697 wall=66.20s status=timeout
+2026-06-18 10:36:16,860 INFO k_sweep | k-sweep 36/280 elapsed=1518.7s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=0 wall=877.22s status=timeout
+2026-06-18 10:36:57,090 INFO k_sweep | k-sweep 37/280 elapsed=1559.0s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=14488818 wall=63.55s status=timeout
+2026-06-18 10:37:21,503 INFO k_sweep | k-sweep 38/280 elapsed=1583.4s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=820151 wall=64.61s status=timeout
+2026-06-18 10:37:44,933 INFO k_sweep | k-sweep 39/280 elapsed=1606.8s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=0 wall=347.13s status=timeout
+2026-06-18 10:38:02,247 INFO k_sweep | k-sweep 40/280 elapsed=1624.1s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=16533816 wall=65.13s status=timeout
+2026-06-18 10:40:50,677 INFO k_sweep | k-sweep 41/280 elapsed=1792.5s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=0 wall=743.82s status=timeout
+2026-06-18 10:41:54,120 INFO k_sweep | k-sweep 42/280 elapsed=1856.0s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=0 wall=1855.62s status=timeout
+2026-06-18 10:41:55,646 INFO k_sweep | k-sweep 43/280 elapsed=1857.5s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=19482695 wall=64.94s status=timeout
+2026-06-18 10:42:00,610 INFO k_sweep | k-sweep 44/280 elapsed=1862.5s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=0 wall=1862.14s status=timeout
+2026-06-18 10:42:37,985 INFO k_sweep | k-sweep 45/280 elapsed=1899.8s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=0 wall=1835.92s status=timeout
+2026-06-18 10:42:56,717 INFO k_sweep | k-sweep 46/280 elapsed=1918.6s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=29206080 wall=62.55s status=timeout
+2026-06-18 10:43:01,016 INFO k_sweep | k-sweep 47/280 elapsed=1922.9s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=8173050 wall=64.48s status=timeout
+2026-06-18 10:43:03,080 INFO k_sweep | k-sweep 48/280 elapsed=1924.9s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=27539735 wall=62.42s status=timeout
+2026-06-18 10:43:17,493 INFO k_sweep | k-sweep 49/280 elapsed=1939.3s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=0 wall=699.32s status=timeout
+2026-06-18 10:43:25,180 INFO k_sweep | k-sweep 50/280 elapsed=1947.0s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=0 wall=322.90s status=timeout
+2026-06-18 10:44:03,429 INFO k_sweep | k-sweep 51/280 elapsed=1985.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=0 wall=1793.77s status=timeout
+2026-06-18 10:44:14,281 INFO k_sweep | k-sweep 52/280 elapsed=1996.1s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=12997260 wall=70.29s status=timeout
+2026-06-18 10:44:28,868 INFO k_sweep | k-sweep 53/280 elapsed=2010.7s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=6519969 wall=71.33s status=timeout
+2026-06-18 10:44:29,084 INFO k_sweep | k-sweep 54/280 elapsed=2010.9s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=11385085 wall=63.85s status=timeout
+2026-06-18 10:45:09,693 INFO k_sweep | k-sweep 55/280 elapsed=2051.5s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=3617534 wall=66.24s status=timeout
+2026-06-18 10:46:21,290 INFO k_sweep | k-sweep 56/280 elapsed=2123.1s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=12932536 wall=70.61s status=timeout
+2026-06-18 10:47:25,443 INFO k_sweep | k-sweep 57/280 elapsed=2187.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=21131466 wall=64.10s status=timeout
+2026-06-18 10:48:05,564 INFO k_sweep | k-sweep 58/280 elapsed=2227.4s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=0 wall=1643.70s status=timeout
+2026-06-18 10:48:26,162 INFO k_sweep | k-sweep 59/280 elapsed=2248.0s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=0 wall=325.09s status=timeout
+2026-06-18 10:48:26,571 INFO k_sweep | k-sweep 60/280 elapsed=2248.4s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=42137216 wall=61.11s status=timeout
+2026-06-18 10:49:09,221 INFO k_sweep | k-sweep 61/280 elapsed=2291.1s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=4621501 wall=63.61s status=timeout
+2026-06-18 10:49:25,439 INFO k_sweep | k-sweep 62/280 elapsed=2307.3s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=0 wall=700.43s status=timeout
+2026-06-18 10:50:29,169 INFO k_sweep | k-sweep 63/280 elapsed=2371.0s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=22665456 wall=63.71s status=timeout
+2026-06-18 10:50:39,599 INFO k_sweep | k-sweep 64/280 elapsed=2381.4s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=0 wall=369.54s status=timeout
+2026-06-18 10:51:32,052 INFO k_sweep | k-sweep 65/280 elapsed=2433.9s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=38928440 wall=62.15s status=timeout
+2026-06-18 10:51:43,595 INFO k_sweep | k-sweep 66/280 elapsed=2445.4s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=8009474 wall=63.94s status=timeout
+2026-06-18 10:52:36,116 INFO k_sweep | k-sweep 67/280 elapsed=2498.0s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=522294 wall=64.04s status=timeout
+2026-06-18 10:54:18,266 INFO k_sweep | k-sweep 68/280 elapsed=2600.1s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=0 wall=1608.95s status=timeout
+2026-06-18 10:56:19,054 INFO k_sweep | k-sweep 69/280 elapsed=2720.9s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=0 wall=429.18s status=timeout
+2026-06-18 10:56:23,572 INFO k_sweep | k-sweep 70/280 elapsed=2725.4s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=0 wall=805.77s status=timeout
+2026-06-18 10:57:22,515 INFO k_sweep | k-sweep 71/280 elapsed=2784.4s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=16213484 wall=63.42s status=timeout
+2026-06-18 10:57:27,471 INFO k_sweep | k-sweep 72/280 elapsed=2789.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=11347303 wall=63.87s status=timeout
+2026-06-18 10:58:20,195 INFO k_sweep | k-sweep 73/280 elapsed=2842.0s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=0 wall=831.07s status=timeout
+2026-06-18 10:58:25,272 INFO k_sweep | k-sweep 74/280 elapsed=2847.1s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=25105518 wall=62.04s status=timeout
+2026-06-18 10:58:30,196 INFO k_sweep | k-sweep 75/280 elapsed=2852.0s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=24871509 wall=62.06s status=timeout
+2026-06-18 10:58:36,159 INFO k_sweep | k-sweep 76/280 elapsed=2858.0s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=0 wall=1643.22s status=timeout
+2026-06-18 10:59:43,227 INFO k_sweep | k-sweep 77/280 elapsed=2925.1s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=19500668 wall=67.01s status=timeout
+2026-06-18 11:00:48,618 INFO k_sweep | k-sweep 78/280 elapsed=2990.5s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=9803754 wall=64.63s status=timeout
+2026-06-18 11:01:20,499 INFO k_sweep | k-sweep 79/280 elapsed=3022.3s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=0 wall=422.20s status=timeout
+2026-06-18 11:01:51,332 INFO k_sweep | k-sweep 80/280 elapsed=3053.2s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=21895875 wall=62.66s status=timeout
+2026-06-18 11:02:26,393 INFO k_sweep | k-sweep 81/280 elapsed=3088.2s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=1087924 wall=65.18s status=timeout
+2026-06-18 11:02:55,313 INFO k_sweep | k-sweep 82/280 elapsed=3117.2s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=0 wall=868.67s status=timeout
+2026-06-18 11:05:30,478 INFO k_sweep | k-sweep 83/280 elapsed=3272.3s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=0 wall=420.23s status=timeout
+2026-06-18 11:05:46,498 INFO k_sweep | k-sweep 84/280 elapsed=3288.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=0 wall=1704.93s status=timeout
+2026-06-18 11:06:36,742 INFO k_sweep | k-sweep 85/280 elapsed=3338.6s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=16234478 wall=66.23s status=timeout
+2026-06-18 11:06:49,901 INFO k_sweep | k-sweep 86/280 elapsed=3351.7s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=11408606 wall=63.38s status=timeout
+2026-06-18 11:07:02,035 INFO k_sweep | k-sweep 87/280 elapsed=3363.9s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=0 wall=865.88s status=timeout
+2026-06-18 11:07:41,434 INFO k_sweep | k-sweep 88/280 elapsed=3403.3s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=823147 wall=64.66s status=timeout
+2026-06-18 11:07:54,977 INFO k_sweep | k-sweep 89/280 elapsed=3416.8s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=1058476 wall=64.45s status=timeout
+2026-06-18 11:09:54,167 INFO k_sweep | k-sweep 90/280 elapsed=3536.0s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=0 wall=418.78s status=timeout
+2026-06-18 11:10:57,668 INFO k_sweep | k-sweep 91/280 elapsed=3599.5s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=19453693 wall=63.47s status=timeout
+2026-06-18 11:11:44,617 INFO k_sweep | k-sweep 92/280 elapsed=3646.4s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=0 wall=1746.57s status=timeout
+2026-06-18 11:12:02,059 INFO k_sweep | k-sweep 93/280 elapsed=3663.9s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=9730088 wall=63.73s status=timeout
+2026-06-18 11:12:36,545 INFO k_sweep | k-sweep 94/280 elapsed=3698.4s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=0 wall=851.22s status=timeout
+2026-06-18 11:12:47,545 INFO k_sweep | k-sweep 95/280 elapsed=3709.4s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=14576302 wall=62.91s status=timeout
+2026-06-18 11:13:05,848 INFO k_sweep | k-sweep 96/280 elapsed=3727.7s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=1538009 wall=63.73s status=timeout
+2026-06-18 11:13:30,853 INFO k_sweep | k-sweep 97/280 elapsed=3752.7s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=0 wall=1756.45s status=timeout
+2026-06-18 11:14:35,586 INFO k_sweep | k-sweep 98/280 elapsed=3817.4s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=19464437 wall=64.70s status=timeout
+2026-06-18 11:14:53,053 INFO k_sweep | k-sweep 99/280 elapsed=3834.9s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=0 wall=418.00s status=timeout
+2026-06-18 11:15:47,369 INFO k_sweep | k-sweep 100/280 elapsed=3889.2s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=13059050 wall=71.05s status=timeout
+2026-06-18 11:15:57,558 INFO k_sweep | k-sweep 101/280 elapsed=3899.4s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=1641693 wall=64.45s status=timeout
+2026-06-18 11:16:30,902 INFO k_sweep | k-sweep 102/280 elapsed=3932.7s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=0 wall=844.44s status=timeout
+2026-06-18 11:16:49,749 INFO k_sweep | k-sweep 103/280 elapsed=3951.6s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=27581697 wall=62.33s status=timeout
+2026-06-18 11:17:34,404 INFO k_sweep | k-sweep 104/280 elapsed=3996.2s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=0 wall=1748.17s status=timeout
+2026-06-18 11:18:39,321 INFO k_sweep | k-sweep 105/280 elapsed=4061.1s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=22655609 wall=64.86s status=timeout
+2026-06-18 11:19:43,018 INFO k_sweep | k-sweep 106/280 elapsed=4124.8s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=19456360 wall=62.94s status=timeout
+2026-06-18 11:19:54,999 INFO k_sweep | k-sweep 107/280 elapsed=4136.8s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=0 wall=409.13s status=timeout
+2026-06-18 11:20:44,653 INFO k_sweep | k-sweep 108/280 elapsed=4186.5s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=0 wall=1740.98s status=timeout
+2026-06-18 11:20:45,180 INFO k_sweep | k-sweep 109/280 elapsed=4187.0s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=26639478 wall=62.11s status=timeout
+2026-06-18 11:20:59,088 INFO k_sweep | k-sweep 110/280 elapsed=4200.9s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=2049091 wall=64.04s status=timeout
+2026-06-18 11:21:42,679 INFO k_sweep | k-sweep 111/280 elapsed=4244.5s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=0 wall=840.58s status=timeout
+2026-06-18 11:22:46,804 INFO k_sweep | k-sweep 112/280 elapsed=4308.6s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=12991404 wall=64.08s status=timeout
+2026-06-18 11:23:42,341 INFO k_sweep | k-sweep 113/280 elapsed=4364.2s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=0 wall=412.56s status=timeout
+2026-06-18 11:23:50,516 INFO k_sweep | k-sweep 114/280 elapsed=4372.3s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=19451362 wall=63.13s status=timeout
+2026-06-18 11:24:44,441 INFO k_sweep | k-sweep 115/280 elapsed=4426.3s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=33162185 wall=62.04s status=timeout
+2026-06-18 11:24:54,437 INFO k_sweep | k-sweep 116/280 elapsed=4436.3s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=7753046 wall=63.86s status=timeout
+2026-06-18 11:26:47,109 INFO k_sweep | k-sweep 117/280 elapsed=4548.9s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=0 wall=838.91s status=timeout
+2026-06-18 11:27:07,154 INFO k_sweep | k-sweep 118/280 elapsed=4569.0s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=0 wall=1726.88s status=timeout
+2026-06-18 11:27:52,745 INFO k_sweep | k-sweep 119/280 elapsed=4614.6s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=0 wall=413.61s status=timeout
+2026-06-18 11:28:14,266 INFO k_sweep | k-sweep 120/280 elapsed=4636.1s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=16207555 wall=67.08s status=timeout
+2026-06-18 11:28:56,132 INFO k_sweep | k-sweep 121/280 elapsed=4677.9s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=9746562 wall=63.36s status=timeout
+2026-06-18 11:29:18,407 INFO k_sweep | k-sweep 122/280 elapsed=4700.2s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=1608265 wall=63.50s status=timeout
+2026-06-18 11:30:00,141 INFO k_sweep | k-sweep 123/280 elapsed=4742.0s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=498459 wall=63.99s status=timeout
+2026-06-18 11:30:31,323 INFO k_sweep | k-sweep 124/280 elapsed=4773.1s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=0 wall=1719.90s status=timeout
+2026-06-18 11:30:33,164 INFO k_sweep | k-sweep 125/280 elapsed=4775.0s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=0 wall=842.22s status=timeout
+2026-06-18 11:31:38,692 INFO k_sweep | k-sweep 126/280 elapsed=4840.5s solver=hld k=16 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=16200697 wall=65.48s status=timeout
+2026-06-18 11:32:42,696 INFO k_sweep | k-sweep 127/280 elapsed=4904.5s solver=hld k=32 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=13020804 wall=63.37s status=timeout
+2026-06-18 11:33:43,586 INFO k_sweep | k-sweep 128/280 elapsed=4965.4s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=0 wall=416.42s status=timeout
+2026-06-18 11:33:46,285 INFO k_sweep | k-sweep 129/280 elapsed=4968.1s solver=hld k=64 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=1666262 wall=63.55s status=timeout
+2026-06-18 11:34:47,579 INFO k_sweep | k-sweep 130/280 elapsed=5029.4s solver=hld k=100 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=6283435 wall=63.42s status=timeout
+2026-06-18 11:34:54,341 INFO k_sweep | k-sweep 131/280 elapsed=5036.1s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=0 wall=849.11s status=timeout
+2026-06-18 11:35:45,485 INFO k_sweep | k-sweep 132/280 elapsed=5087.3s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=0 wall=1723.38s status=timeout
+2026-06-18 11:36:50,230 INFO k_sweep | k-sweep 133/280 elapsed=5152.0s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=19462330 wall=64.70s status=timeout
+2026-06-18 11:37:32,725 INFO k_sweep | k-sweep 134/280 elapsed=5194.5s solver=hld k=8 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=0 wall=421.37s status=timeout
+2026-06-18 11:37:53,254 INFO k_sweep | k-sweep 135/280 elapsed=5215.1s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=24324375 wall=62.40s status=timeout
+2026-06-18 11:38:35,142 INFO k_sweep | k-sweep 136/280 elapsed=5256.9s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=29191320 wall=61.75s status=timeout
+2026-06-18 11:38:57,197 INFO k_sweep | k-sweep 137/280 elapsed=5279.0s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=519807 wall=63.92s status=timeout
+2026-06-18 11:39:09,372 INFO k_sweep | k-sweep 138/280 elapsed=5291.2s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=0 wall=854.89s status=timeout
+2026-06-18 11:41:34,249 INFO k_sweep | k-sweep 139/280 elapsed=5436.0s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=0 wall=1737.62s status=timeout
+2026-06-18 11:41:54,511 INFO k_sweep | k-sweep 140/280 elapsed=5456.3s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=0 wall=420.13s status=timeout
+2026-06-18 11:42:37,669 INFO k_sweep | k-sweep 141/280 elapsed=5499.5s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=29170871 wall=63.36s status=timeout
+2026-06-18 11:42:59,989 INFO k_sweep | k-sweep 142/280 elapsed=5521.8s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=21063024 wall=64.84s status=timeout
+2026-06-18 11:43:42,052 INFO k_sweep | k-sweep 143/280 elapsed=5563.9s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=810458 wall=63.70s status=timeout
+2026-06-18 11:44:02,392 INFO k_sweep | k-sweep 144/280 elapsed=5584.2s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=30074934 wall=62.34s status=timeout
+2026-06-18 11:44:18,821 INFO k_sweep | k-sweep 145/280 elapsed=5600.6s solver=hld k=4 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=0 wall=858.03s status=timeout
+2026-06-18 11:44:59,174 INFO k_sweep | k-sweep 146/280 elapsed=5641.0s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=0 wall=1741.54s status=timeout
+2026-06-18 11:46:02,543 INFO k_sweep | k-sweep 147/280 elapsed=5704.4s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=0 wall=413.17s status=timeout
+2026-06-18 11:46:02,925 INFO k_sweep | k-sweep 148/280 elapsed=5704.8s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=19456237 wall=63.75s status=timeout
+2026-06-18 11:47:05,686 INFO k_sweep | k-sweep 149/280 elapsed=5767.5s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=19456746 wall=63.10s status=timeout
+2026-06-18 11:47:05,873 INFO k_sweep | k-sweep 150/280 elapsed=5767.7s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=30814229 wall=62.25s status=timeout
+2026-06-18 11:48:10,462 INFO k_sweep | k-sweep 151/280 elapsed=5832.3s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=519508 wall=64.75s status=timeout
+2026-06-18 11:49:05,586 INFO k_sweep | k-sweep 152/280 elapsed=5887.4s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=0 wall=857.93s status=timeout
+2026-06-18 11:49:58,293 INFO k_sweep | k-sweep 153/280 elapsed=5940.1s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=0 wall=1753.61s status=timeout
+2026-06-18 11:51:02,510 INFO k_sweep | k-sweep 154/280 elapsed=6004.3s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=22697768 wall=64.17s status=timeout
+2026-06-18 11:51:29,729 INFO k_sweep | k-sweep 155/280 elapsed=6031.6s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=0 wall=430.89s status=timeout
+2026-06-18 11:52:03,984 INFO k_sweep | k-sweep 156/280 elapsed=6065.8s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=48627955 wall=60.62s status=timeout
+2026-06-18 11:52:33,738 INFO k_sweep | k-sweep 157/280 elapsed=6095.6s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=51868083 wall=29.70s status=feasible
+2026-06-18 11:52:33,875 INFO k_sweep | k-sweep 158/280 elapsed=6095.7s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=2433027 wall=64.12s status=timeout
+2026-06-18 11:53:41,702 INFO k_sweep | k-sweep 159/280 elapsed=6163.5s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=0 wall=884.48s status=timeout
+2026-06-18 11:54:29,376 INFO k_sweep | k-sweep 160/280 elapsed=6211.2s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=0 wall=1784.90s status=timeout
+2026-06-18 11:55:33,039 INFO k_sweep | k-sweep 161/280 elapsed=6274.9s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=12964676 wall=63.59s status=timeout
+2026-06-18 11:56:36,237 INFO k_sweep | k-sweep 162/280 elapsed=6338.1s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=25942318 wall=62.33s status=timeout
+2026-06-18 11:56:52,926 INFO k_sweep | k-sweep 163/280 elapsed=6354.7s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=0 wall=467.30s status=timeout
+2026-06-18 11:57:33,917 INFO k_sweep | k-sweep 164/280 elapsed=6395.7s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=51874296 wall=40.96s status=feasible
+2026-06-18 11:57:39,253 INFO k_sweep | k-sweep 165/280 elapsed=6401.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=15398785 wall=62.98s status=timeout
+2026-06-18 11:59:29,116 INFO k_sweep | k-sweep 166/280 elapsed=6510.9s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=0 wall=926.69s status=timeout
+2026-06-18 11:59:50,856 INFO k_sweep | k-sweep 167/280 elapsed=6532.7s solver=hld k=2 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=0 wall=1832.42s status=timeout
+2026-06-18 12:00:56,824 INFO k_sweep | k-sweep 168/280 elapsed=6598.6s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=22679706 wall=65.94s status=timeout
+2026-06-18 12:01:35,218 INFO k_sweep | k-sweep 169/280 elapsed=6637.0s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=0 wall=473.48s status=timeout
+2026-06-18 12:01:58,288 INFO k_sweep | k-sweep 170/280 elapsed=6660.1s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=51831413 wall=60.68s status=timeout
+2026-06-18 12:02:34,501 INFO k_sweep | k-sweep 171/280 elapsed=6696.3s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=51830337 wall=59.26s status=feasible
+2026-06-18 12:03:01,280 INFO k_sweep | k-sweep 172/280 elapsed=6723.1s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=21773949 wall=62.93s status=timeout
+2026-06-18 12:04:23,329 INFO k_sweep | k-sweep 173/280 elapsed=6805.1s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=0 wall=972.17s status=timeout
+2026-06-18 12:04:57,911 INFO k_sweep | k-sweep 174/280 elapsed=6839.7s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=0 profit=0 wall=1871.57s status=timeout
+2026-06-18 12:06:01,520 INFO k_sweep | k-sweep 175/280 elapsed=6903.3s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=25942517 wall=63.58s status=timeout
+2026-06-18 12:07:05,788 INFO k_sweep | k-sweep 176/280 elapsed=6967.6s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=16210708 wall=63.44s status=timeout
+2026-06-18 12:07:18,998 INFO k_sweep | k-sweep 177/280 elapsed=6980.8s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=0 wall=469.84s status=timeout
+2026-06-18 12:08:07,806 INFO k_sweep | k-sweep 178/280 elapsed=7029.6s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=28374305 wall=62.00s status=timeout
+2026-06-18 12:08:24,390 INFO k_sweep | k-sweep 179/280 elapsed=7046.2s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=518537 wall=64.53s status=timeout
+2026-06-18 12:08:59,407 INFO k_sweep | k-sweep 180/280 elapsed=7081.2s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=0 wall=984.76s status=timeout
+2026-06-18 12:10:36,157 INFO k_sweep | k-sweep 181/280 elapsed=7178.0s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=1 profit=0 wall=1920.97s status=timeout
+2026-06-18 12:11:40,224 INFO k_sweep | k-sweep 182/280 elapsed=7242.0s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=12966256 wall=64.03s status=timeout
+2026-06-18 12:12:20,262 INFO k_sweep | k-sweep 183/280 elapsed=7282.1s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=0 wall=476.81s status=timeout
+2026-06-18 12:12:50,114 INFO k_sweep | k-sweep 184/280 elapsed=7311.9s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=8105298 wall=69.11s status=timeout
+2026-06-18 12:13:24,863 INFO k_sweep | k-sweep 185/280 elapsed=7346.7s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=811842 wall=63.86s status=timeout
+2026-06-18 12:13:53,042 INFO k_sweep | k-sweep 186/280 elapsed=7374.9s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=23331584 wall=62.87s status=timeout
+2026-06-18 12:14:09,616 INFO k_sweep | k-sweep 187/280 elapsed=7391.4s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=0 wall=990.32s status=timeout
+2026-06-18 12:16:49,513 INFO k_sweep | k-sweep 188/280 elapsed=7551.3s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=0 wall=470.06s status=timeout
+2026-06-18 12:16:50,622 INFO k_sweep | k-sweep 189/280 elapsed=7552.4s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=10 profit=0 wall=1988.55s status=timeout
+2026-06-18 12:17:51,375 INFO k_sweep | k-sweep 190/280 elapsed=7613.2s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=50309325 wall=60.72s status=timeout
+2026-06-18 12:17:54,960 INFO k_sweep | k-sweep 191/280 elapsed=7616.8s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=25969722 wall=64.62s status=timeout
+2026-06-18 12:18:55,278 INFO k_sweep | k-sweep 192/280 elapsed=7677.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=13793738 wall=63.07s status=timeout
+2026-06-18 12:18:58,265 INFO k_sweep | k-sweep 193/280 elapsed=7680.1s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=19215999 wall=63.21s status=timeout
+2026-06-18 12:19:32,491 INFO k_sweep | k-sweep 194/280 elapsed=7714.3s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=0 wall=991.16s status=timeout
+2026-06-18 12:21:07,254 INFO k_sweep | k-sweep 195/280 elapsed=7809.1s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=11 profit=0 wall=2041.33s status=timeout
+2026-06-18 12:22:05,936 INFO k_sweep | k-sweep 196/280 elapsed=7867.7s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=0 wall=476.29s status=timeout
+2026-06-18 12:22:11,351 INFO k_sweep | k-sweep 197/280 elapsed=7873.2s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=22697355 wall=64.07s status=timeout
+2026-06-18 12:23:09,485 INFO k_sweep | k-sweep 198/280 elapsed=7931.3s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=21075595 wall=63.51s status=timeout
+2026-06-18 12:23:16,880 INFO k_sweep | k-sweep 199/280 elapsed=7938.7s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=809352 wall=64.62s status=timeout
+2026-06-18 12:24:13,171 INFO k_sweep | k-sweep 200/280 elapsed=7995.0s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=26976185 wall=62.73s status=timeout
+2026-06-18 12:24:50,622 INFO k_sweep | k-sweep 201/280 elapsed=8032.4s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=0 wall=986.18s status=timeout
+2026-06-18 12:26:50,269 INFO k_sweep | k-sweep 202/280 elapsed=8152.1s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=12 profit=0 wall=2056.47s status=timeout
+2026-06-18 12:27:22,622 INFO k_sweep | k-sweep 203/280 elapsed=8184.4s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=0 wall=470.10s status=timeout
+2026-06-18 12:28:30,032 INFO k_sweep | k-sweep 204/280 elapsed=8251.8s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=6480264 wall=67.39s status=timeout
+2026-06-18 12:28:58,120 INFO k_sweep | k-sweep 205/280 elapsed=8279.9s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=12961455 wall=127.80s status=timeout
+2026-06-18 12:29:35,363 INFO k_sweep | k-sweep 206/280 elapsed=8317.2s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=810790 wall=64.41s status=timeout
+2026-06-18 12:30:01,278 INFO k_sweep | k-sweep 207/280 elapsed=8343.1s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=23333965 wall=62.41s status=timeout
+2026-06-18 12:30:07,626 INFO k_sweep | k-sweep 208/280 elapsed=8349.4s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=0 wall=974.55s status=timeout
+2026-06-18 12:31:45,527 INFO k_sweep | k-sweep 209/280 elapsed=8447.3s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=13 profit=0 wall=2050.74s status=timeout
+2026-06-18 12:32:43,113 INFO k_sweep | k-sweep 210/280 elapsed=8504.9s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=0 wall=472.40s status=timeout
+2026-06-18 12:32:50,063 INFO k_sweep | k-sweep 211/280 elapsed=8511.9s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=22669639 wall=64.50s status=timeout
+2026-06-18 12:33:45,923 INFO k_sweep | k-sweep 212/280 elapsed=8567.7s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=19435230 wall=62.78s status=timeout
+2026-06-18 12:33:52,772 INFO k_sweep | k-sweep 213/280 elapsed=8574.6s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=29152315 wall=61.87s status=timeout
+2026-06-18 12:34:59,919 INFO k_sweep | k-sweep 214/280 elapsed=8641.7s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=1036578 wall=73.18s status=timeout
+2026-06-18 12:35:12,103 INFO k_sweep | k-sweep 215/280 elapsed=8653.9s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=0 wall=973.81s status=timeout
+2026-06-18 12:36:50,837 INFO k_sweep | k-sweep 216/280 elapsed=8752.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=14 profit=0 wall=2056.27s status=timeout
+2026-06-18 12:37:54,788 INFO k_sweep | k-sweep 217/280 elapsed=8816.6s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=25947276 wall=63.92s status=timeout
+2026-06-18 12:37:59,314 INFO k_sweep | k-sweep 218/280 elapsed=8821.1s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=0 wall=471.63s status=timeout
+2026-06-18 12:38:58,794 INFO k_sweep | k-sweep 219/280 elapsed=8880.6s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=12970979 wall=63.20s status=timeout
+2026-06-18 12:39:01,515 INFO k_sweep | k-sweep 220/280 elapsed=8883.3s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=27568407 wall=62.19s status=timeout
+2026-06-18 12:40:03,712 INFO k_sweep | k-sweep 221/280 elapsed=8945.5s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=519902 wall=64.86s status=timeout
+2026-06-18 12:40:38,459 INFO k_sweep | k-sweep 222/280 elapsed=8980.3s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=0 wall=985.21s status=timeout
+2026-06-18 12:42:20,928 INFO k_sweep | k-sweep 223/280 elapsed=9082.7s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=15 profit=0 wall=2053.08s status=timeout
+2026-06-18 12:43:00,481 INFO k_sweep | k-sweep 224/280 elapsed=9122.3s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=0 wall=468.38s status=timeout
+2026-06-18 12:43:30,293 INFO k_sweep | k-sweep 225/280 elapsed=9152.1s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=12981041 wall=69.31s status=timeout
+2026-06-18 12:44:03,363 INFO k_sweep | k-sweep 226/280 elapsed=9185.2s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=21086538 wall=62.86s status=timeout
+2026-06-18 12:44:32,971 INFO k_sweep | k-sweep 227/280 elapsed=9214.8s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=29194914 wall=61.92s status=timeout
+2026-06-18 12:45:08,324 INFO k_sweep | k-sweep 228/280 elapsed=9250.1s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=519653 wall=64.93s status=timeout
+2026-06-18 12:46:27,401 INFO k_sweep | k-sweep 229/280 elapsed=9329.2s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=0 wall=986.09s status=timeout
+2026-06-18 12:47:33,223 INFO k_sweep | k-sweep 230/280 elapsed=9395.0s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=16 profit=0 wall=2048.32s status=timeout
+2026-06-18 12:48:30,809 INFO k_sweep | k-sweep 231/280 elapsed=9452.6s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=0 wall=472.33s status=timeout
+2026-06-18 12:48:36,241 INFO k_sweep | k-sweep 232/280 elapsed=9458.1s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=22709419 wall=62.99s status=timeout
+2026-06-18 12:49:14,433 INFO k_sweep | k-sweep 233/280 elapsed=9496.3s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=51911479 wall=37.36s status=feasible
+2026-06-18 12:49:29,969 INFO k_sweep | k-sweep 234/280 elapsed=9511.8s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=51912259 wall=59.13s status=feasible
+2026-06-18 12:50:19,937 INFO k_sweep | k-sweep 235/280 elapsed=9561.8s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=518606 wall=65.47s status=timeout
+2026-06-18 12:51:26,844 INFO k_sweep | k-sweep 236/280 elapsed=9628.7s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=0 wall=986.90s status=timeout
+2026-06-18 12:53:10,873 INFO k_sweep | k-sweep 237/280 elapsed=9732.7s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=17 profit=0 wall=2055.56s status=timeout
+2026-06-18 12:54:17,056 INFO k_sweep | k-sweep 238/280 elapsed=9798.9s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=19443529 wall=66.13s status=timeout
+2026-06-18 12:54:26,626 INFO k_sweep | k-sweep 239/280 elapsed=9808.4s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=0 wall=479.19s status=timeout
+2026-06-18 12:55:20,662 INFO k_sweep | k-sweep 240/280 elapsed=9862.5s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=17820875 wall=62.89s status=timeout
+2026-06-18 12:55:30,391 INFO k_sweep | k-sweep 241/280 elapsed=9872.2s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=809316 wall=63.75s status=timeout
+2026-06-18 12:56:22,729 INFO k_sweep | k-sweep 242/280 elapsed=9924.5s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=26442612 wall=62.04s status=timeout
+2026-06-18 12:56:26,371 INFO k_sweep | k-sweep 243/280 elapsed=9928.2s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=0 wall=981.72s status=timeout
+2026-06-18 12:57:34,170 INFO k_sweep | k-sweep 244/280 elapsed=9996.0s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=18 profit=0 wall=2057.22s status=timeout
+2026-06-18 12:58:37,534 INFO k_sweep | k-sweep 245/280 elapsed=10059.4s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=22700047 wall=63.29s status=timeout
+2026-06-18 12:59:24,407 INFO k_sweep | k-sweep 246/280 elapsed=10106.2s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=0 wall=477.52s status=timeout
+2026-06-18 12:59:39,211 INFO k_sweep | k-sweep 247/280 elapsed=10121.0s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=47021234 wall=60.89s status=timeout
+2026-06-18 13:00:10,305 INFO k_sweep | k-sweep 248/280 elapsed=10152.1s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=51886731 wall=31.05s status=feasible
+2026-06-18 13:00:28,329 INFO k_sweep | k-sweep 249/280 elapsed=10170.1s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=15402437 wall=63.90s status=timeout
+2026-06-18 13:01:41,950 INFO k_sweep | k-sweep 250/280 elapsed=10243.8s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=0 wall=992.78s status=timeout
+2026-06-18 13:03:54,951 INFO k_sweep | k-sweep 251/280 elapsed=10376.8s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=19 profit=0 wall=2059.56s status=timeout
+2026-06-18 13:04:26,391 INFO k_sweep | k-sweep 252/280 elapsed=10408.2s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=0 wall=479.95s status=timeout
+2026-06-18 13:04:59,818 INFO k_sweep | k-sweep 253/280 elapsed=10441.6s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=16212532 wall=64.83s status=timeout
+2026-06-18 13:05:30,232 INFO k_sweep | k-sweep 254/280 elapsed=10472.0s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=35662773 wall=62.89s status=timeout
+2026-06-18 13:06:04,700 INFO k_sweep | k-sweep 255/280 elapsed=10506.5s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=14591526 wall=63.60s status=timeout
+2026-06-18 13:06:14,889 INFO k_sweep | k-sweep 256/280 elapsed=10516.7s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=51874961 wall=44.62s status=feasible
+2026-06-18 13:06:53,693 INFO k_sweep | k-sweep 257/280 elapsed=10555.5s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=0 wall=992.90s status=timeout
+2026-06-18 13:08:18,606 INFO k_sweep | k-sweep 258/280 elapsed=10640.4s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=2 profit=0 wall=2065.81s status=timeout
+2026-06-18 13:09:26,080 INFO k_sweep | k-sweep 259/280 elapsed=10707.9s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=16202149 wall=67.42s status=timeout
+2026-06-18 13:09:40,879 INFO k_sweep | k-sweep 260/280 elapsed=10722.7s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=0 wall=478.83s status=timeout
+2026-06-18 13:10:30,669 INFO k_sweep | k-sweep 261/280 elapsed=10772.5s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=9724034 wall=63.79s status=timeout
+2026-06-18 13:10:44,763 INFO k_sweep | k-sweep 262/280 elapsed=10786.6s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=808679 wall=63.85s status=timeout
+2026-06-18 13:11:33,030 INFO k_sweep | k-sweep 263/280 elapsed=10834.8s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=26446508 wall=62.34s status=timeout
+2026-06-18 13:12:55,198 INFO k_sweep | k-sweep 264/280 elapsed=10917.0s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=0 wall=992.43s status=timeout
+2026-06-18 13:13:27,366 INFO k_sweep | k-sweep 265/280 elapsed=10949.2s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=20 profit=0 wall=2065.82s status=timeout
+2026-06-18 13:14:32,739 INFO k_sweep | k-sweep 266/280 elapsed=11014.6s solver=partition_optimal k=16 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=12971840 wall=65.32s status=timeout
+2026-06-18 13:14:52,644 INFO k_sweep | k-sweep 267/280 elapsed=11034.5s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=0 wall=478.90s status=timeout
+2026-06-18 13:15:36,595 INFO k_sweep | k-sweep 268/280 elapsed=11078.4s solver=partition_optimal k=32 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=22693044 wall=62.81s status=timeout
+2026-06-18 13:15:57,478 INFO k_sweep | k-sweep 269/280 elapsed=11099.3s solver=partition_optimal k=64 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=1623551 wall=64.79s status=timeout
+2026-06-18 13:16:37,793 INFO k_sweep | k-sweep 270/280 elapsed=11139.6s solver=partition_optimal k=100 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=40970404 wall=61.17s status=timeout
+2026-06-18 13:16:53,846 INFO k_sweep | k-sweep 271/280 elapsed=11155.7s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=0 wall=984.82s status=timeout
+2026-06-18 13:18:46,785 INFO k_sweep | k-sweep 272/280 elapsed=11268.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=21 profit=0 wall=2053.78s status=timeout
+2026-06-18 13:19:56,432 INFO k_sweep | k-sweep 273/280 elapsed=11338.2s solver=partition_optimal k=8 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=0 wall=421.21s status=timeout
+2026-06-18 13:21:10,463 INFO k_sweep | k-sweep 274/280 elapsed=11412.3s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=0 wall=895.54s status=timeout
+2026-06-18 13:21:52,813 INFO k_sweep | k-sweep 275/280 elapsed=11454.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=22 profit=0 wall=1942.12s status=timeout
+2026-06-18 13:23:40,003 INFO k_sweep | k-sweep 276/280 elapsed=11561.8s solver=partition_optimal k=4 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=0 wall=726.94s status=timeout
+2026-06-18 13:24:23,339 INFO k_sweep | k-sweep 277/280 elapsed=11605.1s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=23 profit=0 wall=1732.90s status=timeout
+2026-06-18 13:25:05,137 INFO k_sweep | k-sweep 278/280 elapsed=11646.9s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=24 profit=0 wall=1494.79s status=timeout
+2026-06-18 13:25:21,016 INFO k_sweep | k-sweep 279/280 elapsed=11662.8s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=25 profit=0 wall=1156.28s status=timeout
+2026-06-18 13:25:28,750 INFO k_sweep | k-sweep 280/280 elapsed=11670.6s solver=partition_optimal k=2 N=100000 corr=inversely_strongly f=0.9 seed=26 profit=0 wall=883.13s status=timeout
+2026-06-18 13:25:28,750 INFO k_sweep | Wrote K-sweep records to results/k_sweep/sweep.jsonl
+=== K-sweep DONE 2026-06-18T11:25:28Z rows=     840 ===
