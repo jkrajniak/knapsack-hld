@@ -1,0 +1,8 @@
+# Intermediate N for the batch-granularity (concentration) test. N=200 and
+# N=10000 already exist on disk; this fills N=1000 and N=3000 so the
+# error-vs-batch-size curves have resolution across N.
+N: [1000, 3000]
+M: [10]
+correlation: [inversely_strongly]
+f: [0.5, 0.9]
+seeds: [0, 1, 2]

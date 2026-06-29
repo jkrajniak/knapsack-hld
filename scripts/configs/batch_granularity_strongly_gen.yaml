@@ -1,0 +1,8 @@
+# Confirmatory batch-granularity run on the strongly-correlated family.
+# VM has N=1000 and N=10000 (f0.5/0.9, seeds 0-2); generate the N=200 and
+# N=3000 anchors so the error-vs-batch-size curve spans 4 N values.
+N: [200, 3000]
+M: [10]
+correlation: [strongly]
+f: [0.5, 0.9]
+seeds: [0, 1, 2]

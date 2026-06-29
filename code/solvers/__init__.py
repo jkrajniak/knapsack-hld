@@ -24,6 +24,7 @@ import baselines as _baselines  # noqa: F401
 import heuristics as _heuristics  # noqa: F401
 
 from solvers import cbc as _cbc  # noqa: F401
+from solvers import guarded_hld as _guarded_hld  # noqa: F401
 from solvers import highs as _highs  # noqa: F401
 from solvers import hld as _hld  # noqa: F401
 from solvers import scip as _scip  # noqa: F401

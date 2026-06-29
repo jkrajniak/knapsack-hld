@@ -1,0 +1,8 @@
+# VM only has f0.5/0.9 at N=1000 and N=10000; generate the missing N=200 and
+# N=3000 anchors so the error-vs-batch-size curve spans 4 N values. Items are
+# deterministic in (seed, correlation), so these match the laptop set.
+N: [200, 3000]
+M: [10]
+correlation: [inversely_strongly]
+f: [0.5, 0.9]
+seeds: [0, 1, 2]

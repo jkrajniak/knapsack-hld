@@ -1,0 +1,8 @@
+# M-robustness check for the batch-granularity / allocation-error result.
+# VM already has N=1000 at M5/M20 for both families; generate the N=3000 anchor
+# so each (family, M) has two N values to confirm bs-governance / N-invariance.
+N: [3000]
+M: [5, 20]
+correlation: [inversely_strongly, strongly]
+f: [0.5, 0.9]
+seeds: [0, 1, 2]

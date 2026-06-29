@@ -54,6 +54,26 @@ scripts/run_full_archive.sh --out instances_full_candidate --jobs 16
 The manuscript tables and figures are regenerated from the produced `results/`
 CSVs with the `scripts/make_*_tables.py` and `scripts/make_figures.py` helpers.
 
+## Guarded HLD (`guarded_hld`)
+
+When the correlation class is unknown at deployment time, use the registered
+solver **`guarded_hld`** instead of raw `hld`. It is a thin wrapper (not a new
+algorithm): run Partition-Optimal at the operational batch count, optionally
+skip full HLD when the Lagrangian upper bound is within `τ_skip` of PO
+(default `0.005`, cost-only), otherwise run HLD and return **`max(PO, HLD)`**
+so profit never falls below the equal-budget baseline.
+
+```bash
+# Example: batch-granularity sweep cell (see scripts/configs/batch_granularity_*.yaml)
+uv run python scripts/check_batch_granularity.py \
+  --config scripts/configs/batch_granularity_midN.yaml \
+  --methods guarded_hld partition_optimal hld
+```
+
+Implementation: `code/solvers/guarded_hld.py`. Use raw `hld` only when the
+instance is known heterogeneous *and* batch granularity is fine enough that
+unguarded allocation error is acceptable (see manuscript §4.8).
+
 ## Repository layout
 
 ```

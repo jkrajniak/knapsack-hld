@@ -103,9 +103,14 @@ class HighsAdapter:
         sel, profit, cost = extract_selection(instance, _value)
 
         gap = getattr(info, "mip_gap", None)
+        dual_bound = getattr(info, "mip_dual_bound", None)
         meta: dict[str, Any] = {
             "highs_status": str(model_status),
             "mip_gap": float(gap) if gap is not None else None,
+            # Rigorous upper bound on the true optimum (maximization). Lets the
+            # gap analysis report a guaranteed gap upper bound on instances that
+            # do not certify optimal within the budget.
+            "mip_dual_bound": float(dual_bound) if dual_bound is not None else None,
             "mip_rel_gap_set": (
                 float(self._mip_rel_gap) if self._mip_rel_gap is not None else None
             ),

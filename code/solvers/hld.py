@@ -57,6 +57,7 @@ from __future__ import annotations
 import math
 import random
 import time
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Literal
 
 from instances.schema import GENERATOR_VERSION, CorrelationKind, InstanceModel
@@ -69,9 +70,23 @@ DEFAULT_ALPHA = 0.9
 DEFAULT_K = 8
 DEFAULT_SUB_SOLVER = "highs"
 
+# A batch is "budget-binding" (a candidate to receive reallocated surplus) when
+# it spent at least this fraction of its cap in the previous wave.
+REBALANCE_BIND_TOL = 0.999
+
 ClassOrdering = Literal["sequential", "random", "adversarial"]
 CLASS_ORDERINGS: tuple[ClassOrdering, ...] = ("sequential", "random", "adversarial")
 DEFAULT_CLASS_ORDERING: ClassOrdering = "sequential"
+
+
+def _make_sub_solver(name: str, threads: int | None) -> Any:
+    """Sub-solver factory; pins HiGHS thread count when given (avoids
+    oversubscription when many solves run in an outer parallel pool)."""
+    if name == "highs" and threads is not None:
+        from solvers.highs import HighsAdapter
+
+        return HighsAdapter(threads=threads)
+    return get_solver(name)
 
 
 class HldAdapter:
@@ -86,8 +101,11 @@ class HldAdapter:
         alpha: float = DEFAULT_ALPHA,
         k: int = DEFAULT_K,
         sub_solver: str = DEFAULT_SUB_SOLVER,
+        sub_solver_threads: int | None = None,
+        batch_jobs: int | None = None,
         lambda_max_override: float | None = None,
         class_ordering: ClassOrdering = DEFAULT_CLASS_ORDERING,
+        rebalance_rounds: int = 0,
     ) -> None:
         if n_iter < 1:
             raise ValueError(f"n_iter must be >= 1, got {n_iter}")
@@ -103,8 +121,15 @@ class HldAdapter:
         self.alpha = float(alpha)
         self.k = int(k)
         self.sub_solver = str(sub_solver)
+        self.sub_solver_threads = sub_solver_threads
+        if batch_jobs is not None and batch_jobs < 1:
+            raise ValueError(f"batch_jobs must be >= 1, got {batch_jobs}")
+        self.batch_jobs = batch_jobs
         self.lambda_max_override = lambda_max_override
         self.class_ordering: ClassOrdering = class_ordering
+        if rebalance_rounds < 0:
+            raise ValueError(f"rebalance_rounds must be >= 0, got {rebalance_rounds}")
+        self.rebalance_rounds = int(rebalance_rounds)
 
     def solve(
         self,
@@ -145,18 +170,49 @@ class HldAdapter:
             for b in range(k)
         ]
 
-        sub = get_solver(self.sub_solver)
         selected: dict[int, int | None] = {i: None for i in range(instance.N)}
+        parallel = bool(self.batch_jobs and self.batch_jobs > 1)
+
+        def solve_batch_at(b: int, budget: int) -> tuple[int, Any, float]:
+            sub = _make_sub_solver(self.sub_solver, self.sub_solver_threads)
+            sub_inst = _sub_instance(instance, batches[b], budget)
+            sub_t0 = time.perf_counter()
+            # Sequential batches see a shrinking window; parallel batches all
+            # start together, so each gets ~the full remaining budget.
+            remaining = _remaining_time(deadline)
+            sub_res = sub.solve(sub_inst, time_limit_s=remaining, random_seed=random_seed)
+            return b, sub_res, time.perf_counter() - sub_t0
+
+        def run_wave(items: list[tuple[int, int]]) -> list[tuple[int, Any, float]]:
+            if parallel:
+                with ThreadPoolExecutor(max_workers=self.batch_jobs) as pool:
+                    return list(pool.map(lambda a: solve_batch_at(*a), items))
+            return [solve_batch_at(b, bud) for b, bud in items]
+
+        cur_budget = list(per_batch_budget)
+        cur_res: dict[int, Any] = {}
+        cur_wall: dict[int, float] = dict.fromkeys(range(k), 0.0)
+        for b, sub_res, w in run_wave([(b, cur_budget[b]) for b in range(k)]):
+            cur_res[b] = sub_res
+            cur_wall[b] += w
+
+        rebalance_log = _rebalance_waves(
+            cur_res=cur_res,
+            cur_budget=cur_budget,
+            cur_wall=cur_wall,
+            B=instance.B,
+            k=k,
+            rounds=self.rebalance_rounds,
+            deadline=deadline,
+            run_wave=run_wave,
+        )
+
         profit = 0
         cost = 0
         phase3_log: list[dict[str, Any]] = []
-
-        for b, class_indices in enumerate(batches):
-            sub_inst = _sub_instance(instance, class_indices, per_batch_budget[b])
-            sub_t0 = time.perf_counter()
-            remaining = _remaining_time(deadline)
-            sub_res = sub.solve(sub_inst, time_limit_s=remaining, random_seed=random_seed)
-            sub_wall = time.perf_counter() - sub_t0
+        for b in range(k):
+            sub_res = cur_res[b]
+            class_indices = batches[b]
             for local_i, item_j in sub_res.items_selected.items():
                 selected[class_indices[local_i]] = item_j
             profit += sub_res.profit
@@ -164,9 +220,9 @@ class HldAdapter:
             phase3_log.append(
                 {
                     "batch": b,
-                    "B_k": per_batch_budget[b],
+                    "B_k": cur_budget[b],
                     "n_items": sub_res.n_classes_selected,
-                    "sub_milp_wall_s": sub_wall,
+                    "sub_milp_wall_s": cur_wall[b],
                     "profit": sub_res.profit,
                     "cost": sub_res.total_cost,
                     "status": str(sub_res.status),
@@ -180,6 +236,7 @@ class HldAdapter:
             "phase1_trajectory": phase1_trajectory,
             "phase2_allocation": phase2_log,
             "phase3_batches": phase3_log,
+            "rebalance_log": rebalance_log,
             "fallback_equal_split": fallback,
             "params": {
                 "n_iter": self.n_iter,
@@ -188,6 +245,7 @@ class HldAdapter:
                 "lambda_max": lambda_max,
                 "sub_solver": self.sub_solver,
                 "class_ordering": self.class_ordering,
+                "rebalance_rounds": self.rebalance_rounds,
             },
         }
         status = (
@@ -321,6 +379,56 @@ def _phase2_allocate(
         share = b_equal + b_prop * (c_k / total_est)
         out.append(max(1, math.floor(share)))
     return out
+
+
+def _rebalance_waves(
+    *,
+    cur_res: dict[int, Any],
+    cur_budget: list[int],
+    cur_wall: dict[int, float],
+    B: int,
+    k: int,
+    rounds: int,
+    deadline: float | None,
+    run_wave: Any,
+) -> list[dict[str, Any]]:
+    """Water-fill stranded budget into budget-binding batches.
+
+    Each round: surplus = B - sum(actual costs); split it equally across the
+    binding batches (those that spent ~their full cap) by raising only their
+    caps to ``cost + share``. Non-binding batches keep their cap, so the new
+    cap total never exceeds B. ``cur_res``/``cur_budget``/``cur_wall`` are
+    mutated in place. Monotone: a re-solve is kept only if profit does not drop.
+    """
+    log: list[dict[str, Any]] = []
+    for rnd in range(rounds):
+        if deadline is not None and time.perf_counter() > deadline:
+            break
+        surplus = B - sum(cur_res[b].total_cost for b in range(k))
+        if surplus <= 0:
+            break
+        binding = [
+            b for b in range(k) if cur_res[b].total_cost >= cur_budget[b] * REBALANCE_BIND_TOL
+        ]
+        if not binding:
+            break
+        share = surplus / len(binding)
+        new_items: list[tuple[int, int]] = []
+        for b in binding:
+            cur_budget[b] = int(cur_res[b].total_cost + share)
+            new_items.append((b, cur_budget[b]))
+        gained = 0.0
+        for b, sub_res, w in run_wave(new_items):
+            cur_wall[b] += w
+            if sub_res.profit >= cur_res[b].profit:
+                gained += sub_res.profit - cur_res[b].profit
+                cur_res[b] = sub_res
+        log.append(
+            {"round": rnd, "surplus": surplus, "n_binding": len(binding), "profit_gain": gained}
+        )
+        if gained <= 0:
+            break
+    return log
 
 
 def _split_classes(n: int, k: int, *, order: list[int] | None = None) -> list[list[int]]:
