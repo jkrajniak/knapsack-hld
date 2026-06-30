@@ -211,9 +211,7 @@ def _emit_combined_table(
         agg = _aggregate(subset)
         gains_by_n = {
             int(r["N"]): [
-                float(x["hld_vs_baseline_gain_pct"])
-                for x in subset
-                if int(x["N"]) == int(r["N"])
+                float(x["hld_vs_baseline_gain_pct"]) for x in subset if int(x["N"]) == int(r["N"])
             ]
             for r in agg
         }

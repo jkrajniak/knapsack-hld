@@ -26,8 +26,12 @@ from statistics import mean
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--csv", type=Path, required=True)
-    parser.add_argument("--max-oracle-gap", type=float, default=0.5,
-                        help="drop rows whose oracle dual gap exceeds this (pct)")
+    parser.add_argument(
+        "--max-oracle-gap",
+        type=float,
+        default=0.5,
+        help="drop rows whose oracle dual gap exceeds this (pct)",
+    )
     args = parser.parse_args()
 
     rows = list(csv.DictReader(args.csv.open(newline="")))
@@ -55,8 +59,10 @@ def main() -> int:
 
     n_sorted = sorted(ns)
     bs_sorted = sorted(bss)
-    print(f"clean rows: {len(rows) - dropped}/{len(rows)} "
-          f"(dropped {dropped}: timeout or loose oracle)\n")
+    print(
+        f"clean rows: {len(rows) - dropped}/{len(rows)} "
+        f"(dropped {dropped}: timeout or loose oracle)\n"
+    )
 
     for f in sorted(fs):
         for method in ("po", "hld"):
@@ -65,13 +71,14 @@ def main() -> int:
             print(header)
             print("  " + "-" * (len(header) - 2))
             for bs in bs_sorted:
-                vals = {n: mean(cells[(f, method, bs, n)])
-                        for n in n_sorted if (f, method, bs, n) in cells}
+                vals = {
+                    n: mean(cells[(f, method, bs, n)])
+                    for n in n_sorted
+                    if (f, method, bs, n) in cells
+                }
                 if not vals:
                     continue
-                cols = "".join(
-                    f" {vals[n]:6.2f}" if n in vals else "      ." for n in n_sorted
-                )
+                cols = "".join(f" {vals[n]:6.2f}" if n in vals else "      ." for n in n_sorted)
                 spread = max(vals.values()) - min(vals.values())
                 print(f"  {bs:3d} |{cols} | {spread:6.2f}")
             print()

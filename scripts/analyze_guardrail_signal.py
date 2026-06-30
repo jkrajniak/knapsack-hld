@@ -31,7 +31,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-from collections import defaultdict
 from pathlib import Path
 
 
@@ -49,8 +48,14 @@ def _load_cells(csv_paths: list[Path]) -> dict[tuple, dict]:
             og = r.get("oracle_gap_pct", "")
             if og not in ("", None) and abs(float(og)) > 0.5:
                 continue
-            key = (r["correlation"], float(r["f"]), int(r["seed"]),
-                   int(r["n"]), int(r["m"]), int(r["bs_target"]))
+            key = (
+                r["correlation"],
+                float(r["f"]),
+                int(r["seed"]),
+                int(r["n"]),
+                int(r["m"]),
+                int(r["bs_target"]),
+            )
             gap = r.get("gap_oracle_pct")
             if gap in ("", None):
                 continue
@@ -62,41 +67,63 @@ def _load_cells(csv_paths: list[Path]) -> dict[tuple, dict]:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--csv", type=Path, nargs="+", required=True)
-    ap.add_argument("--hurt-tol", type=float, default=0.05,
-                    help="delta above this (pp) counts as a real HLD harm (default 0.05)")
+    ap.add_argument(
+        "--hurt-tol",
+        type=float,
+        default=0.05,
+        help="delta above this (pp) counts as a real HLD harm (default 0.05)",
+    )
     args = ap.parse_args()
 
     cells = _load_cells(args.csv)
     if not cells:
-        print("no usable cells"); return 1
+        print("no usable cells")
+        return 1
 
     rows = []
     for key, v in cells.items():
-        corr, f, seed, n, m, bs = key
+        corr, f, _seed, n, m, bs = key
         po, hld = v["po"], v["hld"]
         delta = hld - po
-        rows.append({"key": key, "corr": corr, "f": f, "n": n, "m": m, "bs": bs,
-                     "po": po, "hld": hld, "delta": delta,
-                     "helped": delta < -args.hurt_tol,
-                     "hurt": delta > args.hurt_tol})
+        rows.append(
+            {
+                "key": key,
+                "corr": corr,
+                "f": f,
+                "n": n,
+                "m": m,
+                "bs": bs,
+                "po": po,
+                "hld": hld,
+                "delta": delta,
+                "helped": delta < -args.hurt_tol,
+                "hurt": delta > args.hurt_tol,
+            }
+        )
 
     rows.sort(key=lambda r: r["po"])
     n_help = sum(r["helped"] for r in rows)
     n_hurt = sum(r["hurt"] for r in rows)
-    print(f"cells: {len(rows)} total | HLD helped: {n_help} | HLD hurt: {n_hurt} | "
-          f"within tol: {len(rows)-n_help-n_hurt}\n")
+    print(
+        f"cells: {len(rows)} total | HLD helped: {n_help} | HLD hurt: {n_hurt} | "
+        f"within tol: {len(rows) - n_help - n_hurt}\n"
+    )
 
     print("=== worst 15 HLD-harm cells (delta = hld-po, pp) ===")
     print("  corr                    f    N      M  bs |   po%   hld%  delta")
     for r in sorted(rows, key=lambda x: -x["delta"])[:15]:
-        print(f"  {r['corr']:23s} {r['f']:.2f} {r['n']:6d} {r['m']:3d} {r['bs']:3d} | "
-              f"{r['po']:6.2f} {r['hld']:6.2f} {r['delta']:+6.2f}")
+        print(
+            f"  {r['corr']:23s} {r['f']:.2f} {r['n']:6d} {r['m']:3d} {r['bs']:3d} | "
+            f"{r['po']:6.2f} {r['hld']:6.2f} {r['delta']:+6.2f}"
+        )
 
     print("\n=== best 15 HLD-win cells ===")
     print("  corr                    f    N      M  bs |   po%   hld%  delta")
     for r in sorted(rows, key=lambda x: x["delta"])[:15]:
-        print(f"  {r['corr']:23s} {r['f']:.2f} {r['n']:6d} {r['m']:3d} {r['bs']:3d} | "
-              f"{r['po']:6.2f} {r['hld']:6.2f} {r['delta']:+6.2f}")
+        print(
+            f"  {r['corr']:23s} {r['f']:.2f} {r['n']:6d} {r['m']:3d} {r['bs']:3d} | "
+            f"{r['po']:6.2f} {r['hld']:6.2f} {r['delta']:+6.2f}"
+        )
 
     print("\n=== guardrail sweep: skip HLD when po_gap < tau ===")
     print("  tau | skip  run | skip_but_hurt run_lost  | harm_avoided  gain_retained")
@@ -110,10 +137,12 @@ def main() -> int:
         gain_retained = sum(-r["delta"] for r in run if r["helped"])  # pp of win kept
         max_skip_harm = max((r["delta"] for r in skip_hurt), default=0.0)
         max_run_lost = max((r["delta"] for r in run_lost), default=0.0)
-        print(f"  {tau:4.2f} | {len(skip):5d} {len(run):5d} | "
-              f"{len(skip_hurt):3d} {max_skip_harm:7.2f}  "
-              f"{len(run_lost):3d} {max_run_lost:7.2f}  | "
-              f"{harm_avoided:9.2f}  {gain_retained:9.2f}")
+        print(
+            f"  {tau:4.2f} | {len(skip):5d} {len(run):5d} | "
+            f"{len(skip_hurt):3d} {max_skip_harm:7.2f}  "
+            f"{len(run_lost):3d} {max_run_lost:7.2f}  | "
+            f"{harm_avoided:9.2f}  {gain_retained:9.2f}"
+        )
 
     print("\n=== with never-lose backstop (accept HLD only if profit>=PO): ===")
     print("  residual harm after backstop = 0 by construction; report retained win.")
@@ -121,9 +150,11 @@ def main() -> int:
         run = [r for r in rows if r["po"] >= tau]
         retained = sum(-r["delta"] for r in run if r["helped"])
         skipped_win = sum(-r["delta"] for r in rows if r["po"] < tau and r["helped"])
-        print(f"  tau={tau:4.2f}: run HLD on {len(run)} cells, retain {retained:.2f}pp "
-              f"of win; skip {len(rows)-len(run)} cells (would have forgone "
-              f"{skipped_win:.2f}pp of win that HLD would have gained).")
+        print(
+            f"  tau={tau:4.2f}: run HLD on {len(run)} cells, retain {retained:.2f}pp "
+            f"of win; skip {len(rows) - len(run)} cells (would have forgone "
+            f"{skipped_win:.2f}pp of win that HLD would have gained)."
+        )
     return 0
 
 

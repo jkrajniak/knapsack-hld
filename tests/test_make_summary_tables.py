@@ -132,7 +132,7 @@ def test_hld_300s_table_recomputes_gains(tmp_path: Path) -> None:
 
     sens = tmp_path / "sensitivity.csv"
     sens_rows: list[dict[str, object]] = []
-    for baseline in ("greedy_max_ratio", "trs2008", "bissa"):
+    for _baseline in ("greedy_max_ratio", "trs2008", "bissa"):
         for seed in range(2):
             # HLD@300s profit 110 -> +10% gain vs baseline_profit 100.
             sens_rows.append(

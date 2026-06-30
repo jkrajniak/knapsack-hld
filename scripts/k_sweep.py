@@ -335,7 +335,9 @@ def main(argv: list[str] | None = None) -> int:
     manifest_path = args.manifest or (args.archive / "MANIFEST.json")
     n_runs = len(entries) * len(args.k_grid) * len(args.solvers)
     print(f"archive: {args.archive}")
-    print(f"config: {args.config} (n_iter={hld.n_iter}, alpha={hld.alpha}, lambda_max={hld.lambda_max})")
+    print(
+        f"config: {args.config} (n_iter={hld.n_iter}, alpha={hld.alpha}, lambda_max={hld.lambda_max})"
+    )
     print(f"out_jsonl: {args.out_jsonl}")
     print(f"subset: {args.subset}  min_N: {args.min_n}")
     print(f"k_grid: {args.k_grid}")
@@ -345,10 +347,14 @@ def main(argv: list[str] | None = None) -> int:
     print(f"runs_planned: {n_runs}")
     if args.dry_run:
         for e in entries:
-            print(f"  {e.rel_path} (N={e.cell['N']}, {e.cell['correlation']}, f={e.cell['f']}, seed={e.seed})")
+            print(
+                f"  {e.rel_path} (N={e.cell['N']}, {e.cell['correlation']}, f={e.cell['f']}, seed={e.seed})"
+            )
         return 0
 
-    write_meta(out_jsonl=args.out_jsonl, args=args, hld=hld, entries=entries, manifest_path=manifest_path)
+    write_meta(
+        out_jsonl=args.out_jsonl, args=args, hld=hld, entries=entries, manifest_path=manifest_path
+    )
 
     done = completed_keys(args.out_jsonl)
     work = [

@@ -40,9 +40,7 @@ PARTITION = "partition_optimal"
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--sweep-jsonl", type=Path, default=Path("results/k_sweep/sweep.jsonl")
-    )
+    parser.add_argument("--sweep-jsonl", type=Path, default=Path("results/k_sweep/sweep.jsonl"))
     parser.add_argument("--out-dir", type=Path, default=Path("results/k_sweep/summary"))
     parser.add_argument("--no-plots", action="store_true")
     return parser.parse_args(argv)
@@ -75,9 +73,7 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
     f_grid = sorted(fs)
     k_grid = sorted(ks)
-    seeds_by_f = {
-        f: sorted({key[1] for key in profit if key[0] == f}) for f in f_grid
-    }
+    seeds_by_f = {f: sorted({key[1] for key in profit if key[0] == f}) for f in f_grid}
 
     cells: list[dict[str, Any]] = []
     per_f: dict[float, dict[str, Any]] = {}
@@ -87,7 +83,9 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         hld_median_by_k: dict[int, float] = {}
         for k in k_grid:
             hld_profits = [profit[(f, s, HLD, k)] for s in seeds if (f, s, HLD, k) in profit]
-            po_profits = [profit[(f, s, PARTITION, k)] for s in seeds if (f, s, PARTITION, k) in profit]
+            po_profits = [
+                profit[(f, s, PARTITION, k)] for s in seeds if (f, s, PARTITION, k) in profit
+            ]
             hld_feasible = sum(1 for p in hld_profits if p > 0)
             po_feasible = sum(1 for p in po_profits if p > 0)
 
@@ -132,9 +130,7 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
             )
 
         infeasible_ks = [k for k in k_grid if k not in feasible_ks]
-        best_k = (
-            max(feasible_ks, key=lambda k: hld_median_by_k[k]) if feasible_ks else None
-        )
+        best_k = max(feasible_ks, key=lambda k: hld_median_by_k[k]) if feasible_ks else None
         per_f[f] = {
             "feasible_ks": feasible_ks,
             "infeasible_ks": infeasible_ks,
@@ -219,9 +215,7 @@ def interpret(summary: dict[str, Any]) -> str:
             continue
         above = [k for k in info["feasible_ks"] if k > best_k]
         med = info["hld_median_by_k"]
-        monotone = all(
-            med[above[i]] >= med[above[i + 1]] for i in range(len(above) - 1)
-        )
+        monotone = all(med[above[i]] >= med[above[i + 1]] for i in range(len(above) - 1))
         declines.append((f, monotone))
     if declines and all(m for _, m in declines):
         bits.append(
@@ -268,7 +262,8 @@ def render_plots(summary: dict[str, Any], out_dir: Path) -> None:
             )
 
     infeasible_union = [
-        k for k in summary["k_grid"]
+        k
+        for k in summary["k_grid"]
         if all(k in summary["per_f"][f]["infeasible_ks"] for f in summary["f_grid"])
     ]
     if infeasible_union:

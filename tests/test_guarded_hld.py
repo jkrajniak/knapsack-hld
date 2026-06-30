@@ -59,9 +59,7 @@ def test_guarded_never_loses_to_po_across_regimes() -> None:
 def test_guarded_contains_hld_harm_on_strongly_loose() -> None:
     """The harm regime: strongly / f=0.9. Guarded must not be worse than PO at same K."""
     k = 20
-    inst = generate_instance(
-        N=60, M=10, correlation=CorrelationKind.STRONGLY, f=0.9, seed=5
-    )
+    inst = generate_instance(N=60, M=10, correlation=CorrelationKind.STRONGLY, f=0.9, seed=5)
     po = get_solver("partition_optimal").__class__(k=k).solve(inst, time_limit_s=20.0)
     guarded = GuardedHldAdapter(k=k, n_iter=25, lambda_max_override=80.745).solve(
         inst, time_limit_s=60.0
@@ -97,7 +95,17 @@ def test_tau_skip_zero_never_skips_and_picks_winner() -> None:
 def test_metadata_schema() -> None:
     inst = generate_instance(N=10, M=3, correlation=CorrelationKind.WEAKLY, f=0.5, seed=13)
     res = GuardedHldAdapter(k=4, tau_skip=DEFAULT_TAU_SKIP).solve(inst, time_limit_s=20.0)
-    keys = {"decision", "po_profit", "hld_profit", "lagrangian_ub", "lambda_est",
-            "po_gap_to_ul", "tau_skip", "wall_po_s", "wall_hld_s", "sub"}
+    keys = {
+        "decision",
+        "po_profit",
+        "hld_profit",
+        "lagrangian_ub",
+        "lambda_est",
+        "po_gap_to_ul",
+        "tau_skip",
+        "wall_po_s",
+        "wall_hld_s",
+        "sub",
+    }
     assert keys <= set(res.solver_metadata.keys())
     assert "po" in res.solver_metadata["sub"]

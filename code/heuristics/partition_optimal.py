@@ -105,9 +105,7 @@ class PartitionOptimalAdapter:
 
         if self.batch_jobs and self.batch_jobs > 1:
             with ThreadPoolExecutor(max_workers=self.batch_jobs) as pool:
-                results = list(
-                    pool.map(lambda a: solve_batch(*a), enumerate(batch_class_lists))
-                )
+                results = list(pool.map(lambda a: solve_batch(*a), enumerate(batch_class_lists)))
         else:
             results = [solve_batch(i, cl) for i, cl in enumerate(batch_class_lists)]
 

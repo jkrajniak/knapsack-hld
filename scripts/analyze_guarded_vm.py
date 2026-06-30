@@ -23,8 +23,14 @@ def _load(path: Path) -> dict[tuple, dict]:
         og = r.get("oracle_gap_pct", "")
         if og not in ("", None) and abs(float(og)) > 0.5:
             continue
-        key = (r["correlation"], float(r["f"]), int(r["seed"]),
-               int(r["n"]), int(r["m"]), int(r["bs_target"]))
+        key = (
+            r["correlation"],
+            float(r["f"]),
+            int(r["seed"]),
+            int(r["n"]),
+            int(r["m"]),
+            int(r["bs_target"]),
+        )
         out.setdefault(key, {})[r["method"]] = r
     return out
 
@@ -44,7 +50,6 @@ def main() -> int:
     n_viol = 0
     n_cells = 0
     decisions: Counter[str] = Counter()
-    overhead: list[float] = []
     gd_vs_hld_win = 0.0
     gd_vs_hld_lost = 0.0
 
@@ -85,13 +90,17 @@ def main() -> int:
         med_oh = sorted(ohs)[len(ohs) // 2] if ohs else 0.0
         skip_pct = 100.0 * skips / len(rs) if rs else 0.0
         label = f"{bucket[0]} / f={bucket[1]:.2f}"
-        print(f"  {label:31s} | {len(rs):2d} | {viol:4d} | {skip_pct:5.1f} | "
-              f"{med_oh:6.2f} | {'OK' if viol == 0 else 'FAIL'}")
+        print(
+            f"  {label:31s} | {len(rs):2d} | {viol:4d} | {skip_pct:5.1f} | "
+            f"{med_oh:6.2f} | {'OK' if viol == 0 else 'FAIL'}"
+        )
 
     print(f"\n  TOTAL cells={n_cells} violations={n_viol}")
     print(f"  decisions: {dict(decisions)}")
-    print(f"  quality vs unguarded HLD: avoided harm {gd_vs_hld_win:.2f}pp, "
-          f"extra gap vs HLD wins {gd_vs_hld_lost:.2f}pp")
+    print(
+        f"  quality vs unguarded HLD: avoided harm {gd_vs_hld_win:.2f}pp, "
+        f"extra gap vs HLD wins {gd_vs_hld_lost:.2f}pp"
+    )
     return 0 if n_viol == 0 else 1
 
 

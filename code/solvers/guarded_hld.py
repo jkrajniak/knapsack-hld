@@ -106,13 +106,20 @@ class GuardedHldAdapter:
             raise ValueError(f"tau_skip must be in [0, 1], got {tau_skip}")
         self.tau_skip = float(tau_skip)
         self._hld_params = dict(
-            n_iter=n_iter, alpha=alpha, k=k, sub_solver=sub_solver,
-            sub_solver_threads=sub_solver_threads, batch_jobs=batch_jobs,
+            n_iter=n_iter,
+            alpha=alpha,
+            k=k,
+            sub_solver=sub_solver,
+            sub_solver_threads=sub_solver_threads,
+            batch_jobs=batch_jobs,
             lambda_max_override=lambda_max_override,
-            class_ordering=class_ordering, rebalance_rounds=rebalance_rounds,
+            class_ordering=class_ordering,
+            rebalance_rounds=rebalance_rounds,
         )
         self._po_params = dict(
-            k=k, sub_solver=sub_solver, sub_solver_threads=sub_solver_threads,
+            k=k,
+            sub_solver=sub_solver,
+            sub_solver_threads=sub_solver_threads,
             batch_jobs=batch_jobs,
         )
 
@@ -137,7 +144,9 @@ class GuardedHldAdapter:
     ) -> SolveResult:
         t0 = time.perf_counter()
 
-        po_res = self._build_po().solve(instance, time_limit_s=time_limit_s, random_seed=random_seed)
+        po_res = self._build_po().solve(
+            instance, time_limit_s=time_limit_s, random_seed=random_seed
+        )
         wall_po = time.perf_counter() - t0
 
         # Phase-1 is pure arithmetic; reuse HLD's machinery so lambda_est matches
@@ -151,9 +160,16 @@ class GuardedHldAdapter:
 
         if po_gap_to_ul < self.tau_skip:
             return self._finalize(
-                instance, decision="skip", po_res=po_res, hld_res=None,
-                lambda_est=lambda_est, ub=ub, po_gap_to_ul=po_gap_to_ul,
-                wall_po=wall_po, wall_hld=0.0, t0=t0,
+                instance,
+                decision="skip",
+                po_res=po_res,
+                hld_res=None,
+                lambda_est=lambda_est,
+                ub=ub,
+                po_gap_to_ul=po_gap_to_ul,
+                wall_po=wall_po,
+                wall_hld=0.0,
+                t0=t0,
             )
 
         hld_t0 = time.perf_counter()
@@ -161,14 +177,18 @@ class GuardedHldAdapter:
         hld_res = self._build_hld().solve(instance, time_limit_s=remaining, random_seed=random_seed)
         wall_hld = time.perf_counter() - hld_t0
 
-        if hld_res.profit > po_res.profit:
-            decision = "hld_wins"
-        else:
-            decision = "po_wins"
+        decision = "hld_wins" if hld_res.profit > po_res.profit else "po_wins"
         return self._finalize(
-            instance, decision=decision, po_res=po_res, hld_res=hld_res,
-            lambda_est=lambda_est, ub=ub, po_gap_to_ul=po_gap_to_ul,
-            wall_po=wall_po, wall_hld=wall_hld, t0=t0,
+            instance,
+            decision=decision,
+            po_res=po_res,
+            hld_res=hld_res,
+            lambda_est=lambda_est,
+            ub=ub,
+            po_gap_to_ul=po_gap_to_ul,
+            wall_po=wall_po,
+            wall_hld=wall_hld,
+            t0=t0,
             winner=hld_res if decision == "hld_wins" else po_res,
         )
 

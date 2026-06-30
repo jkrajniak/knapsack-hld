@@ -39,12 +39,31 @@ from solvers.hld import HldAdapter
 CFG = json.loads(Path("configs/hld_smac_best.json").read_text())
 
 OUT_FIELDS = (
-    "correlation", "f", "seed", "n", "m", "bs_target", "k", "batch_size",
-    "oracle_profit", "oracle_status", "oracle_dual_ub", "oracle_gap_pct",
-    "method", "profit", "fill_pct", "gap_oracle_pct",
-    "n_timeout", "n_batches", "wall_s",
+    "correlation",
+    "f",
+    "seed",
+    "n",
+    "m",
+    "bs_target",
+    "k",
+    "batch_size",
+    "oracle_profit",
+    "oracle_status",
+    "oracle_dual_ub",
+    "oracle_gap_pct",
+    "method",
+    "profit",
+    "fill_pct",
+    "gap_oracle_pct",
+    "n_timeout",
+    "n_batches",
+    "wall_s",
     # guarded_hld only (empty for po/hld rows)
-    "decision", "wall_po_s", "wall_hld_s", "po_gap_to_ul", "tau_skip",
+    "decision",
+    "wall_po_s",
+    "wall_hld_s",
+    "po_gap_to_ul",
+    "tau_skip",
 )
 
 
@@ -72,17 +91,24 @@ def _solve_methods(
 
     if "hld" in methods:
         hld = HldAdapter(
-            n_iter=CFG["n_iter"], alpha=CFG["alpha"], k=k,
-            lambda_max_override=CFG["lambda_max"], rebalance_rounds=0,
+            n_iter=CFG["n_iter"],
+            alpha=CFG["alpha"],
+            k=k,
+            lambda_max_override=CFG["lambda_max"],
+            rebalance_rounds=0,
             **common,
         ).solve(inst, time_limit_s=time_limit, random_seed=0)
         out["hld"] = (hld, hld.solver_metadata["phase3_batches"], {})
 
     if "guarded_hld" in methods:
         gd = GuardedHldAdapter(
-            n_iter=CFG["n_iter"], alpha=CFG["alpha"], k=k,
-            lambda_max_override=CFG["lambda_max"], rebalance_rounds=0,
-            tau_skip=tau_skip, **common,
+            n_iter=CFG["n_iter"],
+            alpha=CFG["alpha"],
+            k=k,
+            lambda_max_override=CFG["lambda_max"],
+            rebalance_rounds=0,
+            tau_skip=tau_skip,
+            **common,
         ).solve(inst, time_limit_s=time_limit * 2, random_seed=0)
         meta = gd.solver_metadata
         po_batches = meta["sub"]["po"]["batches"]
@@ -113,11 +139,14 @@ def main() -> int:
     parser.add_argument("--oracle-time", type=float, default=300.0)
     parser.add_argument("--sub-time", type=float, default=120.0)
     parser.add_argument(
-        "--methods", default="po,hld",
+        "--methods",
+        default="po,hld",
         help="Comma-separated: po, hld, guarded_hld (default: po,hld)",
     )
     parser.add_argument(
-        "--tau-skip", type=float, default=DEFAULT_TAU_SKIP,
+        "--tau-skip",
+        type=float,
+        default=DEFAULT_TAU_SKIP,
         help="Guarded-HLD Lagrangian-UB skip threshold (default 0.005)",
     )
     args = parser.parse_args()
@@ -130,8 +159,16 @@ def main() -> int:
     if args.out_csv.exists():
         with args.out_csv.open(newline="") as fh:
             for r in csv.DictReader(fh):
-                done.add((r["correlation"], float(r["f"]), int(r["seed"]),
-                          int(r["n"]), int(r["bs_target"]), r["method"]))
+                done.add(
+                    (
+                        r["correlation"],
+                        float(r["f"]),
+                        int(r["seed"]),
+                        int(r["n"]),
+                        int(r["bs_target"]),
+                        r["method"],
+                    )
+                )
 
     args.out_csv.parent.mkdir(parents=True, exist_ok=True)
     write_header = not args.out_csv.exists()
@@ -146,10 +183,7 @@ def main() -> int:
         for f in args.fs:
             for seed in args.seeds:
                 bss = [bs for bs in args.batch_sizes if bs <= n]
-                if all(
-                    (corr, float(f), seed, n, bs, m) in done
-                    for bs in bss for m in methods
-                ):
+                if all((corr, float(f), seed, n, bs, m) in done for bs in bss for m in methods):
                     print(f"skip N{n} f{f} seed{seed} (all bs x methods done)", flush=True)
                     continue
                 path = Path(
@@ -172,21 +206,31 @@ def main() -> int:
                         continue
                     k = max(1, min(n, round(n / bs)))
                     solved = _solve_methods(
-                        inst, k, args.sub_time, methods=methods, tau_skip=args.tau_skip,
+                        inst,
+                        k,
+                        args.sub_time,
+                        methods=methods,
+                        tau_skip=args.tau_skip,
                     )
                     for method, (res, batches, extra) in solved.items():
                         if (corr, float(f), seed, n, bs, method) in done:
                             continue
                         gap = (ub - res.profit) / ub * 100 if ub else None
                         row = {
-                            "correlation": corr, "f": inst.f, "seed": seed,
-                            "n": n, "m": args.m, "bs_target": bs, "k": k,
+                            "correlation": corr,
+                            "f": inst.f,
+                            "seed": seed,
+                            "n": n,
+                            "m": args.m,
+                            "bs_target": bs,
+                            "k": k,
                             "batch_size": round(n / k, 1),
                             "oracle_profit": orc.profit,
                             "oracle_status": str(orc.status),
                             "oracle_dual_ub": round(dual_ub, 1),
                             "oracle_gap_pct": round(orc_gap, 4) if orc_gap is not None else None,
-                            "method": method, "profit": res.profit,
+                            "method": method,
+                            "profit": res.profit,
                             "fill_pct": round(res.total_cost / inst.B * 100, 3),
                             "gap_oracle_pct": round(gap, 4) if gap is not None else None,
                             "n_timeout": _n_timeout(batches),
@@ -208,12 +252,10 @@ def main() -> int:
                         g = (ub - res.profit) / ub * 100 if ub else 0.0
                         tag = m.upper() if m != "guarded_hld" else "GD"
                         suffix = f" [{extra['decision']}]" if m == "guarded_hld" else ""
-                        parts.append(
-                            f"{tag} gap={g:7.3f}% (TO {_n_timeout(batches)}){suffix}"
-                        )
+                        parts.append(f"{tag} gap={g:7.3f}% (TO {_n_timeout(batches)}){suffix}")
                     print(
                         f"N{n:6d} f{f} seed{seed} bs={bs:3d} k={k:4d} "
-                        f"bs_eff={n/k:6.1f} | {' '.join(parts)} "
+                        f"bs_eff={n / k:6.1f} | {' '.join(parts)} "
                         f"orc {orc.status} gap={orc_gap:.4f}%",
                         flush=True,
                     )

@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-from collections import defaultdict
 from pathlib import Path
 
 
@@ -28,8 +27,14 @@ def _load_cells(csv_paths: list[Path]) -> dict[tuple, dict]:
             og = r.get("oracle_gap_pct", "")
             if og not in ("", None) and abs(float(og)) > 0.5:
                 continue
-            key = (r["correlation"], float(r["f"]), int(r["seed"]),
-                   int(r["n"]), int(r["m"]), int(r["bs_target"]))
+            key = (
+                r["correlation"],
+                float(r["f"]),
+                int(r["seed"]),
+                int(r["n"]),
+                int(r["m"]),
+                int(r["bs_target"]),
+            )
             gap = r.get("gap_oracle_pct")
             if gap in ("", None):
                 continue
@@ -43,21 +48,34 @@ def main() -> int:
     args = ap.parse_args()
     cells = _load_cells(args.csv)
     if not cells:
-        print("no usable cells"); return 1
+        print("no usable cells")
+        return 1
 
     # profit proxy = (1 - gap/100) * oracle_profit; but gaps are vs the same oracle
     # per cell, so win/harm in *gap pp* is the right currency. We sum gap-pp deltas.
     rows = []
     for key, v in cells.items():
-        corr, f, seed, n, m, bs = key
+        corr, f, _seed, n, m, bs = key
         po, hld = v["po"], v["hld"]
-        rows.append({"corr": corr, "f": f, "n": n, "m": m, "bs": bs,
-                     "po": po, "hld": hld, "delta": hld - po,
-                     "guarded_gap": min(po, hld)})
+        rows.append(
+            {
+                "corr": corr,
+                "f": f,
+                "n": n,
+                "m": m,
+                "bs": bs,
+                "po": po,
+                "hld": hld,
+                "delta": hld - po,
+                "guarded_gap": min(po, hld),
+            }
+        )
 
     print("=== unguarded vs guarded HLD, by (correlation, f) bucket ===")
-    print(f"  {'bucket':31s} | n  | ungd: hurt maxharm  sumharm  sumwin | "
-          f"gd: hurt  maxharm  retained  lost  | retain%")
+    print(
+        f"  {'bucket':31s} | n  | ungd: hurt maxharm  sumharm  sumwin | "
+        f"gd: hurt  maxharm  retained  lost  | retain%"
+    )
     tot_ungd_win = 0.0
     tot_gd_retained = 0.0
     for k in sorted({(r["corr"], r["f"]) for r in rows}):
@@ -79,21 +97,27 @@ def main() -> int:
         tot_ungd_win += ungd_sumwin
         tot_gd_retained += gd_retained
         label = f"{k[0]} / f={k[1]:.2f}"
-        print(f"  {label:31s} | {len(rs):2d} | {len(ungd_hurt):4d} {ungd_maxharm:7.2f}  "
-              f"{ungd_sumharm:7.2f}  {ungd_sumwin:7.2f} | "
-              f"{len(gd_harm):4d}  {gd_maxharm:7.2f}  {gd_retained:7.2f}  {lost:5.2f}  | "
-              f"{(gd_retained/ungd_sumwin*100 if ungd_sumwin else 0):5.1f}")
+        print(
+            f"  {label:31s} | {len(rs):2d} | {len(ungd_hurt):4d} {ungd_maxharm:7.2f}  "
+            f"{ungd_sumharm:7.2f}  {ungd_sumwin:7.2f} | "
+            f"{len(gd_harm):4d}  {gd_maxharm:7.2f}  {gd_retained:7.2f}  {lost:5.2f}  | "
+            f"{(gd_retained / ungd_sumwin * 100 if ungd_sumwin else 0):5.1f}"
+        )
 
-    print(f"\n  TOTAL unguarded win = {tot_ungd_win:.2f}pp ; "
-          f"guarded retained = {tot_gd_retained:.2f}pp "
-          f"({tot_gd_retained/tot_ungd_win*100:.1f}%)")
+    print(
+        f"\n  TOTAL unguarded win = {tot_ungd_win:.2f}pp ; "
+        f"guarded retained = {tot_gd_retained:.2f}pp "
+        f"({tot_gd_retained / tot_ungd_win * 100:.1f}%)"
+    )
 
     # global harm comparison
     all_hurt = [r for r in rows if r["delta"] > 0.05]
-    print(f"  Unguarded: {len(all_hurt)} hurt cells, "
-          f"max harm {max(r['delta'] for r in all_hurt):.2f}pp, "
-          f"sum harm {sum(r['delta'] for r in all_hurt):.2f}pp")
-    print(f"  Guarded  : 0 hurt cells, max harm 0.00pp, sum harm 0.00pp")
+    print(
+        f"  Unguarded: {len(all_hurt)} hurt cells, "
+        f"max harm {max(r['delta'] for r in all_hurt):.2f}pp, "
+        f"sum harm {sum(r['delta'] for r in all_hurt):.2f}pp"
+    )
+    print("  Guarded  : 0 hurt cells, max harm 0.00pp, sum harm 0.00pp")
     return 0
 
 
