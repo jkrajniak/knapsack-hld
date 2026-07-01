@@ -352,7 +352,7 @@ def make_lambda_sweep_figure(path: Path, out_path: Path) -> None:
     ax.set_ylabel("HLD median optimality gap (%)")
     ax.set_title(r"Lagrangian dual saturates well below SMAC $\lambda_{\max}$")
     ax.grid(True, which="both", alpha=0.3)
-    ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), fontsize=8, frameon=True)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=2, fontsize=8, frameon=True)
     fig.tight_layout()
     fig.savefig(out_path, bbox_inches="tight")
     plt.close(fig)
