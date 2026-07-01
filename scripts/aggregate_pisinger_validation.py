@@ -331,6 +331,11 @@ def make_lambda_sweep_figure(path: Path, out_path: Path) -> None:
     correlation_color = {1: "#1b4f72", 2: "#922b21"}
     fig, ax = plt.subplots(figsize=(6.0, 4.0))
     for tid in type_keys:
+        if tid == 1:
+            # Type-1 (uncorrelated) median gap is ~0.02% and flat across the whole
+            # sweep; on a linear axis it is indistinguishable from zero and adds no
+            # signal. Omitted here and reported in the text/table instead.
+            continue
         lambdas = sorted({lm for t, lm in by_tid_lm if t == tid})
         medians = [median(by_tid_lm[(tid, lm)]) for lm in lambdas]
         ax.plot(
@@ -347,9 +352,9 @@ def make_lambda_sweep_figure(path: Path, out_path: Path) -> None:
     ax.set_ylabel("HLD median optimality gap (%)")
     ax.set_title(r"Lagrangian dual saturates well below SMAC $\lambda_{\max}$")
     ax.grid(True, which="both", alpha=0.3)
-    ax.legend(loc="upper right")
+    ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), fontsize=8, frameon=True)
     fig.tight_layout()
-    fig.savefig(out_path)
+    fig.savefig(out_path, bbox_inches="tight")
     plt.close(fig)
     LOGGER.info("wrote %s", out_path)
 

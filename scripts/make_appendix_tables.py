@@ -12,7 +12,7 @@ f) cell. Reference solver:
 Outputs (in `--out-dir`):
 
 - `appendix_N{n}.csv`  -- machine-readable per-cell table
-- `appendix_N{n}.tex`  -- LaTeX tabular environment
+- `appendix_N{n}.tex`  -- LaTeX longtable environment (page-breaking)
 
 Number cadence follows the project-wide rule:
 percentages with |x| >= 1 use 2 decimals; sub-1 % use 4 decimals.
@@ -32,6 +32,37 @@ REFERENCE_PER_N: dict[int, str] = {
     1000: "highs",
     10000: "highs",
     100000: "partition_optimal",
+}
+
+# Per-scale captions embedded in the emitted longtable (the appendix now lives in
+# the supplementary material as page-breaking longtables). Kept here so a
+# regeneration reproduces the exact caption text shipped in the manuscript.
+CAPTIONS: dict[int, str] = {
+    1000: (
+        r"Per-cell paired profit gap of HLD vs HiGHS at $N = 1\,000$ (60 cells). "
+        r"Negative \emph{med gain (\%)} means HiGHS attains a strictly higher profit "
+        r"on the median seed; positive values mean HLD wins. HLD is at or within tenths "
+        r"of a percent of HiGHS on the median of every cell at this scale."
+    ),
+    10000: (
+        r"Per-cell paired profit gap of HLD vs HiGHS at $N = 10\,000$ (55 cells; five "
+        r"cells where HiGHS returned no incumbent within the 60-second budget are omitted "
+        r"because the paired comparison is undefined). HLD remains at parity with HiGHS on "
+        r"the median of every cell except a handful of strongly- and "
+        r"inversely-strongly-correlated low-$f$ cells where HiGHS finds a strictly better "
+        r"incumbent under the same wall-clock budget; see "
+        r"Section~\ref{sec:large_scale_validation} for the aggregate."
+    ),
+    100000: (
+        r"Per-cell paired profit gap of HLD vs Partition-Optimal at $N = 100\,000$ "
+        r"(60 cells). HiGHS is omitted because it does not return an incumbent within the "
+        r"60-second budget at this scale. Positive \emph{med gain (\%)} means HLD recovers "
+        r"profit that the equal-budget decomposition leaves on the table; negative values "
+        r"mean Partition-Optimal wins on the median seed. The bimodal cell-level picture "
+        r"noted in Section~\ref{sec:large_scale_validation} (HLD wins 33 of 60 cells; "
+        r"Partition-Optimal wins the remaining 27, predominantly on strongly- and "
+        r"inversely-strongly-correlated cells at low $f$) is visible directly in this table."
+    ),
 }
 
 CSV_FIELDS = [
@@ -150,14 +181,27 @@ def write_appendix_tex(path: Path, n: int, rows: list[dict[str, object]]) -> Non
     if not rows:
         return
     ref = _tex_escape_underscores(str(rows[0]["reference_solver"]))
-    lines = [
-        "\\begin{tabular}{rlrrrrrrr}",
-        "\\hline",
+    label = f"tab:per_instance_N{n}"
+    header = (
         "$M$ & corr. & $f$ & $n$ & "
         "HLD med (s) & HLD max (s) & ref med (s) & "
-        "med gain (\\%) & worst gain (\\%) \\\\",
+        "med gain (\\%) & worst gain (\\%) \\\\"
+    )
+    caption = CAPTIONS.get(n, f"Per-cell paired profit gap of HLD at $N = {n}$.")
+    # longtable so the 55--60 row tables break across pages in the supplement.
+    lines = [
+        "\\begin{longtable}{rlrrrrrrr}",
+        f"\\caption{{{caption}}}\\label{{{label}}}\\\\",
+        "\\hline",
+        header,
         f"\\multicolumn{{9}}{{l}}{{reference: \\texttt{{{ref}}}}} \\\\",
         "\\hline",
+        "\\endfirsthead",
+        f"\\multicolumn{{9}}{{c}}{{\\footnotesize (Table~\\ref{{{label}}} continued)}} \\\\",
+        "\\hline",
+        header,
+        "\\hline",
+        "\\endhead",
     ]
     for row in rows:
         lines.append(
@@ -170,7 +214,7 @@ def write_appendix_tex(path: Path, n: int, rows: list[dict[str, object]]) -> Non
             f"{_format_pct(float(row['worst_gain_pct']))} \\\\"
         )
     lines.append("\\hline")
-    lines.append("\\end{tabular}")
+    lines.append("\\end{longtable}")
     path.write_text("\n".join(lines) + "\n")
 
 

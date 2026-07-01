@@ -191,7 +191,7 @@ def _make_sensitivity_figure(
     args.out_dir.mkdir(parents=True, exist_ok=True)
     pdf_path = args.out_dir / f"{figure_name}.pdf"
 
-    fig, (ax_q, ax_t) = plt.subplots(1, 2, figsize=(9.5, 3.8))
+    fig, (ax_q, ax_t) = plt.subplots(2, 1, sharex=True, figsize=(5.6, 7.0))
 
     for seed in seeds:
         seed_xs = sorted(by_seed[seed])
@@ -214,19 +214,19 @@ def _make_sensitivity_figure(
                 x_sel, color="tab:red", linestyle="--", linewidth=1.0, alpha=0.7, label=label_sel
             )
 
-    ax_q.set_xlabel(x_label)
     ax_q.set_ylabel("Optimality gap (\\%)")
     ax_q.set_title("(a) Solution quality")
     ax_q.grid(True, alpha=0.3)
-    ax_q.legend(loc="best", fontsize=8)
 
     ax_t.set_xlabel(x_label)
     ax_t.set_ylabel("HLD wall time (s)")
     ax_t.set_title("(b) Computation time")
     ax_t.grid(True, alpha=0.3)
-    ax_t.legend(loc="best", fontsize=8)
 
-    fig.tight_layout()
+    # Vertically stacked panels share one x-axis; a single legend sits below both.
+    handles, labels = ax_q.get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=3, fontsize=8, frameon=True)
+    fig.tight_layout(rect=(0, 0.10, 1, 1))
     fig.savefig(pdf_path)
     plt.close(fig)
 
@@ -453,7 +453,7 @@ def make_large_scale_scaling_ab(args: argparse.Namespace) -> None:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     pdf_path = args.out_dir / f"{figure_name}.pdf"
 
-    fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(10.0, 3.8))
+    fig, (ax_a, ax_b) = plt.subplots(2, 1, sharex=True, figsize=(5.6, 7.0))
     for solver in SCALING_SOLVERS:
         if solver not in agg:
             continue
@@ -481,13 +481,15 @@ def make_large_scale_scaling_ab(args: argparse.Namespace) -> None:
     ):
         ax.set_xscale("log")
         ax.set_yscale("log")
-        ax.set_xlabel("Number of decision classes $N$")
         ax.set_ylabel(ylabel)
         ax.set_title(title)
         ax.grid(True, which="both", alpha=0.3)
-        ax.legend(loc="best", fontsize=8)
+    ax_b.set_xlabel("Number of decision classes $N$")
 
-    fig.tight_layout()
+    # Vertically stacked panels share one x-axis; single legend below both.
+    handles, labels = ax_a.get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=len(labels), fontsize=8, frameon=True)
+    fig.tight_layout(rect=(0, 0.08, 1, 1))
     fig.savefig(pdf_path)
     plt.close(fig)
 

@@ -121,7 +121,7 @@ def make_figure(agg: dict, name: str, out_dir: Path) -> Path:
     bss = sorted({b for (_fam, _f, _m, b, _n) in agg})
     families = sorted({fam for (fam, _f, _m, _b, _n) in agg})
 
-    fig, axes = plt.subplots(1, len(fs), figsize=(4.6 * len(fs), 4.2), sharey=True)
+    fig, axes = plt.subplots(len(fs), 1, figsize=(5.4, 4.0 * len(fs)), sharex=True)
     if len(fs) == 1:
         axes = [axes]
 
@@ -140,10 +140,10 @@ def make_figure(agg: dict, name: str, out_dir: Path) -> Path:
         ax.set_yscale("symlog", linthresh=Y_FLOOR)
         ax.set_xticks(bss)
         ax.set_xticklabels([str(b) for b in bss])
-        ax.set_xlabel("batch size (classes / batch)")
+        ax.set_ylabel("allocation error vs oracle (%)")
         ax.set_title(f"f = {f:g}  (budget tightness)")
         ax.grid(True, which="major", alpha=0.3)
-    axes[0].set_ylabel("allocation error vs oracle (%)")
+    axes[-1].set_xlabel("batch size (classes / batch)")
 
     # One shared legend (family x method = 4 fully-specified entries) outside both panels.
     handles = [
@@ -159,12 +159,13 @@ def make_figure(agg: dict, name: str, out_dir: Path) -> Path:
         for fam in families
         for _m, (ls, marker, lbl) in METHOD_STYLE.items()
     ]
-    fig.suptitle(SUPTITLE, fontsize=11, y=0.98)
-    fig.tight_layout(rect=(0, 0, 1.0, 0.93))
+    fig.suptitle(SUPTITLE, fontsize=11, y=0.99)
+    fig.tight_layout(rect=(0, 0.06, 1.0, 0.95))
     legend = fig.legend(
         handles=handles,
-        loc="center left",
-        bbox_to_anchor=(1.0, 0.5),
+        loc="lower center",
+        bbox_to_anchor=(0.5, 0.0),
+        ncol=2,
         fontsize=8,
         frameon=True,
         framealpha=0.9,
